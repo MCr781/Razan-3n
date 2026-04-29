@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  /* Custom Brand Colors */
+  --color-razan-teal-light: #049e96;
+  --color-razan-teal: #028c85;
+  --color-razan-teal-dark: #00645f;
+
+  --color-razan-gray-100: #8e8e8e;
+  --color-razan-gray-200: #676767;
+  --color-razan-gray-300: #595959;
+  --color-razan-gray-400: #474646;
+
+  /* Custom Fonts */
+  --font-brand: 'AvantGarde', 'Sahel', sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-brand);
+    background-color: #ffffff;
+    /* Assuming white background based on previous designs */
+    color: var(--color-razan-gray-400);
+  }
+}
