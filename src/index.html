@@ -17,9 +17,9 @@
             --razan-gray-300: #595959;
             --razan-gray-400: #474646;
             --ease-elegant: cubic-bezier(0.22, 1, 0.36, 1);
-            --ease-bounce-light: cubic-bezier(0.34, 1.56, 0.64, 1);
-            --intro-offset-x: 0px;
-            --intro-offset-y: 0px;
+            --intro-fly-x: 0px;
+            --intro-fly-y: 0px;
+            --intro-fly-scale: 1;
         }
 
         @font-face {
@@ -44,33 +44,226 @@
             padding: 0;
             background-color: #ffffff;
             color: var(--razan-gray-400);
-        }
-
-        /* White Initial Overlay */
-        #intro-overlay {
-            position: fixed;
-            inset: 0;
-            background:
-                radial-gradient(circle at 20% 18%, rgba(4, 158, 150, 0.10), transparent 28%),
-                radial-gradient(circle at 78% 82%, rgba(2, 140, 133, 0.07), transparent 32%),
-                #ffffff;
-            z-index: 40;
-            transition: opacity 1.1s var(--ease-elegant);
-            pointer-events: none;
-        }
-
-        body[data-phase="idle"] #intro-overlay {
+            overflow-x: hidden;
             opacity: 0;
+            transition: opacity 0.55s ease-out;
         }
 
-        body[data-phase="intro"] #intro-overlay {
+        body.page-ready {
             opacity: 1;
         }
 
-        /* ── Logo Container ── */
+        /* ═══════════════════════════════════════════════
+           INTRO OVERLAY
+           ═══════════════════════════════════════════════ */
+        #intro-overlay {
+            position: fixed;
+            inset: 0;
+            background: #ffffff;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: opacity 0.7s var(--ease-elegant);
+        }
+
+        #intro-overlay.intro-fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #intro-overlay.intro-hidden {
+            display: none;
+        }
+
+        /* ── Intro Logo Wrapper ── */
+        #intro-logo-wrap {
+            position: relative;
+            width: 280px;
+            height: 275px;
+            margin-bottom: 0.5rem;
+            transition: transform 0.85s var(--ease-elegant), opacity 0.5s var(--ease-elegant);
+            transform-origin: center center;
+            will-change: transform, opacity;
+        }
+
+        @media (min-width: 640px) {
+            #intro-logo-wrap {
+                width: 340px;
+                height: 334px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #intro-logo-wrap {
+                width: 400px;
+                height: 393px;
+            }
+        }
+
+        /* Phase 3: fly to corner */
+        #intro-overlay.intro-phase-3 #intro-logo-wrap {
+            transform: translate(var(--intro-fly-x), var(--intro-fly-y)) scale(var(--intro-fly-scale));
+            opacity: 1;
+            transition: transform 0.85s var(--ease-elegant), opacity 0.55s var(--ease-elegant);
+        }
+
+        /* ── Intro Logo Pieces ── */
+        .intro-piece {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            will-change: transform, opacity;
+            transition: transform 0.8s var(--ease-elegant), opacity 0.2s linear;
+            transform-origin: center center;
+        }
+
+        /* Blue center piece – always on top */
+        #intro-piece-blue {
+            z-index: 50;
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* Gray pieces – stacked exactly under the blue piece (full size, invisible) */
+        #intro-piece-p1,
+        #intro-piece-p3,
+        #intro-piece-p4,
+        #intro-piece-p5 {
+            z-index: 40;
+            /* مقادیر پیش‌فرض برای متغیرهای حرکتی */
+            --off-x: 0px;
+            --off-y-initial: 0px;
+            --off-y-final: 0px;
+            /* قطعات در ابتدا مخفی هستند */
+            opacity: 0;
+            /* موقعیت اولیه: مخفی شده زیر قطعه آبی (با جابجایی منفی برای جبران فاصله) */
+            transform: translate(calc(var(--off-x) * -1), calc(var(--off-y-final) * -1)) scale(1);
+        }
+
+        /* Phase 1: horizontal slide only (Y stays at blue level) */
+        #intro-overlay.intro-phase-1 #intro-piece-p1,
+        #intro-overlay.intro-phase-2 #intro-piece-p1,
+        #intro-overlay.intro-phase-3 #intro-piece-p1 {
+            transform: translate(0px, calc(var(--off-y-final) * -1)) scale(1);
+            opacity: 1;
+        }
+
+        #intro-overlay.intro-phase-1 #intro-piece-p3,
+        #intro-overlay.intro-phase-2 #intro-piece-p3,
+        #intro-overlay.intro-phase-3 #intro-piece-p3 {
+            transform: translate(0px, calc(var(--off-y-final) * -1)) scale(1);
+            opacity: 1;
+        }
+
+        #intro-overlay.intro-phase-1 #intro-piece-p4,
+        #intro-overlay.intro-phase-2 #intro-piece-p4,
+        #intro-overlay.intro-phase-3 #intro-piece-p4 {
+            transform: translate(0px, calc(var(--off-y-final) * -1)) scale(1);
+            opacity: 1;
+        }
+
+        #intro-overlay.intro-phase-1 #intro-piece-p5,
+        #intro-overlay.intro-phase-2 #intro-piece-p5,
+        #intro-overlay.intro-phase-3 #intro-piece-p5 {
+            transform: translate(0px, calc(var(--off-y-final) * -1)) scale(1);
+            opacity: 1;
+        }
+
+        /* Phase 2: top pieces move upward to final Y */
+        #intro-overlay.intro-phase-2 #intro-piece-p3,
+        #intro-overlay.intro-phase-3 #intro-piece-p3 {
+            transform: translate(0px, 0px) scale(1);
+        }
+
+        #intro-overlay.intro-phase-2 #intro-piece-p4,
+        #intro-overlay.intro-phase-3 #intro-piece-p4 {
+            transform: translate(0px, 0px) scale(1);
+        }
+
+        /* ── Intro Text ── */
+        #intro-text-block {
+            text-align: center;
+            z-index: 60;
+            transition: opacity 0.3s ease-out;
+            /* سرعت محو شدن متن را بیشتر کردیم */
+            pointer-events: none;
+            white-space: nowrap;
+            margin-top: 0.5rem;
+        }
+
+        #intro-text-block .intro-title {
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: 0.28em;
+            color: #474646;
+            line-height: 1.1;
+        }
+
+        #intro-text-block .intro-subtitle {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            color: #595959;
+            text-transform: uppercase;
+            margin-top: 0.4rem;
+        }
+
+        @media (min-width: 640px) {
+            #intro-text-block .intro-title {
+                font-size: 2.6rem;
+                letter-spacing: 0.32em;
+            }
+
+            #intro-text-block .intro-subtitle {
+                font-size: 0.8rem;
+                letter-spacing: 0.26em;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #intro-text-block .intro-title {
+                font-size: 3.2rem;
+                letter-spacing: 0.38em;
+            }
+
+            #intro-text-block .intro-subtitle {
+                font-size: 0.85rem;
+                letter-spacing: 0.3em;
+            }
+        }
+
+        /* Text fades out in phase 2+ */
+        #intro-overlay.intro-phase-2 #intro-text-block,
+        #intro-overlay.intro-phase-3 #intro-text-block,
+        #intro-overlay.intro-fade-out #intro-text-block {
+            opacity: 0;
+            transition: opacity 0.4s var(--ease-elegant);
+        }
+
+        /* ═══════════════════════════════════════════════
+           MAIN CONTENT FADE-IN
+           ═══════════════════════════════════════════════ */
+        [data-stage="app-root"] {
+            opacity: 0;
+            transition: opacity 0.7s var(--ease-elegant);
+        }
+
+        body.content-visible [data-stage="app-root"] {
+            opacity: 1;
+        }
+
+        /* ═══════════════════════════════════════════════
+           SIDEBAR LOGO (final position)
+           ═══════════════════════════════════════════════ */
         [data-anim-target="logo-container"] {
             position: relative;
-            transition: transform 1.15s var(--ease-elegant), opacity 1.15s var(--ease-elegant);
             transform-origin: center center;
             will-change: transform, opacity;
             z-index: 1;
@@ -80,182 +273,33 @@
             transition: none !important;
         }
 
-        /* Collapsed: hidden at center, 3x size */
-        [data-anim-target="logo-container"][data-state="collapsed"] {
-            transform: translate(var(--intro-offset-x), var(--intro-offset-y)) scale(3);
-            opacity: 0;
-            z-index: 50;
-            transition: none;
-        }
-
-        /* Intro: fade in at center, 3x size */
-        [data-anim-target="logo-container"][data-state="intro"] {
-            transform: translate(var(--intro-offset-x), var(--intro-offset-y)) scale(3);
-            opacity: 1;
-            z-index: 50;
-            transition: opacity 0.65s var(--ease-elegant);
-        }
-
-        /* Assembling: stays at center, parts animate at 3x scale */
-        [data-anim-target="logo-container"][data-state="assembling"] {
-            transform: translate(var(--intro-offset-x), var(--intro-offset-y)) scale(3);
-            opacity: 1;
-            z-index: 50;
-            transition: none;
-        }
-
-        /* Idle / Parked: final sidebar position */
-        [data-anim-target="logo-container"][data-state="idle"],
-        [data-anim-target="logo-container"][data-state="parked"] {
-            transform: translate(0, 0) scale(1);
-            opacity: 1;
-            z-index: 1;
-        }
-
-        /* ── Logo Parts ── */
         .logo-part {
             opacity: 1;
-            transition: transform 1s var(--ease-elegant), opacity 0.9s var(--ease-elegant);
+            /* اضافه شدن fill به ترانزیشن‌ها برای تغییر رنگ نرم */
+            transition: transform 1s var(--ease-elegant), opacity 0.9s var(--ease-elegant), fill 0.6s var(--ease-elegant);
             transform-origin: center;
-            will-change: transform, opacity;
+            will-change: transform, opacity, fill;
         }
 
-        /* Assembling keyframes – graceful, minimal drift */
-        [data-state="assembling"] #part1 {
-            animation: assemblePart1 0.9s var(--ease-elegant) forwards;
+        /* ── Hover React CSS ── */
+        .logo-part.hover-active {
+            transform: scale(1.09) !important;
+            animation: none !important;
+            /* توقف انیمیشن‌های Idle هنگام هاور */
         }
 
-        [data-state="assembling"] #part2 {
-            animation: assemblePart2 0.9s var(--ease-elegant) 0.08s forwards;
-        }
-
-        [data-state="assembling"] #part3 {
-            animation: assemblePart3 0.9s var(--ease-elegant) 0.16s forwards;
-        }
-
-        [data-state="assembling"] #part4 {
-            animation: assemblePart4 0.9s var(--ease-elegant) 0.24s forwards;
-        }
-
-        [data-state="assembling"] #part5 {
-            animation: assemblePart5 0.9s var(--ease-elegant) 0.32s forwards;
-        }
-
-        @keyframes assemblePart1 {
-            from {
-                transform: translate(-28px, -22px) rotate(-2.5deg) scale(0.85);
-                opacity: 0;
-            }
-
-            to {
-                transform: translate(0, 0) rotate(0deg) scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes assemblePart2 {
-            from {
-                transform: translate(28px, -22px) rotate(2.5deg) scale(0.85);
-                opacity: 0;
-            }
-
-            to {
-                transform: translate(0, 0) rotate(0deg) scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes assemblePart3 {
-            from {
-                transform: translate(-22px, 28px) rotate(-2deg) scale(0.85);
-                opacity: 0;
-            }
-
-            to {
-                transform: translate(0, 0) rotate(0deg) scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes assemblePart4 {
-            from {
-                transform: translate(22px, 28px) rotate(2deg) scale(0.85);
-                opacity: 0;
-            }
-
-            to {
-                transform: translate(0, 0) rotate(0deg) scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes assemblePart5 {
-            from {
-                transform: translate(0, 0) scale(0.75);
-                opacity: 0;
-            }
-
-            to {
-                transform: translate(0, 0) scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* ── UI Reveal ── */
-        body[data-phase="intro"] [data-anim-target]:not([data-anim-target="logo-container"]) {
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(12px);
-        }
-
-        body[data-phase="idle"] [data-anim-target]:not([data-anim-target="logo-container"]) {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.85s var(--ease-elegant), transform 0.85s var(--ease-elegant);
-        }
-
-        body[data-phase="idle"] [data-anim-target="logo-text"] {
-            transition-delay: 0.35s;
-        }
-
-        body[data-phase="idle"] [data-anim-target="spine-divider"] {
-            transition-delay: 0.46s;
-        }
-
-        body[data-phase="idle"] [data-anim-target="nav-item"]:nth-child(1) {
-            transition-delay: 0.54s;
-        }
-
-        body[data-phase="idle"] [data-anim-target="nav-item"]:nth-child(2) {
-            transition-delay: 0.62s;
-        }
-
-        body[data-phase="idle"] [data-anim-target="nav-item"]:nth-child(3) {
-            transition-delay: 0.70s;
-        }
-
-        body[data-phase="idle"] [data-anim-target="nav-item"]:nth-child(4) {
-            transition-delay: 0.78s;
-        }
-
-        body[data-phase="idle"] [data-anim-target="nav-item"]:nth-child(5) {
-            transition-delay: 0.86s;
-        }
-
-        body[data-phase="idle"] [data-anim-target="social-links"] {
-            transition-delay: 0.94s;
-        }
-
-        /* ── Confetti ── */
+        /* ═══════════════════════════════════════════════
+           CONFETTI – right side only
+           ═══════════════════════════════════════════════ */
         .confetti-piece {
             position: absolute;
             width: 96px;
             height: 168px;
-            color: rgba(4, 158, 150, 0.22);
+            color: rgba(4, 158, 150, 0.16);
             fill: currentColor;
             animation: confettiDrift 13s ease-in-out infinite;
             pointer-events: none;
-            filter: drop-shadow(0 8px 14px rgba(2, 140, 133, 0.14));
+            filter: drop-shadow(0 8px 14px rgba(2, 140, 133, 0.10));
             transition: transform 1.5s var(--ease-elegant), opacity 1.5s var(--ease-elegant);
         }
 
@@ -275,14 +319,14 @@
             width: 72px;
             height: 132px;
             animation-delay: -5.2s;
-            color: rgba(2, 140, 133, 0.28);
+            color: rgba(2, 140, 133, 0.20);
         }
 
         .confetti-piece.c5 {
             width: 90px;
             height: 156px;
             animation-delay: -9.4s;
-            color: rgba(4, 158, 150, 0.19);
+            color: rgba(4, 158, 150, 0.13);
         }
 
         @keyframes confettiDrift {
@@ -297,7 +341,9 @@
             }
         }
 
-        /* ── Panel / Visual Styles ── */
+        /* ═══════════════════════════════════════════════
+           PANELS & VISUALS
+           ═══════════════════════════════════════════════ */
         .panel-shell {
             border-radius: 28px;
             border: 1px solid rgba(2, 140, 133, 0.32);
@@ -345,19 +391,31 @@
             transform: none;
         }
 
+        /* ═══════════════════════════════════════════════
+           NAVIGATION – padding-based hitbox, no gaps
+           ═══════════════════════════════════════════════ */
         .nav-item {
-            transition: color 0.5s var(--ease-elegant), transform 0.5s var(--ease-elegant), text-shadow 0.5s var(--ease-elegant);
+            transition: color 0.5s var(--ease-elegant), text-shadow 0.5s var(--ease-elegant);
             position: relative;
             z-index: 10;
-            transform: none;
+            /* پدینگ بالا و پایین زیاد شده تا هیت‌باکس‌ها به هم بچسبند اما متن‌ها فاصله داشته باشند */
+            padding: 1.5rem 0.35rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            text-align: start;
+            outline: none;
         }
 
         .nav-item::after {
             content: "";
             position: absolute;
-            inset-inline-start: 0;
-            bottom: -0.26rem;
-            width: 0;
+            inset-inline-start: 0.35rem;
+            bottom: 0.25rem;
+            width: calc(100% - 0.7rem);
             height: 1px;
             background: rgba(2, 140, 133, 0.42);
             transition: width 0.45s var(--ease-elegant), opacity 0.45s var(--ease-elegant);
@@ -366,22 +424,22 @@
 
         .nav-item:hover,
         .nav-item[aria-selected="true"] {
-            transform: none;
             text-shadow: 0 0 0.01px currentColor;
         }
 
         .nav-item:hover::after,
         .nav-item[aria-selected="true"]::after {
-            width: 100%;
+            width: calc(100% - 0.7rem);
             opacity: 1;
         }
 
-        .spine-top,
         .spine-top strong {
             font-weight: 700 !important;
         }
 
-        /* ── Logo Part Markers in Nav ── */
+        /* ═══════════════════════════════════════════════
+           LOGO PART MARKERS IN NAV
+           ═══════════════════════════════════════════════ */
         .logo-part-marker {
             --marker-left: 4.45rem;
             --marker-scale: 1;
@@ -430,6 +488,9 @@
             opacity: 0.5;
         }
 
+        /* ═══════════════════════════════════════════════
+           SPINE DIVIDER
+           ═══════════════════════════════════════════════ */
         .spine-bottom {
             min-width: 72px;
             text-align: center;
@@ -467,6 +528,9 @@
             margin-left: 0.65rem;
         }
 
+        /* ═══════════════════════════════════════════════
+           MOTION RISE HOVER
+           ═══════════════════════════════════════════════ */
         .motion-rise {
             transition: transform 0.6s var(--ease-elegant), box-shadow 0.6s var(--ease-elegant);
         }
@@ -480,7 +544,9 @@
             transform: translateY(0);
         }
 
-        /* ── Idle Remix Animations (unchanged) ── */
+        /* ═══════════════════════════════════════════════
+           IDLE REMIX KEYFRAMES
+           ═══════════════════════════════════════════════ */
         [data-state="idle"][data-remix="c"] #part1 {
             animation: remixC1 3s var(--ease-elegant);
         }
@@ -1156,7 +1222,9 @@
             }
         }
 
-        /* ── Other UI (timeline, news, filters, about subnav) unchanged ── */
+        /* ═══════════════════════════════════════════════
+           TIMELINE, NEWS, FILTERS, ABOUT
+           ═══════════════════════════════════════════════ */
         .timeline-vertical {
             position: relative;
             padding-left: 2rem;
@@ -1237,28 +1305,27 @@
             pointer-events: none;
         }
 
+        /* استایل‌های مربوط به فیلترهای پروژه‌ها که به سایدبار می‌روند */
         .project-filter-btn {
-            padding: 0.35rem 0.75rem;
+            padding: 0.15rem 0.25rem;
             font-size: 0.75rem;
             letter-spacing: 0.14em;
             text-transform: uppercase;
             color: var(--razan-gray-200);
-            border: 1px solid transparent;
-            border-radius: 4px;
+            border: none;
             background: none;
             cursor: pointer;
             transition: all 0.3s var(--ease-elegant);
+            text-align: left;
         }
 
         .project-filter-btn:hover {
             color: var(--razan-teal);
-            border-color: var(--razan-teal-light);
         }
 
         .project-filter-btn.active {
-            color: #fff;
-            background: var(--razan-teal);
-            border-color: var(--razan-teal);
+            color: var(--razan-teal);
+            font-weight: bold;
         }
 
         #about-subnav button.about-nav-active {
@@ -1279,7 +1346,9 @@
             border-radius: 2px;
         }
 
-        /* ── Responsive ── */
+        /* ═══════════════════════════════════════════════
+           RESPONSIVE
+           ═══════════════════════════════════════════════ */
         @media (max-width: 1023px) {
             body {
                 overflow-x: hidden;
@@ -1296,7 +1365,7 @@
             #main-nav {
                 display: grid;
                 grid-template-columns: repeat(6, minmax(0, 1fr));
-                gap: 0.45rem;
+                gap: 0;
                 padding: 0.55rem;
                 background: rgba(255, 255, 255, 0.94);
                 border: 1px solid rgba(2, 140, 133, 0.18);
@@ -1322,7 +1391,7 @@
             #main-nav .nav-item {
                 justify-content: center;
                 min-height: 2.45rem;
-                padding: 0 0.65rem;
+                padding: 0.55rem 0.65rem;
                 border: 1px solid rgba(2, 140, 133, 0.12);
                 border-radius: 999px;
                 background: #ffffff;
@@ -1332,6 +1401,7 @@
                 letter-spacing: 0.13em;
                 line-height: 1.15;
                 white-space: normal;
+                margin: 0;
             }
 
             #main-nav .nav-item[aria-selected="true"] {
@@ -1373,7 +1443,7 @@
             }
 
             .confetti-piece {
-                opacity: 0.45;
+                opacity: 0.30;
             }
 
             .contact-shell {
@@ -1414,13 +1484,6 @@
                 color: var(--razan-gray-400);
             }
 
-            #main-nav .nav-item,
-            #main-nav .nav-item:hover,
-            #main-nav .nav-item[aria-selected="true"] {
-                transform: none;
-                letter-spacing: 0.13em;
-            }
-
             #main-nav .nav-item::after {
                 display: none;
             }
@@ -1434,10 +1497,6 @@
             .tab-panel>div>.sticky h2 {
                 font-size: 1.45rem;
                 letter-spacing: 0.09em;
-            }
-
-            .tab-panel>div>.sticky .w-12 {
-                margin-top: 0.5rem;
             }
         }
 
@@ -1473,24 +1532,52 @@
     </style>
 </head>
 
-<body class="bg-white text-[#474646] m-0 p-0 min-h-screen overflow-x-hidden select-none" data-phase="intro">
+<body class="bg-white text-[#474646] m-0 p-0 min-h-screen overflow-x-hidden select-none">
 
-    <div id="intro-overlay"></div>
+    <!-- ═══════════════ INTRO OVERLAY ═══════════════ -->
+    <div id="intro-overlay" aria-hidden="false">
+        <!-- All 5 logo pieces stacked at the EXACT same center -->
+        <div id="intro-logo-wrap">
+            <!-- Part1 – bottom-left gray (z-40) -->
+            <svg id="intro-piece-p1" class="intro-piece" viewBox="0 0 800 786" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#676767"
+                    d="M252.286 339.826L252.894 340.003C253.894 341.824 252.825 390.507 252.778 395.973L252.709 647.244L253.174 687.238C253.208 693.859 252.953 707.952 253.732 713.903C246.332 709.857 234.553 705.205 226.451 701.484L172.362 676.463L92.5657 639.781C78.8707 633.45 65.4008 626.801 51.5366 620.758C50.7766 610.398 51.4294 591.903 51.4667 581.199L51.4122 479.009L51.3365 450.035C51.324 445.1 51.0344 437.554 51.7325 432.924C53.5518 431.147 61.7699 428.278 64.6023 426.994L104.719 408.384C113.072 404.552 126.905 398.599 134.592 393.784L135.083 393.473C134.238 398.458 134.295 404.713 134.082 409.823C133.656 420.046 133.654 430.275 133.66 440.505L134.451 530.81C139.924 530.619 145.302 530.559 150.778 530.51C150.314 500.582 150.847 468.979 150.837 438.964L150.799 407.041C150.793 401.002 150.56 392.795 151.248 386.975C153.752 385.426 159.508 382.966 162.315 381.707L180.558 373.472L216.147 356.977C228.282 351.394 240.414 345.957 252.286 339.826Z" />
+            </svg>
 
-    <!-- Decorative confetti -->
+            <!-- Part2 – center-right BLUE (z-50, ON TOP) -->
+            <svg id="intro-piece-blue" class="intro-piece" viewBox="0 0 800 786" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#028c85"
+                    d="M477.35 339.826L477.999 338.687C478.24 354.409 477.718 372.005 477.683 387.973L477.259 524.431L477.574 625.651C477.781 655.163 478.158 685.599 477.639 715.082C466.475 710.634 453.921 704.506 442.893 699.405L394.626 677.21C385.072 672.764 375.195 667.837 365.614 663.609C364.785 650.848 365.52 633.344 365.546 620.015L365.67 534.019L365.436 435.491C365.41 429.299 364.792 394.009 366.053 389.684C369.801 387.37 379.941 382.994 384.303 380.965L421.416 363.776L457.976 346.937C463.894 344.177 471.414 340.185 477.35 337.957Z" />
+            </svg>
+
+            <!-- Part3 – top-left gray (z-40) -->
+            <svg id="intro-piece-p3" class="intro-piece" viewBox="0 0 800 786" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#676767"
+                    d="M364.209 12.8717L364.809 13.2716C363.87 29.2252 364.612 45.8132 364.232 61.8463C362.981 114.746 363.26 167.825 363.346 220.747L364.374 327.76L364.49 365.083C364.506 372.75 364.317 381.281 364.882 388.844L321.305 368.174C311.497 363.639 301.391 359.265 291.671 354.606L269.595 344.41C264.989 342.276 259.387 339.544 254.631 337.999C254.192 332.908 254.517 324.509 254.549 319.169L254.626 287.205L254.71 181.224L254.638 103.82L254.633 82.6475C254.639 76.6521 254.326 70.6339 255.486 64.7758C257.272 63.5543 261.802 61.6607 263.994 60.6651L280.895 52.9829L326.303 31.8679C338.874 26.0585 352.702 20.3481 364.209 12.8717Z" />
+            </svg>
+
+            <!-- Part4 – top-right gray (z-40) -->
+            <svg id="intro-piece-p4" class="intro-piece" viewBox="0 0 800 786" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#676767"
+                    d="M587.262 12.6001C585.876 29.0645 586.545 46.9277 586.311 63.5384L585.495 164.033L586.344 329.141C586.569 348.548 586.022 369.132 586.761 388.426C560.606 375.448 533.348 363.52 506.831 351.232C499.109 347.655 485.752 340.791 477.999 338.687L477.35 337.957C477.989 336.131 478.342 259.803 478.417 250.869L478.43 146.249C478.318 127.22 477.264 108.061 477.634 88.9833C477.786 81.1055 477.143 72.3362 477.9 64.5395L550.004 31.1783C558.693 27.1442 580.03 17.8515 587.262 12.6001Z" />
+            </svg>
+
+            <!-- Part5 – far-right gray (z-40) -->
+            <svg id="intro-piece-p5" class="intro-piece" viewBox="0 0 800 786" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#676767"
+                    d="M697.322 339.861L697.903 340.297C698.116 342.126 697.702 347.524 697.666 349.775L697.463 371.578L696.398 440.55C696.255 448.831 695.781 456.932 695.753 465.252L696.627 624.669L697.61 697.654C697.631 702.394 697.626 707.058 697.959 711.789C698.043 712.984 698.007 712.86 697.465 713.38C689.679 709.436 679.249 705.196 671.043 701.445L624.742 679.9C612.81 674.739 600.278 668.6 588.504 663.01C588.262 658.194 588.516 650.946 588.539 645.98L588.623 614.677L588.696 512.345L588.576 433.185C588.552 421.562 587.862 401.208 588.93 390.426C595.695 386.389 609.619 380.874 617.548 377.088C644.022 364.447 671.044 353.011 697.322 339.861Z" />
+            </svg>
+
+            <!-- Intro text block (positioned relative to the overlay, not the wrapper) -->
+        </div>
+        <div id="intro-text-block">
+            <div class="intro-title">RAZAN</div>
+            <div class="intro-subtitle">Consulting Engineering</div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ CONFETTI – right side only ═══════════════ -->
     <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-        <svg class="confetti-piece c1 left-[8%] top-[8%]" viewBox="0 0 800 786" aria-hidden="true">
-            <use href="#logo-shape-part2"></use>
-        </svg>
-        <svg class="confetti-piece c2 left-[15%] top-[44%]" viewBox="0 0 800 786" aria-hidden="true">
-            <use href="#logo-shape-part2"></use>
-        </svg>
-        <svg class="confetti-piece c3 left-[10%] bottom-[14%]" viewBox="0 0 800 786" aria-hidden="true">
-            <use href="#logo-shape-part2"></use>
-        </svg>
-        <svg class="confetti-piece c4 left-[82%] top-[8%]" viewBox="0 0 800 786" aria-hidden="true">
-            <use href="#logo-shape-part2"></use>
-        </svg>
         <svg class="confetti-piece c2 right-[11%] top-[11%]" viewBox="0 0 800 786" aria-hidden="true">
             <use href="#logo-shape-part2"></use>
         </svg>
@@ -1503,15 +1590,18 @@
         <svg class="confetti-piece c3 right-[12%] bottom-[15%]" viewBox="0 0 800 786" aria-hidden="true">
             <use href="#logo-shape-part2"></use>
         </svg>
-        <svg class="confetti-piece c4 left-[5%] top-[62%]" viewBox="0 0 800 786" aria-hidden="true">
+        <svg class="confetti-piece c4 right-[6%] top-[72%]" viewBox="0 0 800 786" aria-hidden="true">
             <use href="#logo-shape-part2"></use>
         </svg>
         <svg class="confetti-piece c5 right-[18%] bottom-[22%]" viewBox="0 0 800 786" aria-hidden="true">
             <use href="#logo-shape-part2"></use>
         </svg>
+        <svg class="confetti-piece c1 right-[20%] top-[18%]" viewBox="0 0 800 786" aria-hidden="true">
+            <use href="#logo-shape-part2"></use>
+        </svg>
     </div>
 
-    <!-- Reusable logo-part shapes -->
+    <!-- ═══════════════ REUSABLE SVG SHAPES ═══════════════ -->
     <svg width="0" height="0" class="absolute" aria-hidden="true">
         <defs>
             <path id="logo-shape-part1"
@@ -1527,36 +1617,74 @@
         </defs>
     </svg>
 
+    <!-- ═══════════════ MAIN LAYOUT ═══════════════ -->
     <main
         class="relative flex flex-col lg:flex-row min-h-screen lg:h-screen w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-3 sm:py-4 lg:py-8 box-border"
         data-stage="app-root">
 
+        <!-- SIDEBAR LEFT: Logo + Social + Project Filters -->
         <aside
-            class="w-full lg:w-[245px] flex flex-row lg:flex-col items-center justify-between lg:justify-start lg:pt-10 relative shrink-0 gap-2 sm:gap-3 lg:gap-0"
+            class="w-full lg:w-[245px] flex flex-row lg:flex-col items-center justify-between lg:justify-start lg:pt-6 relative shrink-0 gap-2 sm:gap-3 lg:gap-0"
             data-anim-group="sidebar-left">
-            <div class="w-[92px] h-[92px] sm:w-[106px] sm:h-[106px] lg:w-[148px] lg:h-[148px] lg:-mt-6 mb-0 lg:mb-6 flex justify-center items-center"
-                data-anim-target="logo-container" data-state="collapsed">
-                <svg class="w-full h-full" viewBox="0 0 800 786" xmlns="http://www.w3.org/2000/svg"
+            <!-- Logo – larger, pushed more to the left -->
+            <div class="w-[110px] h-[110px] sm:w-[130px] sm:h-[130px] lg:w-[220px] lg:h-[220px] lg:-ml-12 lg:-mt-4 mb-0 lg:mb-4 flex justify-center items-center"
+                data-anim-target="logo-container" data-state="idle">
+                <svg class="w-full h-full overflow-visible" viewBox="0 0 800 786" xmlns="http://www.w3.org/2000/svg"
                     aria-label="لوگوی رازان زمین">
                     <path class="logo-part" id="part1" fill="#676767"
                         d="M252.286 339.826L252.894 340.003C253.894 341.824 252.825 390.507 252.778 395.973L252.709 647.244L253.174 687.238C253.208 693.859 252.953 707.952 253.732 713.903C246.332 709.857 234.553 705.205 226.451 701.484L172.362 676.463L92.5657 639.781C78.8707 633.45 65.4008 626.801 51.5366 620.758C50.7766 610.398 51.4294 591.903 51.4667 581.199L51.4122 479.009L51.3365 450.035C51.324 445.1 51.0344 437.554 51.7325 432.924C53.5518 431.147 61.7699 428.278 64.6023 426.994L104.719 408.384C113.072 404.552 126.905 398.599 134.592 393.784L135.083 393.473C134.238 398.458 134.295 404.713 134.082 409.823C133.656 420.046 133.654 430.275 133.66 440.505L134.451 530.81C139.924 530.619 145.302 530.559 150.778 530.51C150.314 500.582 150.847 468.979 150.837 438.964L150.799 407.041C150.793 401.002 150.56 392.795 151.248 386.975C153.752 385.426 159.508 382.966 162.315 381.707L180.558 373.472L216.147 356.977C228.282 351.394 240.414 345.957 252.286 339.826Z" />
                     <path class="logo-part" id="part2" fill="#028c85"
                         d="M477.35 339.826L477.999 338.687C478.24 354.409 477.718 372.005 477.683 387.973L477.259 524.431L477.574 625.651C477.781 655.163 478.158 685.599 477.639 715.082C466.475 710.634 453.921 704.506 442.893 699.405L394.626 677.21C385.072 672.764 375.195 667.837 365.614 663.609C364.785 650.848 365.52 633.344 365.546 620.015L365.67 534.019L365.436 435.491C365.41 429.299 364.792 394.009 366.053 389.684C369.801 387.37 379.941 382.994 384.303 380.965L421.416 363.776L457.976 346.937C463.894 344.177 471.414 340.185 477.35 337.957Z" />
-                    <path class="logo-part shifted" id="part3" fill="#676767"
+                    <path class="logo-part" id="part3" fill="#676767"
                         d="M364.209 12.8717L364.809 13.2716C363.87 29.2252 364.612 45.8132 364.232 61.8463C362.981 114.746 363.26 167.825 363.346 220.747L364.374 327.76L364.49 365.083C364.506 372.75 364.317 381.281 364.882 388.844L321.305 368.174C311.497 363.639 301.391 359.265 291.671 354.606L269.595 344.41C264.989 342.276 259.387 339.544 254.631 337.999C254.192 332.908 254.517 324.509 254.549 319.169L254.626 287.205L254.71 181.224L254.638 103.82L254.633 82.6475C254.639 76.6521 254.326 70.6339 255.486 64.7758C257.272 63.5543 261.802 61.6607 263.994 60.6651L280.895 52.9829L326.303 31.8679C338.874 26.0585 352.702 20.3481 364.209 12.8717Z" />
-                    <path class="logo-part shifted" id="part4" fill="#676767"
+                    <path class="logo-part" id="part4" fill="#676767"
                         d="M587.262 12.6001C585.876 29.0645 586.545 46.9277 586.311 63.5384L585.495 164.033L586.344 329.141C586.569 348.548 586.022 369.132 586.761 388.426C560.606 375.448 533.348 363.52 506.831 351.232C499.109 347.655 485.752 340.791 477.999 338.687L477.35 337.957C477.989 336.131 478.342 259.803 478.417 250.869L478.43 146.249C478.318 127.22 477.264 108.061 477.634 88.9833C477.786 81.1055 477.143 72.3362 477.9 64.5395L550.004 31.1783C558.693 27.1442 580.03 17.8515 587.262 12.6001Z" />
                     <path class="logo-part" id="part5" fill="#676767"
                         d="M697.322 339.861L697.903 340.297C698.116 342.126 697.702 347.524 697.666 349.775L697.463 371.578L696.398 440.55C696.255 448.831 695.781 456.932 695.753 465.252L696.627 624.669L697.61 697.654C697.631 702.394 697.626 707.058 697.959 711.789C698.043 712.984 698.007 712.86 697.465 713.38C689.679 709.436 679.249 705.196 671.043 701.445L624.742 679.9C612.81 674.739 600.278 668.6 588.504 663.01C588.262 658.194 588.516 650.946 588.539 645.98L588.623 614.677L588.696 512.345L588.576 433.185C588.552 421.562 587.862 401.208 588.93 390.426C595.695 386.389 609.619 380.874 617.548 377.088C644.022 364.447 671.044 353.011 697.322 339.861Z" />
                 </svg>
             </div>
-            <div class="text-start lg:text-center" data-anim-target="logo-text">
-                <div
-                    class="text-base sm:text-lg lg:text-3xl tracking-[0.22em] sm:tracking-[0.28em] lg:tracking-[0.4em] font-light text-[#676767] mb-1 lg:mb-2">
-                    RAZAN</div>
-                <div class="text-[9px] lg:text-[10px] tracking-[0.13em] text-[#8e8e8e] uppercase">Consulting Engineering
+
+            <!-- Project Filters (Visible ONLY when Projects tab is active) -->
+            <div id="sidebar-project-filters"
+                class="hidden lg:flex flex-col w-full px-4 mt-8 opacity-0 transition-opacity duration-500 pointer-events-none">
+                <button class="project-filter-btn active mb-4 text-left"
+                    onclick="filterProjects('all', this)">ALL</button>
+
+                <div class="flex flex-col gap-1.5 mb-6">
+                    <button class="project-filter-btn text-left"
+                        onclick="filterProjects('2000-2004', this)">2000-2004</button>
+                    <button class="project-filter-btn text-left"
+                        onclick="filterProjects('2005-2009', this)">2005-2009</button>
+                    <button class="project-filter-btn text-left"
+                        onclick="filterProjects('2010-2014', this)">2010-2014</button>
+                    <button class="project-filter-btn text-left"
+                        onclick="filterProjects('2015-2019', this)">2015-2019</button>
+                    <button class="project-filter-btn text-left"
+                        onclick="filterProjects('2019-2024', this)">2019-2024</button>
+                    <button class="project-filter-btn text-left"
+                        onclick="filterProjects('2025-2029', this)">2025-2029</button>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <button class="project-filter-btn text-left"
+                        onclick="filterProjects('apartment', this)">Apartment</button>
+                    <button class="project-filter-btn text-left" onclick="filterProjects('villa', this)">Villa</button>
+                    <button class="project-filter-btn text-left"
+                        onclick="filterProjects('commercial', this)">Commercial</button>
+                    <button class="project-filter-btn text-left" onclick="filterProjects('health', this)">Health &
+                        Care</button>
+                    <button class="project-filter-btn text-left"
+                        onclick="filterProjects('office', this)">Office</button>
+                    <button class="project-filter-btn text-left"
+                        onclick="filterProjects('complex', this)">Complex</button>
+                    <button class="project-filter-btn text-left"
+                        onclick="filterProjects('interior', this)">Interior</button>
+                    <button class="project-filter-btn text-left"
+                        onclick="filterProjects('landscape', this)">Landscape</button>
                 </div>
             </div>
+
+            <!-- Social links only (no text) -->
             <div class="flex gap-4 lg:gap-5 text-[#8e8e8e] lg:absolute lg:bottom-10 lg:left-1/2 lg:-translate-x-1/2"
                 data-anim-target="social-links">
                 <svg class="w-6 h-6 hover:text-[#028c85] transition-colors cursor-pointer" fill="currentColor"
@@ -1572,6 +1700,7 @@
             </div>
         </aside>
 
+        <!-- SPINE DIVIDER -->
         <div class="w-full lg:w-[54px] flex justify-center relative shrink-0 py-2 lg:py-8 z-30" aria-hidden="true"
             data-anim-target="spine-divider">
             <div class="spine-line w-full lg:w-[1px] h-[1px] lg:h-full bg-[#028c85] relative">
@@ -1587,8 +1716,9 @@
             </div>
         </div>
 
+        <!-- NAVIGATION – padding-based hitbox, no gaps, moved to center -->
         <nav id="main-nav"
-            class="w-full lg:w-[144px] flex flex-row lg:flex-col lg:justify-center gap-4 lg:gap-6 shrink-0 overflow-x-auto lg:overflow-visible pb-1 lg:pb-0"
+            class="w-full lg:w-[144px] flex flex-row lg:flex-col lg:justify-center lg:mt-[15vh] gap-0 shrink-0 overflow-x-auto lg:overflow-visible pb-1 lg:pb-0"
             data-anim-group="main-nav" role="tablist" aria-orientation="horizontal">
             <button onclick="switchTab('home')" id="nav-btn-home" role="tab" aria-selected="true"
                 aria-controls="sec-home" tabindex="0"
@@ -1627,9 +1757,11 @@
                 </svg>CONTACT</button>
         </nav>
 
+        <!-- CONTENT PANEL -->
         <div class="flex-1 relative min-h-[62vh] lg:h-full overflow-hidden" data-anim-group="content-area"
             data-anim-target="content-panel">
 
+            <!-- HOME -->
             <section id="sec-home" role="tabpanel" aria-labelledby="nav-btn-home"
                 class="tab-panel absolute inset-0 w-full h-full opacity-100 translate-y-0 z-10" data-page="home">
                 <div class="h-full w-full overflow-y-auto scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24">
@@ -1682,117 +1814,206 @@
                 </div>
             </section>
 
+            <!-- PROJECTS -->
             <section id="sec-projects" role="tabpanel" aria-labelledby="nav-btn-projects"
                 class="tab-panel absolute inset-0 w-full h-full opacity-0 translate-y-0 pointer-events-none z-0"
                 data-page="projects">
-                <div class="h-full w-full overflow-y-auto scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24">
-                    <div class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4">
+                <!-- استفاده از h-full و overflow-hidden برای کنترل دقیق فضا -->
+                <div class="h-full w-full px-4 sm:px-8 lg:px-10 pb-6 flex flex-col relative overflow-hidden">
+                    <div class="shrink-0 bg-white z-20 py-6 lg:py-10 mb-2">
                         <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">Selected
                             Works</h2>
                         <div class="w-12 h-[1px] bg-[#028c85] mt-4 lg:mt-6"></div>
                     </div>
-                    <div class="grid grid-cols-1 xl:grid-cols-[260px_1fr] gap-6 lg:gap-8">
-                        <aside class="panel-shell p-4 lg:p-5 text-[#595959]"><button
-                                class="project-filter-btn active mb-4"
-                                onclick="filterProjects('all', this)">ALL</button>
-                            <p class="text-xs tracking-[0.16em] uppercase text-[#8e8e8e] mb-2">Years</p>
-                            <div class="flex flex-wrap gap-1.5 mb-6"><button class="project-filter-btn"
-                                    onclick="filterProjects('2000-2004', this)">2000-2004</button><button
-                                    class="project-filter-btn"
-                                    onclick="filterProjects('2005-2009', this)">2005-2009</button><button
-                                    class="project-filter-btn"
-                                    onclick="filterProjects('2010-2014', this)">2010-2014</button><button
-                                    class="project-filter-btn"
-                                    onclick="filterProjects('2015-2019', this)">2015-2019</button><button
-                                    class="project-filter-btn"
-                                    onclick="filterProjects('2019-2024', this)">2019-2024</button><button
-                                    class="project-filter-btn"
-                                    onclick="filterProjects('2025-2029', this)">2025-2029</button></div>
-                            <p class="text-xs tracking-[0.16em] uppercase text-[#8e8e8e] mb-2">Categories</p>
-                            <div class="flex flex-wrap gap-1.5"><button class="project-filter-btn"
-                                    onclick="filterProjects('apartment', this)">Apartment</button><button
-                                    class="project-filter-btn"
-                                    onclick="filterProjects('villa', this)">Villa</button><button
-                                    class="project-filter-btn"
-                                    onclick="filterProjects('commercial', this)">Commercial</button><button
-                                    class="project-filter-btn" onclick="filterProjects('health', this)">Health &
-                                    Care</button><button class="project-filter-btn"
-                                    onclick="filterProjects('office', this)">Office</button><button
-                                    class="project-filter-btn"
-                                    onclick="filterProjects('complex', this)">Complex</button><button
-                                    class="project-filter-btn"
-                                    onclick="filterProjects('interior', this)">Interior</button><button
-                                    class="project-filter-btn"
-                                    onclick="filterProjects('landscape', this)">Landscape</button></div>
-                        </aside>
-                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5 lg:gap-6">
-                            <article
-                                class="group panel-shell motion-rise relative overflow-hidden col-span-2 md:col-span-2 aspect-[16/10]">
-                                <div class="visual-fill w-full h-full p-4 lg:p-6 flex flex-col justify-end">
+
+                    <!-- 3x3 Infinite Scroll Columns -->
+                    <!-- اضافه شدن h-full برای پر کردن ارتفاع باقی‌مانده -->
+                    <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 overflow-hidden relative h-full">
+
+                        <!-- Column 1 -->
+                        <div
+                            class="flex flex-col gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full snap-y snap-mandatory">
+                            <!-- جایگزینی aspect-square با min-h-[calc(33.333%-1rem)] برای نمایش دقیق ۳ باکس در ستون -->
+                            <article onclick="openProjectDetail('Tehran Commercial Complex', '2025', 'COMMERCIAL')"
+                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                                <div
+                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
-                                        class="text-white text-xl lg:text-2xl tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                        class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Tehran Commercial Complex</h3>
-                                    <p
-                                        class="text-white/80 text-xs tracking-[0.18em] mt-2 translate-y-3 group-hover:translate-y-0 transition-transform duration-500 delay-75">
-                                        2025 | COMMERCIAL</p><span class="visual-tag">Featured</span>
                                 </div>
                             </article>
-                            <article class="group panel-shell motion-rise relative overflow-hidden aspect-square">
-                                <div class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end">
+                            <article onclick="openProjectDetail('Urban Pocket Landscape', '2022', 'Artistic')"
+                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                                <div
+                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    <h3
+                                        class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                        Urban Pocket Landscape</h3>
+                                </div>
+                            </article>
+                            <article onclick="openProjectDetail('Laleh Villa', '2019', 'Large Housing')"
+                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                                <div
+                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Laleh Villa</h3>
-                                    <p
-                                        class="text-white/80 text-[10px] lg:text-xs tracking-[0.18em] mt-1.5 translate-y-3 group-hover:translate-y-0 transition-transform duration-500 delay-75">
-                                        2024 | VILLA</p><span class="visual-tag">P-02</span>
                                 </div>
                             </article>
-                            <article class="group panel-shell motion-rise relative overflow-hidden aspect-square">
-                                <div class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end">
-                                    <h3
-                                        class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
-                                        Office Atrium</h3>
-                                    <p
-                                        class="text-white/80 text-[10px] lg:text-xs tracking-[0.18em] mt-1.5 translate-y-3 group-hover:translate-y-0 transition-transform duration-500 delay-75">
-                                        2023 | OFFICE</p><span class="visual-tag">P-03</span>
-                                </div>
-                            </article>
-                            <article class="group panel-shell motion-rise relative overflow-hidden aspect-square">
-                                <div class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end">
-                                    <h3
-                                        class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
-                                        Urban Pocket</h3>
-                                    <p
-                                        class="text-white/80 text-[10px] lg:text-xs tracking-[0.18em] mt-1.5 translate-y-3 group-hover:translate-y-0 transition-transform duration-500 delay-75">
-                                        2022 | LANDSCAPE</p><span class="visual-tag">P-04</span>
-                                </div>
-                            </article>
-                            <article class="group panel-shell motion-rise relative overflow-hidden aspect-square">
-                                <div class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end">
+                        </div>
+
+                        <!-- Column 2 -->
+                        <div
+                            class="flex flex-col gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full snap-y snap-mandatory">
+                            <article onclick="openProjectDetail('Health Cluster', '2026', 'Government')"
+                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                                <div
+                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Health Cluster</h3>
-                                    <p
-                                        class="text-white/80 text-[10px] lg:text-xs tracking-[0.18em] mt-1.5 translate-y-3 group-hover:translate-y-0 transition-transform duration-500 delay-75">
-                                        2021 | HEALTH & CARE</p><span class="visual-tag">P-05</span>
                                 </div>
                             </article>
-                            <article
-                                class="group panel-shell motion-rise relative overflow-hidden col-span-2 md:col-span-3 aspect-[21/7]">
-                                <div class="visual-fill w-full h-full p-4 lg:p-6 flex flex-col justify-end">
+                            <article onclick="openProjectDetail('Office Atrium', '2016', 'Business')"
+                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                                <div
+                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
-                                        class="text-white text-base lg:text-xl tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
-                                        Karaj Riverfront Masterplan</h3>
-                                    <p
-                                        class="text-white/80 text-[10px] lg:text-xs tracking-[0.18em] mt-2 translate-y-3 group-hover:translate-y-0 transition-transform duration-500 delay-75">
-                                        2020 | COMPLEX</p><span class="visual-tag">Long Strip</span>
+                                        class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                        Office Atrium</h3>
                                 </div>
                             </article>
+                            <article onclick="openProjectDetail('Karaj Riverfront Renewal', '2012', 'Renewal')"
+                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                                <div
+                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    <h3
+                                        class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                        Karaj Riverfront Renewal</h3>
+                                </div>
+                            </article>
+                        </div>
+
+                        <!-- Column 3 -->
+                        <div
+                            class="flex flex-col gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full snap-y snap-mandatory">
+                            <article onclick="openProjectDetail('Community School Campus', '2009', 'Schooling')"
+                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                                <div
+                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    <h3
+                                        class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                        Community School Campus</h3>
+                                </div>
+                            </article>
+                            <article onclick="openProjectDetail('Civic Gateway', '2005', 'pathing')"
+                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                                <div
+                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    <h3
+                                        class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                        Civic Gateway</h3>
+                                </div>
+                            </article>
+                            <article onclick="openProjectDetail('Workspace Flexibility Hub', '2004', 'Hubbing')"
+                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                                <div
+                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    <h3
+                                        class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                        Workspace Flexibility Hub</h3>
+                                </div>
+                            </article>
+                        </div>
+
+                        <!-- فید سفید (Gradient Fade) -->
+                        <div
+                            class="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white to-transparent pointer-events-none z-10">
+                        </div>
+                        <div
+                            class="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none z-10">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PROJECT DETAIL OVERLAY (Hidden by default) -->
+                <div id="project-detail-overlay"
+                    class="absolute inset-0 w-full h-full bg-white z-50 flex flex-col transform translate-x-full opacity-0 transition-all duration-700 ease-in-out pointer-events-none">
+
+                    <!-- Header & Back Button -->
+                    <div
+                        class="shrink-0 bg-white/95 backdrop-blur-md z-20 px-6 py-6 border-b border-[#028c85]/20 flex items-center">
+                        <button onclick="closeProjectDetail()"
+                            class="group flex items-center text-[#8e8e8e] hover:text-[#028c85] transition-colors tracking-[0.15em] text-xs uppercase focus:outline-none">
+                            <svg class="w-5 h-5 mr-3 rtl:ml-3 rtl:mr-0 transform group-hover:-translate-x-2 transition-transform duration-500"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                            Back to Selected Works
+                        </button>
+                    </div>
+
+                    <!-- Detail Content -->
+                    <div class="flex-1 overflow-y-auto scroll-clean p-6 lg:p-10">
+                        <div class="max-w-4xl mx-auto pb-12">
+                            <!-- Title & Meta -->
+                            <h2 id="pd-title"
+                                class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase mb-2">
+                                Project Title</h2>
+                            <p id="pd-meta" class="text-xs tracking-[0.18em] text-[#028c85] mb-8">2026 | CATEGORY</p>
+
+                            <!-- Main Hero Image (Placeholder) -->
+                            <div
+                                class="w-full aspect-[16/7] panel-shell visual-fill rounded-[22px] mb-10 flex items-center justify-center">
+                                <span class="text-white/60 tracking-widest uppercase text-sm">Main View</span>
+                            </div>
+
+                            <!-- Description & Info Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 mb-12">
+                                <div class="md:col-span-2">
+                                    <h3 class="text-lg text-[#474646] tracking-[0.1em] mb-4 uppercase">Project Narrative
+                                    </h3>
+                                    <p class="text-[#595959] font-light leading-relaxed text-justify">
+                                        Razan sees architecture as a layered act of listening: to site, climate,
+                                        culture, and program. We map constraints early, then translate them into clear
+                                        spatial systems that age with dignity and perform efficiently. This project
+                                        represents our core values in urban development and sustainable design.
+                                    </p>
+                                </div>
+                                <div class="space-y-6">
+                                    <div>
+                                        <p class="text-[10px] uppercase tracking-[0.16em] text-[#8e8e8e] mb-1">Location
+                                        </p>
+                                        <p class="text-sm text-[#474646]">Tehran, Iran</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] uppercase tracking-[0.16em] text-[#8e8e8e] mb-1">Area</p>
+                                        <p class="text-sm text-[#474646]">12,500 sqm</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] uppercase tracking-[0.16em] text-[#8e8e8e] mb-1">Status
+                                        </p>
+                                        <p class="text-sm text-[#474646]">Completed</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Gallery Grid -->
+                            <h3 class="text-lg text-[#474646] tracking-[0.1em] mb-6 uppercase">Gallery</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+                                <div class="aspect-[4/3] panel-shell visual-fill rounded-[18px]"></div>
+                                <div class="aspect-[4/3] panel-shell visual-fill rounded-[18px]"></div>
+                                <div class="aspect-[4/3] panel-shell visual-fill rounded-[18px]"></div>
+                                <div class="aspect-[4/3] panel-shell visual-fill rounded-[18px]"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
+            <!-- NEWS -->
             <section id="sec-news" role="tabpanel" aria-labelledby="nav-btn-news"
                 class="tab-panel absolute inset-0 w-full h-full opacity-0 translate-y-0 pointer-events-none z-0"
                 data-page="news">
@@ -1803,13 +2024,13 @@
                     </div>
                     <div class="space-y-7 lg:space-y-8">
                         <div class="flex flex-wrap gap-0 border-b-2 border-[#8e8e8e]/20 mb-6" id="news-year-tabs">
-                            <button class="news-year-tab active" onclick="filterNews('all', this)">All</button><button
-                                class="news-year-tab" onclick="filterNews('2021', this)">2021</button><button
-                                class="news-year-tab" onclick="filterNews('2022', this)">2022</button><button
-                                class="news-year-tab" onclick="filterNews('2023', this)">2023</button><button
-                                class="news-year-tab" onclick="filterNews('2024', this)">2024</button><button
-                                class="news-year-tab" onclick="filterNews('2025', this)">2025</button><button
-                                class="news-year-tab" onclick="filterNews('2026', this)">2026</button>
+                            <button class="news-year-tab active" onclick="filterNews('all', this)">All</button>
+                            <button class="news-year-tab" onclick="filterNews('2021', this)">2021</button>
+                            <button class="news-year-tab" onclick="filterNews('2022', this)">2022</button>
+                            <button class="news-year-tab" onclick="filterNews('2023', this)">2023</button>
+                            <button class="news-year-tab" onclick="filterNews('2024', this)">2024</button>
+                            <button class="news-year-tab" onclick="filterNews('2025', this)">2025</button>
+                            <button class="news-year-tab" onclick="filterNews('2026', this)">2026</button>
                         </div>
                         <div id="news-articles" class="space-y-4">
                             <article class="news-article-item group flex items-stretch gap-2 lg:gap-3 cursor-pointer"
@@ -1895,6 +2116,7 @@
                 </div>
             </section>
 
+            <!-- ABOUT -->
             <section id="sec-about" role="tabpanel" aria-labelledby="nav-btn-about"
                 class="tab-panel absolute inset-0 w-full h-full opacity-0 translate-y-0 pointer-events-none z-0"
                 data-page="about">
@@ -1908,18 +2130,21 @@
                     <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 relative">
                         <div class="lg:w-1/4">
                             <div class="lg:sticky lg:top-32 flex flex-col gap-3 text-xs sm:text-sm tracking-[0.16em] uppercase text-[#8e8e8e]"
-                                id="about-subnav"><button onclick="scrollToAbout('brand')" data-target="brand"
-                                    class="text-left hover:text-[#028c85] transition-colors about-nav-active">Brand</button><button
-                                    onclick="scrollToAbout('leadership')" data-target="leadership"
-                                    class="text-left hover:text-[#028c85] transition-colors text-[#8e8e8e]">Resume</button><button
-                                    onclick="scrollToAbout('team')" data-target="team"
+                                id="about-subnav">
+                                <button onclick="scrollToAbout('brand')" data-target="brand"
+                                    class="text-left hover:text-[#028c85] transition-colors about-nav-active">Brand</button>
+                                <button onclick="scrollToAbout('leadership')" data-target="leadership"
+                                    class="text-left hover:text-[#028c85] transition-colors text-[#8e8e8e]">Resume</button>
+                                <button onclick="scrollToAbout('team')" data-target="team"
                                     class="text-left hover:text-[#028c85] transition-colors text-[#8e8e8e]">Team
-                                    now</button><button onclick="scrollToAbout('history')" data-target="history"
+                                    now</button>
+                                <button onclick="scrollToAbout('history')" data-target="history"
                                     class="text-left hover:text-[#028c85] transition-colors text-[#8e8e8e]">Team
-                                    history</button><button onclick="scrollToAbout('expertise')" data-target="expertise"
+                                    history</button>
+                                <button onclick="scrollToAbout('expertise')" data-target="expertise"
                                     class="text-left hover:text-[#028c85] transition-colors text-[#8e8e8e]">Design &
-                                    Construction</button><button onclick="scrollToAbout('competitions')"
-                                    data-target="competitions"
+                                    Construction</button>
+                                <button onclick="scrollToAbout('competitions')" data-target="competitions"
                                     class="text-left hover:text-[#028c85] transition-colors text-[#8e8e8e]">Competitions</button>
                             </div>
                         </div>
@@ -2018,6 +2243,7 @@
                 </div>
             </section>
 
+            <!-- CONTACT -->
             <section id="sec-contact" role="tabpanel" aria-labelledby="nav-btn-contact"
                 class="tab-panel absolute inset-0 w-full h-full opacity-0 translate-y-0 pointer-events-none z-0"
                 data-page="contact">
@@ -2107,22 +2333,34 @@
         let remixClearTimerId = 0;
         let isRemixRunning = false;
         let isTabVisible = true;
+        let introStarted = false;
 
         function switchTab(activeTab) {
             if (!activeTab) return;
             const targetBtn = document.getElementById('nav-btn-' + activeTab);
             const targetPanel = document.getElementById('sec-' + activeTab);
             if (!targetBtn || !targetPanel) return;
+
+            // --- کدهای جدید برای مخفی و نمایان کردن فیلترها در سایدبار ---
+            const sidebarFilters = document.getElementById('sidebar-project-filters');
+            if (sidebarFilters) {
+                if (activeTab === 'projects') {
+                    sidebarFilters.classList.remove('opacity-0', 'pointer-events-none');
+                    sidebarFilters.classList.add('opacity-100', 'pointer-events-auto');
+                } else {
+                    sidebarFilters.classList.add('opacity-0', 'pointer-events-none');
+                    sidebarFilters.classList.remove('opacity-100', 'pointer-events-auto');
+                }
+            }
+
             const currentBtn = document.querySelector('#main-nav [aria-selected="true"]');
             if (currentBtn && currentBtn.id === targetBtn.id) return;
-
             tabs.forEach(tab => {
                 const btn = document.getElementById('nav-btn-' + tab);
                 if (!btn) return;
                 btn.setAttribute('aria-selected', 'false');
                 btn.setAttribute('tabindex', '-1');
             });
-
             if (currentBtn) {
                 const currentPanelId = currentBtn.getAttribute('aria-controls');
                 const currentPanel = currentPanelId ? document.getElementById(currentPanelId) : null;
@@ -2140,7 +2378,6 @@
                     }, 260);
                 }
             }
-
             targetBtn.setAttribute('aria-selected', 'true');
             targetBtn.setAttribute('tabindex', '0');
             targetPanel.classList.remove('z-0', 'opacity-0', 'pointer-events-none');
@@ -2184,9 +2421,7 @@
                     article.classList.toggle('hidden-news', !shouldShow);
                 });
                 if (list) {
-                    requestAnimationFrame(() => {
-                        list.classList.remove('news-switching');
-                    });
+                    requestAnimationFrame(() => { list.classList.remove('news-switching'); });
                 }
             }, 180);
         }
@@ -2197,28 +2432,214 @@
             clickedBtn.classList.add('active');
         }
 
-        function queueIntroStep(fn, delay) {
-            const timer = setTimeout(fn, delay);
-            introTimers.push(timer);
-            return timer;
-        }
-
-        function clearIntroSequence() {
+        function clearIntroTimers() {
             introTimers.forEach(t => clearTimeout(t));
             introTimers = [];
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const logo = document.querySelector('[data-anim-target="logo-container"]');
+        /* ── Compute exact pixel offsets from SVG coordinates ── */
+        const SVG_CENTERS = {
+            blue: { x: 421.5, y: 526.5 },
+            p1: { x: 152.3, y: 526.9 },
+            p3: { x: 309.5, y: 200.9 },
+            p4: { x: 532.2, y: 200.5 },
+            p5: { x: 643.0, y: 526.6 }
+        };
+
+        function updateIntroPieceOffsets() {
+            const wrapper = document.getElementById('intro-logo-wrap');
+            if (!wrapper) return;
+            const rect = wrapper.getBoundingClientRect();
+            const scaleX = rect.width / 800;
+            const scaleY = rect.height / 786;
+
+            const blueX = SVG_CENTERS.blue.x * scaleX;
+            const blueY = SVG_CENTERS.blue.y * scaleY;
+
+            ['p1', 'p3', 'p4', 'p5'].forEach(id => {
+                const piece = document.getElementById(`intro-piece-${id}`);
+                if (!piece) return;
+                const c = SVG_CENTERS[id];
+                const finalX = c.x * scaleX;
+                const finalY = c.y * scaleY;
+                const offX = finalX - blueX;
+                const offY = finalY - blueY;
+
+                // ثبت فاصله‌ها به عنوان متغیرهای CSS
+                piece.style.setProperty('--off-x', offX + 'px');
+                piece.style.setProperty('--off-y-initial', '0px');
+                piece.style.setProperty('--off-y-final', offY + 'px');
+            });
+        }
+
+        /* ── Measure target position for intro logo fly-to-corner ── */
+        function measureIntroTarget() {
+            const sidebarLogo = document.querySelector('[data-anim-target="logo-container"]');
+            const introLogoWrap = document.getElementById('intro-logo-wrap');
             const root = document.documentElement;
+            if (!sidebarLogo || !introLogoWrap) return;
+            const prevOpacity = sidebarLogo.style.opacity;
+            sidebarLogo.style.opacity = '0';
+            sidebarLogo.classList.add('logo-no-transition');
+            sidebarLogo.setAttribute('data-state', 'idle');
+            requestAnimationFrame(() => {
+                const sidebarRect = sidebarLogo.getBoundingClientRect();
+                const sidebarCenterX = sidebarRect.left + sidebarRect.width / 2;
+                const sidebarCenterY = sidebarRect.top + sidebarRect.height / 2;
+                const introRect = introLogoWrap.getBoundingClientRect();
+                const introCenterX = introRect.left + introRect.width / 2;
+                const introCenterY = introRect.top + introRect.height / 2;
+                const targetX = sidebarCenterX - introCenterX;
+                const targetY = sidebarCenterY - introCenterY;
+                const targetScale = sidebarRect.width / introRect.width;
+                root.style.setProperty('--intro-fly-x', targetX + 'px');
+                root.style.setProperty('--intro-fly-y', targetY + 'px');
+                root.style.setProperty('--intro-fly-scale', targetScale.toFixed(4));
+                sidebarLogo.style.opacity = prevOpacity;
+                sidebarLogo.classList.remove('logo-no-transition');
+            });
+        }
+
+        /* ── Intro Animation Sequence ── */
+        function startIntroSequence() {
+            if (introStarted) return;
+            introStarted = true;
+            clearIntroTimers();
+            updateIntroPieceOffsets();
+
+            const overlay = document.getElementById('intro-overlay');
+            const textBlock = document.getElementById('intro-text-block');
             const body = document.body;
+            if (!overlay) return;
+
+            if (textBlock) textBlock.style.opacity = '0';
+
+            // فاز ۱: باز شدن به طرفین
+            introTimers.push(setTimeout(() => {
+                overlay.classList.add('intro-phase-1');
+            }, 250));
+
+            // فاز ۲: حرکت قطعات بالایی
+            introTimers.push(setTimeout(() => {
+                overlay.classList.add('intro-phase-2');
+            }, 900));
+
+            // ------ تغییر جدید: فاز ۲.۵ (فید-این محتوا زودتر شروع شود) ------
+            introTimers.push(setTimeout(() => {
+                body.classList.add('content-visible');
+            }, 1200));
+
+            // فاز ۳: پرواز لوگو به گوشه
+            introTimers.push(setTimeout(() => {
+                overlay.classList.add('intro-phase-3');
+                // (حذف content-visible از اینجا چون در فاز 2.5 انجام شد)
+            }, 1700));
+
+            introTimers.push(setTimeout(() => {
+                overlay.classList.add('intro-fade-out');
+            }, 2550));
+
+            introTimers.push(setTimeout(() => {
+                overlay.classList.add('intro-hidden');
+                body.setAttribute('data-phase', 'idle');
+                const sidebarLogo = document.querySelector('[data-anim-target="logo-container"]');
+                if (sidebarLogo) sidebarLogo.setAttribute('data-state', 'idle');
+
+                runLogoRemix();
+                scheduleNextRemix();
+            }, 3250));
+        }
+
+        function snapToIdleLogo() {
+            const logo = document.querySelector('[data-anim-target="logo-container"]');
+            if (!logo) return;
+            logo.classList.add('logo-no-transition');
+            logo.setAttribute('data-state', 'idle');
+            logo.removeAttribute('data-remix');
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => { logo.classList.remove('logo-no-transition'); });
+            });
+        }
+
+        const remixVariants = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+        const remixDurations = { a: 2520, b: 2360, c: 3020, d: 2820, e: 2220, f: 3420, g: 2720 };
+
+        function runLogoRemix() {
+            const logo = document.querySelector('[data-anim-target="logo-container"]');
+            const body = document.body;
+            if (!logo || body.getAttribute('data-phase') !== 'idle' || isRemixRunning || !isTabVisible || logo.getAttribute('data-state') !== 'idle') return;
+            isRemixRunning = true;
+            const variant = remixVariants[Math.floor(Math.random() * remixVariants.length)];
+            logo.setAttribute('data-remix', variant);
+            window.clearTimeout(remixClearTimerId);
+            remixClearTimerId = window.setTimeout(() => {
+                logo.removeAttribute('data-remix');
+                isRemixRunning = false;
+            }, remixDurations[variant] || 2400);
+        }
+
+        function scheduleNextRemix() {
+            window.clearTimeout(remixTimerId);
+            const delay = 9200 + Math.floor(Math.random() * 5600);
+            remixTimerId = window.setTimeout(() => {
+                runLogoRemix();
+                scheduleNextRemix();
+            }, delay);
+        }
+
+        function stopRemixLoopSmoothly() {
+            const logo = document.querySelector('[data-anim-target="logo-container"]');
+            if (!logo || !logo.hasAttribute('data-remix')) {
+                clearTimeout(remixTimerId);
+                clearTimeout(remixClearTimerId);
+                isRemixRunning = false;
+                return;
+            }
+
+            // خواندن موقعیت فعلی قطعات در وسط هوا و ثبت به عنوان استایل ثابت (برای جلوگیری از پرش)
+            const parts = logo.querySelectorAll('.logo-part');
+            parts.forEach(p => {
+                const comp = window.getComputedStyle(p).transform;
+                p.style.transition = 'none';
+                p.style.transform = comp !== 'none' ? comp : '';
+            });
+
+            // حالا بأمان کامل انیمیشن را قطع می‌کنیم
+            logo.removeAttribute('data-remix');
+            isRemixRunning = false;
+            clearTimeout(remixTimerId);
+            clearTimeout(remixClearTimerId);
+
+            // اعمال ترانزیشن برای بازگشت نرم به حالت عادی
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    parts.forEach(p => {
+                        p.style.transition = 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
+                        p.style.transform = ''; // پاک کردن استایل خطی
+                    });
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const overlay = document.getElementById('intro-overlay');
+            const body = document.body;
+            const logo = document.querySelector('[data-anim-target="logo-container"]');
             const nav = document.getElementById('main-nav');
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             const desktopQuery = window.matchMedia('(min-width: 1024px)');
             const aboutContainer = document.getElementById('about-scroll-container');
             const aboutSections = ['brand', 'leadership', 'team', 'history', 'expertise', 'competitions']
-                .map(key => document.getElementById('about-' + key))
-                .filter(Boolean);
+                .map(key => document.getElementById('about-' + key)).filter(Boolean);
+
+            // Initial page fade-in
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    body.classList.add('page-ready');
+                    updateIntroPieceOffsets();
+                    window.addEventListener('resize', updateIntroPieceOffsets);
+                });
+            });
 
             const updateNavOrientation = () => {
                 if (!nav) return;
@@ -2231,8 +2652,20 @@
                 desktopQuery.addListener(updateNavOrientation);
             }
 
+            // ── Sidebar Logo Mapping (Step 3) ──
+            const navToPartMap = {
+                'home': 'part3',
+                'news': 'part4',
+                'projects': 'part2', // قطعه آبی وسط
+                'about': 'part5',
+                'contact': 'part1'
+            };
+
             const navButtons = tabs.map(tab => document.getElementById('nav-btn-' + tab)).filter(Boolean);
+
             navButtons.forEach((btn, index) => {
+
+                // --- کنترل با کیبورد (کدهای قبلی خودتان) ---
                 btn.addEventListener('keydown', event => {
                     const isNext = event.key === 'ArrowDown' || event.key === 'ArrowRight';
                     const isPrev = event.key === 'ArrowUp' || event.key === 'ArrowLeft';
@@ -2250,7 +2683,121 @@
                     switchTab(targetTab);
                     targetBtn.focus();
                 });
+
+                // --- Hover & Click Interactions (Smooth) ---
+                btn.addEventListener('mouseenter', () => {
+                    const tab = btn.id.replace('nav-btn-', '');
+                    const partId = navToPartMap[tab];
+                    const part = document.getElementById(partId);
+
+                    if (part && document.body.getAttribute('data-phase') === 'idle') {
+                        stopRemixLoopSmoothly(); // توقف نرم به جای توقف خشن
+
+                        // صبر می‌کنیم تا فریمِ توقف اعمال شود، سپس هاور را فعال می‌کنیم
+                        requestAnimationFrame(() => {
+                            requestAnimationFrame(() => {
+                                part.classList.add('hover-active');
+                            });
+                        });
+                    }
+                });
+
+                btn.addEventListener('mouseleave', () => {
+                    const tab = btn.id.replace('nav-btn-', '');
+                    const partId = navToPartMap[tab];
+                    const part = document.getElementById(partId);
+
+                    if (part) {
+                        part.classList.remove('hover-active');
+                    }
+
+                    clearTimeout(remixTimerId);
+                    remixTimerId = setTimeout(() => {
+                        if (document.body.getAttribute('data-phase') === 'idle') {
+                            runLogoRemix();
+                            scheduleNextRemix();
+                        }
+                    }, 1200);
+                });
+
+                btn.addEventListener('click', () => {
+                    const tab = btn.id.replace('nav-btn-', '');
+                    const partId = navToPartMap[tab];
+                    const part = document.getElementById(partId);
+
+                    if (part && document.body.getAttribute('data-phase') === 'idle') {
+                        stopRemixLoopSmoothly();
+
+                        // پالسِ بدون تغییر رنگ
+                        part.animate([
+                            { transform: 'scale(1.09)' },
+                            { transform: 'scale(0.94)' },
+                            { transform: 'scale(1.09)' }
+                        ], {
+                            duration: 400,
+                            easing: 'cubic-bezier(0.22, 1, 0.36, 1)'
+                        });
+                    }
+                });
             });
+
+            // ── Step 4: Infinite Quantum Idle Scroll for Projects ──
+            const columns = document.querySelectorAll('.project-col');
+            let isAnyProjectHovered = false; // یک متغیر سراسری برای تشخیص هاور روی کل بخش
+
+            columns.forEach((col, index) => {
+                const originals = Array.from(col.children);
+                // تکثیر
+                for (let i = 0; i < 4; i++) {
+                    originals.forEach(item => col.appendChild(item.cloneNode(true)));
+                }
+
+                // تشخیص هاور روی هر ستون
+                col.addEventListener('mouseenter', () => isAnyProjectHovered = true);
+                col.addEventListener('mouseleave', () => isAnyProjectHovered = false);
+                col.addEventListener('touchstart', () => isAnyProjectHovered = true, { passive: true });
+                col.addEventListener('touchend', () => setTimeout(() => isAnyProjectHovered = false, 1500));
+
+                const direction = (index % 2 === 0) ? 1 : -1;
+                requestAnimationFrame(() => {
+                    if (direction === -1) col.scrollTop = col.scrollHeight / 2;
+                });
+
+                // ریست مخفیانه اسکرول
+                col.addEventListener('scroll', () => {
+                    const itemHeight = originals[0].getBoundingClientRect().height;
+                    const gap = parseInt(window.getComputedStyle(col).gap) || 0;
+                    const groupHeight = originals.length * (itemHeight + gap);
+
+                    if (col.scrollTop >= groupHeight * 3) {
+                        col.scrollTop -= groupHeight;
+                    } else if (col.scrollTop <= groupHeight * 0.5) {
+                        col.scrollTop += groupHeight;
+                    }
+                }, { passive: true });
+            });
+
+            // هماهنگ‌کننده مرکزی: فقط یک تایمر که نوبتی ستون‌ها را می‌چرخاند
+            let currentScrollingCol = 0;
+            setInterval(() => {
+                const activePanel = document.querySelector('.tab-panel.opacity-100');
+                if (activePanel && activePanel.id === 'sec-projects' && !isAnyProjectHovered) {
+
+                    const col = columns[currentScrollingCol];
+                    const direction = (currentScrollingCol % 2 === 0) ? 1 : -1;
+
+                    if (col && col.children.length > 0) {
+                        const itemHeight = col.children[0].getBoundingClientRect().height;
+                        const gap = parseInt(window.getComputedStyle(col).gap) || 0;
+                        const shift = (itemHeight + gap) * direction;
+
+                        col.scrollBy({ top: shift, behavior: 'smooth' });
+                    }
+
+                    // رفتن به ستون بعدی در دورِ بعد
+                    currentScrollingCol = (currentScrollingCol + 1) % columns.length;
+                }
+            }, 2400); // هر 2.4 ثانیه فقط یک ستون حرکت می‌کند
 
             if (aboutContainer && aboutSections.length > 0) {
                 let aboutTicking = false;
@@ -2259,9 +2806,7 @@
                     if (bottomGap < 24) { setAboutActive('competitions'); return; }
                     const probeLine = aboutContainer.scrollTop + 140;
                     let activeId = 'brand';
-                    aboutSections.forEach(section => {
-                        if (probeLine >= section.offsetTop - 24) activeId = section.id.replace('about-', '');
-                    });
+                    aboutSections.forEach(section => { if (probeLine >= section.offsetTop - 24) activeId = section.id.replace('about-', ''); });
                     setAboutActive(activeId);
                 };
                 setAboutActive('brand');
@@ -2269,145 +2814,123 @@
                 aboutContainer.addEventListener('scroll', () => {
                     if (aboutTicking) return;
                     aboutTicking = true;
-                    requestAnimationFrame(() => { syncAboutActive(); aboutTicking = false; });
+                    requestAnimationFrame(() => {
+                        syncAboutActive();
+                        aboutTicking = false;
+                    });
                 });
                 window.addEventListener('resize', syncAboutActive);
             }
 
-            function measureLogoOffsets() {
-                if (!logo) return;
-                const prevState = logo.getAttribute('data-state') || 'parked';
-                logo.classList.add('logo-no-transition');
-                logo.style.opacity = '0';
-                logo.setAttribute('data-state', 'parked');
-                const rect = logo.getBoundingClientRect();
-                const logoCenterX = rect.left + rect.width / 2;
-                const logoCenterY = rect.top + rect.height / 2;
-                const vw = window.innerWidth;
-                const vh = window.innerHeight;
-                const offsetX = vw / 2 - logoCenterX;
-                const offsetY = vh / 2 - logoCenterY;
-                root.style.setProperty('--intro-offset-x', offsetX + 'px');
-                root.style.setProperty('--intro-offset-y', offsetY + 'px');
-                logo.setAttribute('data-state', prevState);
-                logo.style.opacity = '';
-                logo.classList.remove('logo-no-transition');
-            }
-
-            function snapToIdleLogo() {
-                if (!logo) return;
-                logo.classList.add('logo-no-transition');
-                logo.setAttribute('data-state', 'idle');
-                logo.removeAttribute('data-remix');
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        logo.classList.remove('logo-no-transition');
-                    });
-                });
-            }
-
-            function forceIdleLogo() {
-                clearIntroSequence();
-                body.removeAttribute('data-remix');
-                snapToIdleLogo();
-                body.setAttribute('data-phase', 'idle');
-            }
-
-            const remixVariants = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
-            const remixDurations = { a: 2520, b: 2360, c: 3020, d: 2820, e: 2220, f: 3420, g: 2720 };
-
-            function runLogoRemix() {
-                if (!logo || body.getAttribute('data-phase') !== 'idle' || isRemixRunning || !isTabVisible || logo.getAttribute('data-state') !== 'idle') return;
-                isRemixRunning = true;
-                const variant = remixVariants[Math.floor(Math.random() * remixVariants.length)];
-                logo.setAttribute('data-remix', variant);
-                window.clearTimeout(remixClearTimerId);
-                remixClearTimerId = window.setTimeout(() => {
-                    logo.removeAttribute('data-remix');
-                    isRemixRunning = false;
-                }, remixDurations[variant] || 2400);
-            }
-
-            function scheduleNextRemix() {
-                window.clearTimeout(remixTimerId);
-                const delay = 9200 + Math.floor(Math.random() * 5600);
-                remixTimerId = window.setTimeout(() => {
-                    runLogoRemix();
-                    scheduleNextRemix();
-                }, delay);
-            }
-
-            function stopRemixLoop() {
-                window.clearTimeout(remixTimerId);
-                window.clearTimeout(remixClearTimerId);
-                isRemixRunning = false;
-                if (logo) logo.removeAttribute('data-remix');
-            }
-
-            measureLogoOffsets();
+            measureIntroTarget();
+            window.addEventListener('resize', () => {
+                clearTimeout(window._resizeDebounce);
+                window._resizeDebounce = setTimeout(() => { measureIntroTarget(); }, 300);
+            });
 
             if (prefersReducedMotion) {
-                snapToIdleLogo();
+                if (overlay) {
+                    overlay.classList.add('intro-fade-out');
+                    overlay.classList.add('intro-hidden');
+                }
+                body.classList.add('content-visible');
                 body.setAttribute('data-phase', 'idle');
-                window.setTimeout(() => { runLogoRemix(); scheduleNextRemix(); }, 1200);
-            } else if (logo) {
-                logo.setAttribute('data-state', 'collapsed');
-                body.setAttribute('data-phase', 'intro');
-
-                // Step 1: start assembly at large size (fades in + parts assemble)
-                queueIntroStep(() => { logo.setAttribute('data-state', 'assembling'); }, 300);
-
-                // Step 2: after assembly finishes, trigger shrink + move to final position
-                queueIntroStep(() => {
-                    body.setAttribute('data-phase', 'idle');
-                    logo.setAttribute('data-state', 'idle');
-                }, 1600);
-
-                // Step 3: finalize idle logo, start remix cycle
-                queueIntroStep(() => {
-                    snapToIdleLogo();
+                if (logo) logo.setAttribute('data-state', 'idle');
+                const textBlock = document.getElementById('intro-text-block');
+                if (textBlock) textBlock.style.display = 'none';
+                snapToIdleLogo();
+                introStarted = true;
+                window.setTimeout(() => {
                     runLogoRemix();
                     scheduleNextRemix();
-                }, 2750);
-
-                // Confetti scatter during assembly
-                queueIntroStep(() => {
-                    const pieces = document.querySelectorAll('.confetti-piece');
-                    pieces.forEach((piece, i) => {
-                        piece.style.transform = `translate(${(Math.random() - 0.5) * 160}vw, ${(Math.random() - 0.5) * 160}vh) rotate(${Math.random() * 540 - 270}deg)`;
-                        piece.style.transitionDelay = `${i * 0.04}s`;
-                    });
-                }, 300);
-
-                // Reset confetti after slide
-                queueIntroStep(() => {
-                    const pieces = document.querySelectorAll('.confetti-piece');
-                    pieces.forEach(p => { p.style.transform = ''; p.style.transitionDelay = '0s'; });
-                }, 2750);
+                }, 1200);
+            } else if (overlay) {
+                body.setAttribute('data-phase', 'intro');
+                if (logo) logo.setAttribute('data-state', 'idle');
+                const triggerIntro = () => startIntroSequence();
+                introTimers.push(setTimeout(triggerIntro, 1750));
+                overlay.addEventListener('click', triggerIntro, { once: true });
+                document.addEventListener('click', function docClickTrigger(e) {
+                    if (introStarted) return;
+                    if (e.target === overlay || overlay.contains(e.target)) return;
+                    triggerIntro();
+                    document.removeEventListener('click', docClickTrigger);
+                }, { once: false });
             }
 
             document.addEventListener('visibilitychange', () => {
                 isTabVisible = !document.hidden;
-                if (document.hidden && body.getAttribute('data-phase') !== 'idle') {
-                    forceIdleLogo();
-                    stopRemixLoop();
-                } else if (!document.hidden && body.getAttribute('data-phase') === 'idle') {
+                if (document.hidden && !introStarted && body.getAttribute('data-phase') !== 'idle') {
+                    if (overlay) {
+                        overlay.classList.add('intro-fade-out');
+                        overlay.classList.add('intro-hidden');
+                    }
+                    body.classList.add('content-visible');
+                    body.setAttribute('data-phase', 'idle');
+                    if (logo) logo.setAttribute('data-state', 'idle');
+                    const textBlock = document.getElementById('intro-text-block');
+                    if (textBlock) textBlock.style.display = 'none';
+                    snapToIdleLogo();
+                    introStarted = true;
+                    clearIntroTimers();
+                }
+                if (!document.hidden && body.getAttribute('data-phase') === 'idle') {
                     runLogoRemix();
                     scheduleNextRemix();
                 }
             });
 
-            window.addEventListener('pagehide', () => { clearIntroSequence(); stopRemixLoop(); });
-            window.addEventListener('pageshow', (e) => {
-                if (e.persisted) { forceIdleLogo(); stopRemixLoop(); runLogoRemix(); scheduleNextRemix(); }
+            window.addEventListener('pagehide', () => {
+                clearIntroTimers();
+                stopRemixLoop();
             });
-
-            let resizeDebounce = 0;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeDebounce);
-                resizeDebounce = setTimeout(() => { if (body.getAttribute('data-phase') === 'idle') measureLogoOffsets(); }, 300);
+            window.addEventListener('pageshow', (e) => {
+                if (e.persisted) {
+                    if (overlay && !introStarted) {
+                        overlay.classList.add('intro-fade-out');
+                        overlay.classList.add('intro-hidden');
+                    }
+                    body.classList.add('content-visible');
+                    body.setAttribute('data-phase', 'idle');
+                    if (logo) logo.setAttribute('data-state', 'idle');
+                    const textBlock = document.getElementById('intro-text-block');
+                    if (textBlock) textBlock.style.display = 'none';
+                    snapToIdleLogo();
+                    stopRemixLoop();
+                    runLogoRemix();
+                    scheduleNextRemix();
+                    introStarted = true;
+                    clearIntroTimers();
+                }
             });
         });
+
+        // ── Project Details Overlay Controllers ──
+        function openProjectDetail(title, year, category) {
+            const overlay = document.getElementById('project-detail-overlay');
+            const titleEl = document.getElementById('pd-title');
+            const metaEl = document.getElementById('pd-meta');
+
+            // داینامیک کردن اطلاعات پروژه بر اساس باکسی که روی آن کلیک شده
+            if (titleEl) titleEl.innerText = title;
+            if (metaEl) metaEl.innerText = `${year} | ${category}`;
+
+            // نمایش پنل با ترانزیشن اسلاید از راست به چپ
+            if (overlay) {
+                overlay.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none');
+                overlay.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            }
+        }
+
+        function closeProjectDetail() {
+            const overlay = document.getElementById('project-detail-overlay');
+
+            // بازگرداندن پنل به سمت راست
+            if (overlay) {
+                overlay.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+                overlay.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
+            }
+        }
     </script>
 </body>
 
