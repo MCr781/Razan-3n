@@ -1646,11 +1646,11 @@
 
             <!-- Project Filters (Visible ONLY when Projects tab is active) -->
             <div id="sidebar-project-filters"
-                class="hidden lg:flex flex-col w-full px-4 mt-8 opacity-0 transition-opacity duration-500 pointer-events-none">
-                <button class="project-filter-btn active mb-4 text-left"
+                class="hidden lg:flex flex-col w-full px-4 mt-6 opacity-0 transition-opacity duration-500 pointer-events-none">
+                <button class="project-filter-btn active mb-3 text-left"
                     onclick="filterProjects('all', this)">ALL</button>
 
-                <div class="flex flex-col gap-1.5 mb-6">
+                <div class="flex flex-col gap-1 mb-4">
                     <button class="project-filter-btn text-left"
                         onclick="filterProjects('2000-2004', this)">2000-2004</button>
                     <button class="project-filter-btn text-left"
@@ -1661,11 +1661,9 @@
                         onclick="filterProjects('2015-2019', this)">2015-2019</button>
                     <button class="project-filter-btn text-left"
                         onclick="filterProjects('2019-2024', this)">2019-2024</button>
-                    <button class="project-filter-btn text-left"
-                        onclick="filterProjects('2025-2029', this)">2025-2029</button>
                 </div>
 
-                <div class="flex flex-col gap-1.5">
+                <div class="flex flex-col gap-1">
                     <button class="project-filter-btn text-left"
                         onclick="filterProjects('apartment', this)">Apartment</button>
                     <button class="project-filter-btn text-left" onclick="filterProjects('villa', this)">Villa</button>
@@ -1764,52 +1762,168 @@
             <!-- HOME -->
             <section id="sec-home" role="tabpanel" aria-labelledby="nav-btn-home"
                 class="tab-panel absolute inset-0 w-full h-full opacity-100 translate-y-0 z-10" data-page="home">
-                <div class="h-full w-full overflow-y-auto scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24">
-                    <div class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4 lg:mb-6">
-                        <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">Home</h2>
-                        <div class="w-12 h-[1px] bg-[#028c85] mt-4 lg:mt-6"></div>
-                    </div>
-                    <div class="grid grid-cols-1 xl:grid-cols-[210px_1fr] gap-6 lg:gap-9">
-                        <aside class="panel-shell p-4 lg:p-5">
-                            <h3 class="text-xs tracking-[0.2em] uppercase text-[#028c85] mb-3">Timeline</h3>
-                            <div class="timeline-vertical mt-4">
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div><time class="timeline-year">2000</time>
-                                    <p class="timeline-label">Studio Foundation</p>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div><time class="timeline-year">2004</time>
-                                    <p class="timeline-label">Expansion to Urban Design</p>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div><time class="timeline-year">2011</time>
-                                    <p class="timeline-label">First Regional Award</p>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div><time class="timeline-year">2016</time>
-                                    <p class="timeline-label">Integrated BIM Delivery</p>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div><time class="timeline-year">2020</time>
-                                    <p class="timeline-label">Sustainability Unit Launch</p>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div><time class="timeline-year">2026</time>
-                                    <p class="timeline-label">International Competition Finalist</p>
-                                </div>
-                            </div>
-                        </aside>
+                <!-- استفاده از فضای کامل بدون تایتل -->
+                <div class="h-full w-full px-4 sm:px-8 lg:px-10 py-4 lg:py-6 flex flex-col relative overflow-hidden">
+
+                    <!-- 3x3 Home Grid -->
+                    <div
+                        class="flex-1 grid grid-cols-1 md:grid-cols-3 grid-rows-3 gap-3 lg:gap-5 overflow-hidden h-full">
+
+                        <!-- Box 1 -->
                         <article
-                            class="panel-shell motion-rise min-h-[340px] sm:min-h-[420px] lg:min-h-[520px] p-4 lg:p-6">
-                            <div class="visual-fill rounded-[22px] h-full w-full flex items-end">
-                                <div class="p-5 lg:p-8">
-                                    <p class="text-white/85 text-xs tracking-[0.24em] uppercase mb-3">Architectural
-                                        Narrative</p>
-                                    <h3 class="text-white text-2xl lg:text-4xl font-light tracking-[0.08em] max-w-2xl">
-                                        Designing Context-Driven Spaces With Precision and Memory</h3>
-                                </div><span class="visual-tag">Main Frame</span>
+                            class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500">
+                            <!-- تصویر پس زمینه با افکت سیاه و سفید -->
+                            <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                style="background-image: url('../assets/pics/Buildings/zaha-hadid-heydar-aliyev-center-baku-facade.jpg');">
+                            </div>
+                            <!-- گرادیانت تیره شونده موقع هاور برای خوانایی متن -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            </div>
+                            <!-- تایتل پروژه -->
+                            <div
+                                class="absolute inset-0 p-4 lg:p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <h3
+                                    class="text-white text-sm lg:text-lg tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                    Heydar Aliyev Center</h3>
                             </div>
                         </article>
+
+                        <!-- Box 2 -->
+                        <article
+                            class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500">
+                            <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                style="background-image: url('../assets/pics/Buildings/harpa-concert-hall-glass-honeycomb-facade.jpg');">
+                            </div>
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            </div>
+                            <div
+                                class="absolute inset-0 p-4 lg:p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <h3
+                                    class="text-white text-sm lg:text-lg tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                    Harpa Concert Hall</h3>
+                            </div>
+                        </article>
+
+                        <!-- Box 3 -->
+                        <article
+                            class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500">
+                            <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                style="background-image: url('../assets/pics/Buildings/sidra-medicine-hospital-abudhabi-cantilevered-glass.jpg');">
+                            </div>
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            </div>
+                            <div
+                                class="absolute inset-0 p-4 lg:p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <h3
+                                    class="text-white text-sm lg:text-lg tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                    Sidra Medicine</h3>
+                            </div>
+                        </article>
+
+                        <!-- Box 4 -->
+                        <article
+                            class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500">
+                            <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                style="background-image: url('../assets/pics/Buildings/minimalist-white-architecture-cantilevered-volume.jpg');">
+                            </div>
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            </div>
+                            <div
+                                class="absolute inset-0 p-4 lg:p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <h3
+                                    class="text-white text-sm lg:text-lg tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                    Minimalist Volumes</h3>
+                            </div>
+                        </article>
+
+                        <!-- Box 5 -->
+                        <article
+                            class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500">
+                            <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                style="background-image: url('../assets/pics/Buildings/curved-modern-glass-building-metal-louvers.jpg');">
+                            </div>
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            </div>
+                            <div
+                                class="absolute inset-0 p-4 lg:p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <h3
+                                    class="text-white text-sm lg:text-lg tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                    Curved Glass Facade</h3>
+                            </div>
+                        </article>
+
+                        <!-- Box 6 -->
+                        <article
+                            class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500">
+                            <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                style="background-image: url('../assets/pics/Buildings/futuristic-geometric-glass-canopy-copper-facade.jpg');">
+                            </div>
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            </div>
+                            <div
+                                class="absolute inset-0 p-4 lg:p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <h3
+                                    class="text-white text-sm lg:text-lg tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                    Geometric Canopy</h3>
+                            </div>
+                        </article>
+
+                        <!-- Box 7 -->
+                        <article
+                            class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500">
+                            <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                style="background-image: url('../assets/pics/Buildings/pierres-vives.jpg');"></div>
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            </div>
+                            <div
+                                class="absolute inset-0 p-4 lg:p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <h3
+                                    class="text-white text-sm lg:text-lg tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                    Pierres Vives</h3>
+                            </div>
+                        </article>
+
+                        <!-- Box 8 -->
+                        <article
+                            class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500">
+                            <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                style="background-image: url('../assets/pics/Buildings/rock-and-roll-hall-of-fame-cleveland-architecture.jpg');">
+                            </div>
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            </div>
+                            <div
+                                class="absolute inset-0 p-4 lg:p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <h3
+                                    class="text-white text-sm lg:text-lg tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                    Rock and Roll Hall</h3>
+                            </div>
+                        </article>
+
+                        <!-- Box 9 -->
+                        <article
+                            class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500">
+                            <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                style="background-image: url('../assets/pics/Buildings/germanys-axel-springer-group.jpg');">
+                            </div>
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            </div>
+                            <div
+                                class="absolute inset-0 p-4 lg:p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <h3
+                                    class="text-white text-sm lg:text-lg tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                    Axel Springer</h3>
+                            </div>
+                        </article>
+
                     </div>
                 </div>
             </section>
@@ -1818,44 +1932,53 @@
             <section id="sec-projects" role="tabpanel" aria-labelledby="nav-btn-projects"
                 class="tab-panel absolute inset-0 w-full h-full opacity-0 translate-y-0 pointer-events-none z-0"
                 data-page="projects">
-                <!-- استفاده از h-full و overflow-hidden برای کنترل دقیق فضا -->
-                <div class="h-full w-full px-4 sm:px-8 lg:px-10 pb-6 flex flex-col relative overflow-hidden">
-                    <div class="shrink-0 bg-white z-20 py-6 lg:py-10 mb-2">
-                        <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">Selected
-                            Works</h2>
-                        <div class="w-12 h-[1px] bg-[#028c85] mt-4 lg:mt-6"></div>
-                    </div>
-
-                    <!-- 3x3 Infinite Scroll Columns -->
-                    <!-- اضافه شدن h-full برای پر کردن ارتفاع باقی‌مانده -->
+                <div
+                    class="h-full w-full px-4 sm:px-8 lg:px-10 pt-4 lg:pt-6 pb-6 flex flex-col relative overflow-hidden">
                     <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 overflow-hidden relative h-full">
 
                         <!-- Column 1 -->
                         <div
                             class="flex flex-col gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full snap-y snap-mandatory">
-                            <!-- جایگزینی aspect-square با min-h-[calc(33.333%-1rem)] برای نمایش دقیق ۳ باکس در ستون -->
-                            <article onclick="openProjectDetail('Tehran Commercial Complex', '2025', 'COMMERCIAL')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Tehran Commercial Complex', '2025', 'COMMERCIAL', 1)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] min-h-[calc(33.333%-1rem)] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/angular-leaning-terracotta-glass-museum.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Tehran Commercial Complex</h3>
                                 </div>
                             </article>
-                            <article onclick="openProjectDetail('Urban Pocket Landscape', '2022', 'Artistic')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Urban Pocket Landscape', '2022', 'LANDSCAPE', 2)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] min-h-[calc(33.333%-1rem)] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/colorful-curved-facade-triangular-windows.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Urban Pocket Landscape</h3>
                                 </div>
                             </article>
-                            <article onclick="openProjectDetail('Laleh Villa', '2019', 'Large Housing')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Laleh Villa', '2019', 'VILLA', 3)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] min-h-[calc(33.333%-1rem)] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/concrete-cantilever-modernist-corner-facade.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Laleh Villa</h3>
@@ -1866,31 +1989,48 @@
                         <!-- Column 2 -->
                         <div
                             class="flex flex-col gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full snap-y snap-mandatory">
-                            <article onclick="openProjectDetail('Health Cluster', '2026', 'Government')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Health Cluster', '2026', 'HEALTH & CARE', 4)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] min-h-[calc(33.333%-1rem)] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/curved-concrete-building-blue-glass-windows.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Health Cluster</h3>
                                 </div>
                             </article>
-                            <article onclick="openProjectDetail('Office Atrium', '2016', 'Business')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Office Atrium', '2016', 'OFFICE', 5)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] min-h-[calc(33.333%-1rem)] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/dark-brutalist-geometric-patterned-facade.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Office Atrium</h3>
                                 </div>
                             </article>
-                            <article onclick="openProjectDetail('Karaj Riverfront Renewal', '2012', 'Renewal')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Karaj Riverfront Renewal', '2012', 'COMPLEX', 6)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] min-h-[calc(33.333%-1rem)] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/darya-shkapina.jpg');"></div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
-                                        Karaj Riverfront Renewal</h3>
+                                        Karaj Riverfront</h3>
                                 </div>
                             </article>
                         </div>
@@ -1898,36 +2038,54 @@
                         <!-- Column 3 -->
                         <div
                             class="flex flex-col gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full snap-y snap-mandatory">
-                            <article onclick="openProjectDetail('Community School Campus', '2009', 'Schooling')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Community School Campus', '2009', 'COMPLEX', 7)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] min-h-[calc(33.333%-1rem)] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/double-tree-by-hilton-nice-centre.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
-                                        Community School Campus</h3>
+                                        Community School</h3>
                                 </div>
                             </article>
-                            <article onclick="openProjectDetail('Civic Gateway', '2005', 'pathing')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Civic Gateway', '2005', 'URBAN', 8)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] min-h-[calc(33.333%-1rem)] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/experimenta-science-centre-stoneware-flooring-casalgrande-padana.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Civic Gateway</h3>
                                 </div>
                             </article>
-                            <article onclick="openProjectDetail('Workspace Flexibility Hub', '2004', 'Hubbing')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Workspace Flexibility Hub', '2004', 'OFFICE', 9)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] min-h-[calc(33.333%-1rem)] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/howard-bouchevereau.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
-                                        Workspace Flexibility Hub</h3>
+                                        Flexibility Hub</h3>
                                 </div>
                             </article>
                         </div>
 
-                        <!-- فید سفید (Gradient Fade) -->
+                        <!-- فید سفید بالا و پایین -->
                         <div
                             class="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white to-transparent pointer-events-none z-10">
                         </div>
@@ -1937,15 +2095,14 @@
                     </div>
                 </div>
 
-                <!-- PROJECT DETAIL OVERLAY (Hidden by default) -->
+                <!-- PROJECT DETAIL OVERLAY -->
                 <div id="project-detail-overlay"
                     class="absolute inset-0 w-full h-full bg-white z-50 flex flex-col transform translate-x-full opacity-0 transition-all duration-700 ease-in-out pointer-events-none">
 
-                    <!-- Header & Back Button -->
                     <div
                         class="shrink-0 bg-white/95 backdrop-blur-md z-20 px-6 py-6 border-b border-[#028c85]/20 flex items-center">
                         <button onclick="closeProjectDetail()"
-                            class="group flex items-center text-[#8e8e8e] hover:text-[#028c85] transition-colors tracking-[0.15em] text-xs uppercase focus:outline-none">
+                            class="group cursor-pointer flex items-center text-[#8e8e8e] hover:text-[#028c85] transition-colors tracking-[0.15em] text-xs uppercase focus:outline-none">
                             <svg class="w-5 h-5 mr-3 rtl:ml-3 rtl:mr-0 transform group-hover:-translate-x-2 transition-transform duration-500"
                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -1955,22 +2112,19 @@
                         </button>
                     </div>
 
-                    <!-- Detail Content -->
                     <div class="flex-1 overflow-y-auto scroll-clean p-6 lg:p-10">
                         <div class="max-w-4xl mx-auto pb-12">
-                            <!-- Title & Meta -->
                             <h2 id="pd-title"
                                 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase mb-2">
                                 Project Title</h2>
                             <p id="pd-meta" class="text-xs tracking-[0.18em] text-[#028c85] mb-8">2026 | CATEGORY</p>
 
-                            <!-- Main Hero Image (Placeholder) -->
-                            <div
-                                class="w-full aspect-[16/7] panel-shell visual-fill rounded-[22px] mb-10 flex items-center justify-center">
-                                <span class="text-white/60 tracking-widest uppercase text-sm">Main View</span>
+                            <!-- کانتینر عکس اصلی که از طریق JS آپدیت می‌شود -->
+                            <!-- نکته: حذف panel-shell و جایگزینی با سایه و بوردر اختصاصی برای رفع تداخل بک‌گراند -->
+                            <div id="pd-main-img"
+                                class="w-full aspect-[16/7] shadow-[0_12px_28px_rgba(71,70,70,0.12)] border border-[#028c85]/30 bg-cover bg-center rounded-[22px] mb-10 flex items-center justify-center transition-all duration-500">
                             </div>
 
-                            <!-- Description & Info Grid -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 mb-12">
                                 <div class="md:col-span-2">
                                     <h3 class="text-lg text-[#474646] tracking-[0.1em] mb-4 uppercase">Project Narrative
@@ -1978,8 +2132,7 @@
                                     <p class="text-[#595959] font-light leading-relaxed text-justify">
                                         Razan sees architecture as a layered act of listening: to site, climate,
                                         culture, and program. We map constraints early, then translate them into clear
-                                        spatial systems that age with dignity and perform efficiently. This project
-                                        represents our core values in urban development and sustainable design.
+                                        spatial systems that age with dignity and perform efficiently.
                                     </p>
                                 </div>
                                 <div class="space-y-6">
@@ -2000,13 +2153,21 @@
                                 </div>
                             </div>
 
-                            <!-- Gallery Grid -->
+                            <!-- گالری با عکس‌های واقعی -->
                             <h3 class="text-lg text-[#474646] tracking-[0.1em] mb-6 uppercase">Gallery</h3>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
-                                <div class="aspect-[4/3] panel-shell visual-fill rounded-[18px]"></div>
-                                <div class="aspect-[4/3] panel-shell visual-fill rounded-[18px]"></div>
-                                <div class="aspect-[4/3] panel-shell visual-fill rounded-[18px]"></div>
-                                <div class="aspect-[4/3] panel-shell visual-fill rounded-[18px]"></div>
+                                <div
+                                    class="pd-gallery-img aspect-[4/3] shadow-[0_12px_28px_rgba(71,70,70,0.12)] border border-[#028c85]/30 bg-cover bg-center rounded-[18px]">
+                                </div>
+                                <div
+                                    class="pd-gallery-img aspect-[4/3] shadow-[0_12px_28px_rgba(71,70,70,0.12)] border border-[#028c85]/30 bg-cover bg-center rounded-[18px]">
+                                </div>
+                                <div
+                                    class="pd-gallery-img aspect-[4/3] shadow-[0_12px_28px_rgba(71,70,70,0.12)] border border-[#028c85]/30 bg-cover bg-center rounded-[18px]">
+                                </div>
+                                <div
+                                    class="pd-gallery-img aspect-[4/3] shadow-[0_12px_28px_rgba(71,70,70,0.12)] border border-[#028c85]/30 bg-cover bg-center rounded-[18px]">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2017,99 +2178,184 @@
             <section id="sec-news" role="tabpanel" aria-labelledby="nav-btn-news"
                 class="tab-panel absolute inset-0 w-full h-full opacity-0 translate-y-0 pointer-events-none z-0"
                 data-page="news">
-                <div class="h-full w-full overflow-y-auto scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24">
-                    <div class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4">
+                <div class="h-full w-full overflow-y-auto scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24 relative">
+                    <!-- هدر Sticky با افکت جلوگیری از بیرون‌زدگی اسکرول -->
+                    <div
+                        class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4 -mx-4 px-4 sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">
                         <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">News</h2>
                         <div class="w-12 h-[1px] bg-[#028c85] mt-4 lg:mt-6"></div>
                     </div>
+
                     <div class="space-y-7 lg:space-y-8">
                         <div class="flex flex-wrap gap-0 border-b-2 border-[#8e8e8e]/20 mb-6" id="news-year-tabs">
                             <button class="news-year-tab active" onclick="filterNews('all', this)">All</button>
-                            <button class="news-year-tab" onclick="filterNews('2021', this)">2021</button>
                             <button class="news-year-tab" onclick="filterNews('2022', this)">2022</button>
                             <button class="news-year-tab" onclick="filterNews('2023', this)">2023</button>
                             <button class="news-year-tab" onclick="filterNews('2024', this)">2024</button>
                             <button class="news-year-tab" onclick="filterNews('2025', this)">2025</button>
                             <button class="news-year-tab" onclick="filterNews('2026', this)">2026</button>
                         </div>
-                        <div id="news-articles" class="space-y-4">
-                            <article class="news-article-item group flex items-stretch gap-2 lg:gap-3 cursor-pointer"
-                                data-year="2021">
-                                <div
-                                    class="panel-shell visual-fill motion-rise flex-1 min-h-[58px] lg:min-h-[72px] px-4 lg:px-6 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-white text-[11px] tracking-[0.16em] uppercase">Jan 28</p>
-                                        <h4
-                                            class="text-white text-sm lg:text-base tracking-[0.12em] mt-1 group-hover:translate-x-1 transition-transform duration-500">
-                                            Interdisciplinary health cluster competition entry submitted</h4>
-                                    </div>
-                                </div>
-                                <div class="panel-shell visual-fill motion-rise w-[54px] lg:w-[74px]"></div>
-                            </article>
-                            <article class="news-article-item group flex items-stretch gap-2 lg:gap-3 cursor-pointer"
-                                data-year="2022">
-                                <div
-                                    class="panel-shell visual-fill motion-rise flex-1 min-h-[58px] lg:min-h-[72px] px-4 lg:px-6 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-white text-[11px] tracking-[0.16em] uppercase">May 02</p>
-                                        <h4
-                                            class="text-white text-sm lg:text-base tracking-[0.12em] mt-1 group-hover:translate-x-1 transition-transform duration-500">
-                                            Community school campus receives planning approval</h4>
-                                    </div>
-                                </div>
-                                <div class="panel-shell visual-fill motion-rise w-[54px] lg:w-[74px]"></div>
-                            </article>
-                            <article class="news-article-item group flex items-stretch gap-2 lg:gap-3 cursor-pointer"
-                                data-year="2023">
-                                <div
-                                    class="panel-shell visual-fill motion-rise flex-1 min-h-[58px] lg:min-h-[72px] px-4 lg:px-6 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-white text-[11px] tracking-[0.16em] uppercase">Jun 16</p>
-                                        <h4
-                                            class="text-white text-sm lg:text-base tracking-[0.12em] mt-1 group-hover:translate-x-1 transition-transform duration-500">
-                                            Workspace flexibility report published by Razan Studio</h4>
-                                    </div>
-                                </div>
-                                <div class="panel-shell visual-fill motion-rise w-[54px] lg:w-[74px]"></div>
-                            </article>
-                            <article class="news-article-item group flex items-stretch gap-2 lg:gap-3 cursor-pointer"
-                                data-year="2024">
-                                <div
-                                    class="panel-shell visual-fill motion-rise flex-1 min-h-[58px] lg:min-h-[72px] px-4 lg:px-6 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-white text-[11px] tracking-[0.16em] uppercase">Oct 21</p>
-                                        <h4
-                                            class="text-white text-sm lg:text-base tracking-[0.12em] mt-1 group-hover:translate-x-1 transition-transform duration-500">
-                                            North Tehran residential complex enters commissioning</h4>
-                                    </div>
-                                </div>
-                                <div class="panel-shell visual-fill motion-rise w-[54px] lg:w-[74px]"></div>
-                            </article>
-                            <article class="news-article-item group flex items-stretch gap-2 lg:gap-3 cursor-pointer"
-                                data-year="2025">
-                                <div
-                                    class="panel-shell visual-fill motion-rise flex-1 min-h-[58px] lg:min-h-[72px] px-4 lg:px-6 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-white text-[11px] tracking-[0.16em] uppercase">Dec 09</p>
-                                        <h4
-                                            class="text-white text-sm lg:text-base tracking-[0.12em] mt-1 group-hover:translate-x-1 transition-transform duration-500">
-                                            BIM workflow audit improves delivery speed by 17%</h4>
-                                    </div>
-                                </div>
-                                <div class="panel-shell visual-fill motion-rise w-[54px] lg:w-[74px]"></div>
-                            </article>
-                            <article class="news-article-item group flex items-stretch gap-2 lg:gap-3 cursor-pointer"
+
+                        <div id="news-articles" class="space-y-4 lg:space-y-5">
+                            <!-- News 1 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
                                 data-year="2026">
                                 <div
-                                    class="panel-shell visual-fill motion-rise flex-1 min-h-[58px] lg:min-h-[72px] px-4 lg:px-6 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-white text-[11px] tracking-[0.16em] uppercase">Apr 12</p>
-                                        <h4
-                                            class="text-white text-sm lg:text-base tracking-[0.12em] mt-1 group-hover:translate-x-1 transition-transform duration-500">
-                                            Razan shortlisted for Tehran Civic Gateway</h4>
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        Apr 12, 2026</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        Razan shortlisted for Tehran Civic Gateway</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/modern-brick-building-corner-windows-sky.jpg');">
                                     </div>
                                 </div>
-                                <div class="panel-shell visual-fill motion-rise w-[54px] lg:w-[74px]"></div>
+                            </article>
+                            <!-- News 2 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
+                                data-year="2026">
+                                <div
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        Jan 05, 2026</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        Our new sustainability framework officially launched</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/modern-cantilevered-office-building-waterfront.jpg');">
+                                    </div>
+                                </div>
+                            </article>
+                            <!-- News 3 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
+                                data-year="2025">
+                                <div
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        Dec 09, 2025</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        BIM workflow audit improves delivery speed by 17%</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/modern-white-building-curved-glass-stairs.jpg');">
+                                    </div>
+                                </div>
+                            </article>
+                            <!-- News 4 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
+                                data-year="2025">
+                                <div
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        Jul 22, 2025</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        Award-winning landscape integrated into our recent commercial design</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/monochrome-cylindrical-building-geometric-facade.jpg');">
+                                    </div>
+                                </div>
+                            </article>
+                            <!-- News 5 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
+                                data-year="2024">
+                                <div
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        Oct 21, 2024</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        North Tehran residential complex enters final commissioning phase</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/parametric-curved-glass-amber-grid-architecture.jpg');">
+                                    </div>
+                                </div>
+                            </article>
+                            <!-- News 6 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
+                                data-year="2024">
+                                <div
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        Mar 14, 2024</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        Razan experts featured in the national urban development panel</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/stacked-cantilevered-glass-volumes-architecture.jpg');">
+                                    </div>
+                                </div>
+                            </article>
+                            <!-- News 7 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
+                                data-year="2023">
+                                <div
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        Jun 16, 2023</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        Workspace flexibility report formally published by Razan Studio</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/stepped-dark-glass-facade-architecture-twilight.jpg');">
+                                    </div>
+                                </div>
+                            </article>
+                            <!-- News 8 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
+                                data-year="2022">
+                                <div
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        May 02, 2022</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        Community school campus receives regional planning approval</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/undulating-metallic-reflective-architecture.jpg');">
+                                    </div>
+                                </div>
                             </article>
                         </div>
                     </div>
@@ -2121,15 +2367,20 @@
                 class="tab-panel absolute inset-0 w-full h-full opacity-0 translate-y-0 pointer-events-none z-0"
                 data-page="about">
                 <div id="about-scroll-container"
-                    class="h-full w-full overflow-y-auto scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24 scroll-smooth">
-                    <div class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4">
+                    class="h-full w-full overflow-y-auto scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24 scroll-smooth relative">
+
+                    <!-- هدر Sticky اصلاح شده برای جلوگیری از بیرون‌زدگی اسکرول -->
+                    <div
+                        class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4 -mx-4 px-4 sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">
                         <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">About
                             Razan</h2>
                         <div class="w-12 h-[1px] bg-[#028c85] mt-4 lg:mt-6"></div>
                     </div>
+
                     <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 relative">
                         <div class="lg:w-1/4">
-                            <div class="lg:sticky lg:top-32 flex flex-col gap-3 text-xs sm:text-sm tracking-[0.16em] uppercase text-[#8e8e8e]"
+                            <!-- اضافه شدن self-start و top-40 برای رفع مشکل اسکرول -->
+                            <div class="lg:sticky lg:top-40 self-start flex flex-col gap-3 text-xs sm:text-sm tracking-[0.16em] uppercase text-[#8e8e8e]"
                                 id="about-subnav">
                                 <button onclick="scrollToAbout('brand')" data-target="brand"
                                     class="text-left hover:text-[#028c85] transition-colors about-nav-active">Brand</button>
@@ -2152,7 +2403,10 @@
                             <div id="about-brand" class="space-y-6 scroll-mt-28">
                                 <h3 class="text-2xl font-light tracking-wide text-[#474646]">Brand Philosophy</h3>
                                 <div class="panel-shell p-2">
-                                    <div class="visual-fill rounded-[20px] aspect-[16/8]"></div>
+                                    <!-- جایگذاری عکس دفتر رازان (مسیر اصلاح شد) -->
+                                    <div class="rounded-[20px] aspect-[16/8] bg-cover bg-center"
+                                        style="background-image: url('../assets/pics/Buildings/Razan-Office.jpg');">
+                                    </div>
                                 </div>
                                 <p class="text-[#595959] leading-relaxed font-light text-justify">Razan sees
                                     architecture as a layered act of listening: to site, climate, culture, and program.
@@ -2209,14 +2463,22 @@
                                 <h3 class="text-2xl font-light tracking-wide text-[#474646]">Design & Construction</h3>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div class="panel-shell p-2">
-                                        <div class="visual-fill rounded-[18px] aspect-square flex items-end p-4"><span
-                                                class="text-white text-xs tracking-[0.18em] uppercase">Design
-                                                Package</span></div>
+                                        <!-- جایگذاری عکس معماری -->
+                                        <div class="rounded-[18px] aspect-square flex items-end p-4 bg-cover bg-center"
+                                            style="background-image: linear-gradient(to top, rgba(0,0,0,0.6), transparent), url('../assets/pics/Buildings/geometric-glass-honeycomb-facade.jpg');">
+                                            <span
+                                                class="text-white text-xs tracking-[0.18em] uppercase relative z-10">Design
+                                                Package</span>
+                                        </div>
                                     </div>
                                     <div class="panel-shell p-2">
-                                        <div class="visual-fill rounded-[18px] aspect-square flex items-end p-4"><span
-                                                class="text-white text-xs tracking-[0.18em] uppercase">Construction
-                                                Docs</span></div>
+                                        <!-- جایگذاری عکس معماری -->
+                                        <div class="rounded-[18px] aspect-square flex items-end p-4 bg-cover bg-center"
+                                            style="background-image: linear-gradient(to top, rgba(0,0,0,0.6), transparent), url('../assets/pics/Buildings/stacked-cantilevered-glass-volumes-architecture.jpg');">
+                                            <span
+                                                class="text-white text-xs tracking-[0.18em] uppercase relative z-10">Construction
+                                                Docs</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -2247,23 +2509,31 @@
             <section id="sec-contact" role="tabpanel" aria-labelledby="nav-btn-contact"
                 class="tab-panel absolute inset-0 w-full h-full opacity-0 translate-y-0 pointer-events-none z-0"
                 data-page="contact">
-                <div class="contact-shell h-full w-full scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24">
-                    <div class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4">
+                <div class="contact-shell h-full w-full scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24 relative">
+
+                    <!-- هدر Sticky اصلاح شده برای جلوگیری از بیرون‌زدگی اسکرول -->
+                    <div
+                        class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4 -mx-4 px-4 sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">
                         <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">Contact
                         </h2>
                         <div class="w-12 h-[1px] bg-[#028c85] mt-4 lg:mt-6"></div>
                     </div>
+
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-3">
                         <div class="panel-shell p-2">
-                            <div
-                                class="visual-fill rounded-[20px] aspect-[4/3] lg:aspect-[16/6] flex items-center justify-center">
-                                <p class="text-white text-lg lg:text-2xl tracking-[0.14em]">Main Office Map</p>
+                            <!-- جایگذاری عکس نقشه (مسیر اصلاح شد) -->
+                            <div class="rounded-[20px] aspect-[4/3] lg:aspect-[16/6] bg-cover bg-center flex items-end p-5"
+                                style="background-image: linear-gradient(to top, rgba(0,0,0,0.6), transparent), url('../assets/pics/Buildings/Map1.png');">
+                                <p class="text-white text-sm lg:text-base tracking-[0.14em] drop-shadow-md">Main Office
+                                    Map</p>
                             </div>
                         </div>
                         <div class="panel-shell p-2">
-                            <div
-                                class="visual-fill rounded-[20px] aspect-[4/3] lg:aspect-[16/6] flex items-center justify-center">
-                                <p class="text-white text-lg lg:text-2xl tracking-[0.14em]">Site Visit Map</p>
+                            <!-- جایگذاری عکس نقشه دوم با تصویر جدید گوگل مپ -->
+                            <div class="rounded-[20px] aspect-[4/3] lg:aspect-[16/6] bg-cover bg-center flex items-end p-5"
+                                style="background-image: linear-gradient(to top, rgba(0,0,0,0.6), transparent), url('../assets/pics/Buildings/google-map-view.jpg');">
+                                <p class="text-white text-sm lg:text-base tracking-[0.14em] drop-shadow-md">Site Visit
+                                    Map</p>
                             </div>
                         </div>
                     </div>
@@ -2709,8 +2979,12 @@
 
                     if (part) {
                         part.classList.remove('hover-active');
+                        // پاک‌سازی استایل‌های خطی که ممکن است حینِ توقفِ نرم گیر کرده باشند
+                        part.style.transition = '';
+                        part.style.transform = '';
                     }
 
+                    // راه‌اندازی مجدد انیمیشن‌های تصادفی بعد از یک ثانیه مکث
                     clearTimeout(remixTimerId);
                     remixTimerId = setTimeout(() => {
                         if (document.body.getAttribute('data-phase') === 'idle') {
@@ -2905,20 +3179,52 @@
             });
         });
 
-        // ── Project Details Overlay Controllers ──
-        function openProjectDetail(title, year, category) {
+        // ── Project Details Overlay Controllers (Dynamic Gallery) ──
+        const projectImages = {
+            1: ['angular-leaning-terracotta-glass-museum.jpg', 'colorful-curved-facade-triangular-windows.jpg', 'concrete-cantilever-modernist-corner-facade.jpg', 'curved-concrete-building-blue-glass-windows.jpg', 'curved-modern-glass-building-metal-louvers.jpg'],
+            2: ['colorful-curved-facade-triangular-windows.jpg', 'curved-white-building-tall-glass-arch.jpg', 'dark-brutalist-geometric-patterned-facade.jpg', 'darya-shkapina.jpg', 'double-tree-by-hilton-nice-centre.jpg'],
+            3: ['concrete-cantilever-modernist-corner-facade.jpg', 'experimenta-science-centre-stoneware-flooring-casalgrande-padana.jpg', 'futuristic-geometric-glass-canopy-copper-facade.jpg', 'geometric-glass-honeycomb-facade.jpg', 'germanys-axel-springer-group.jpg'],
+            4: ['curved-concrete-building-blue-glass-windows.jpg', 'harpa-concert-hall-glass-honeycomb-facade.jpg', 'howard-bouchevereau.jpg', 'minimalist-white-architecture-cantilevered-volume.jpg', 'modern-brick-building-corner-windows-sky.jpg'],
+            5: ['dark-brutalist-geometric-patterned-facade.jpg', 'modern-cantilevered-office-building-waterfront.jpg', 'modern-white-building-curved-glass-stairs.jpg', 'monochrome-cylindrical-building-geometric-facade.jpg', 'parametric-curved-glass-amber-grid-architecture.jpg'],
+            6: ['darya-shkapina.jpg', 'pexels-michael-pointner-134459625-10209033.jpg', 'pierres-vives.jpg', 'rock-and-roll-hall-of-fame-cleveland-architecture.jpg', 'sidra-medicine-hospital-abudhabi-cantilevered-glass.jpg'],
+            7: ['double-tree-by-hilton-nice-centre.jpg', 'silver-geometric-origami-metal-facade.jpg', 'stacked-cantilevered-glass-volumes-architecture.jpg', 'stepped-dark-glass-facade-architecture-twilight.jpg', 'undulating-metallic-reflective-architecture.jpg'],
+            8: ['experimenta-science-centre-stoneware-flooring-casalgrande-padana.jpg', 'zaha-hadid-heydar-aliyev-center-baku-facade.jpg', 'angular-leaning-terracotta-glass-museum.jpg', 'concrete-cantilever-modernist-corner-facade.jpg', 'curved-modern-glass-building-metal-louvers.jpg'],
+            9: ['howard-bouchevereau.jpg', 'colorful-curved-facade-triangular-windows.jpg', 'dark-brutalist-geometric-patterned-facade.jpg', 'double-tree-by-hilton-nice-centre.jpg', 'geometric-glass-honeycomb-facade.jpg']
+        };
+
+        function openProjectDetail(title, year, category, projectId) {
             const overlay = document.getElementById('project-detail-overlay');
             const titleEl = document.getElementById('pd-title');
             const metaEl = document.getElementById('pd-meta');
+            const mainImgEl = document.getElementById('pd-main-img');
+            const galImages = document.querySelectorAll('.pd-gallery-img');
 
-            // داینامیک کردن اطلاعات پروژه بر اساس باکسی که روی آن کلیک شده
             if (titleEl) titleEl.innerText = title;
             if (metaEl) metaEl.innerText = `${year} | ${category}`;
 
-            // نمایش پنل با ترانزیشن اسلاید از راست به چپ
+            const imgs = projectImages[projectId];
+            if (imgs) {
+                // استفاده از setProperty با important برای غلبه بر CSS پیش‌فرضِ panel-shell
+                if (mainImgEl) mainImgEl.style.setProperty('background-image', `url('../assets/pics/Buildings/${imgs[0]}')`, 'important');
+
+                galImages.forEach((el, index) => {
+                    if (imgs[index + 1]) {
+                        el.style.setProperty('background-image', `url('../assets/pics/Buildings/${imgs[index + 1]}')`, 'important');
+                    }
+                });
+            }
+
             if (overlay) {
                 overlay.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none');
                 overlay.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            }
+        }
+
+        function closeProjectDetail() {
+            const overlay = document.getElementById('project-detail-overlay');
+            if (overlay) {
+                overlay.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+                overlay.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
             }
         }
 
