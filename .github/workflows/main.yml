@@ -3,21 +3,23 @@ name: Auto Release
 on:
   push:
     branches:
-      - main                # هر بار push روی main یک ریلیز جدید می‌سازد
-  workflow_dispatch:        # امکان اجرای دستی هم باقی می‌ماند
+      - main                # با هر push روی main یک ریلیز جدید می‌سازد
+  workflow_dispatch:        # اجرای دستی بدون نیاز به تگ
+
+permissions:
+  contents: write           # 🔑 این خط مجوز ایجاد ریلیز را می‌دهد
 
 jobs:
   release:
     runs-on: ubuntu-latest
     env:
-      # رفع اخطار منسوخ شدن Node 20 (اختیاری)
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true   # رفع اخطار (اختیاری)
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # (اختیاری) اگر به build نیاز دارید، کامنت‌ها را بردارید
+      # در صورت نیاز به build (Tailwind و غیره) کامنت‌ها را بردارید
       # - name: Setup Node.js
       #   uses: actions/setup-node@v4
       #   with:
@@ -41,7 +43,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: release-${{ github.run_id }}   # تگ یکتا برای هر اجرا
+          tag_name: release-${{ github.run_id }}
           files: release.zip
           generate_release_notes: true
         env:
