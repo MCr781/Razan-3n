@@ -83,9 +83,12 @@
         /* ── Intro Logo Wrapper ── */
         #intro-logo-wrap {
             position: relative;
-            width: 280px;
+            /* Using a variable lets us shift exactly 2.6875% of its width at any breakpoint */
+            --logo-w: 280px;
+            width: var(--logo-w);
             height: 275px;
             margin-bottom: 0.5rem;
+            left: calc(var(--logo-w) * -0.026875);
             transition: transform 0.85s var(--ease-elegant), opacity 0.5s var(--ease-elegant);
             transform-origin: center center;
             will-change: transform, opacity;
@@ -93,14 +96,14 @@
 
         @media (min-width: 640px) {
             #intro-logo-wrap {
-                width: 340px;
+                --logo-w: 340px;
                 height: 334px;
             }
         }
 
         @media (min-width: 1024px) {
             #intro-logo-wrap {
-                width: 400px;
+                --logo-w: 400px;
                 height: 393px;
             }
         }
@@ -281,11 +284,11 @@
             will-change: transform, opacity, fill;
         }
 
-        /* ── Hover React CSS ── */
+        /* ── Hover React CSS (Sidebar Logo) ── */
         .logo-part.hover-active {
+            /* تغییر رنگ رو از اینجا هم حذف کردیم تا فقط زوم بشه */
             transform: scale(1.09) !important;
             animation: none !important;
-            /* توقف انیمیشن‌های Idle هنگام هاور */
         }
 
         /* ═══════════════════════════════════════════════
@@ -349,6 +352,95 @@
             border: 1px solid rgba(2, 140, 133, 0.32);
             background: linear-gradient(180deg, rgba(142, 142, 142, 0.12), rgba(103, 103, 103, 0.18));
             box-shadow: 0 12px 28px rgba(71, 70, 70, 0.12);
+        }
+
+        /* رفع لگ اسکرول کروم (حذف will-change و استفاده از Hardware Acceleration بهینه) */
+        .panel-shell,
+        .news-article-item {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        /* ── انیمیشن ارگانیک و افترافکتی لوگو (Breathing Effect) ── */
+        .idle-pulse-group {
+            transform-origin: center center;
+            transform-box: fill-box;
+            /* ترفند نهایی فایرفاکس: تبدیل لایه به یک آبجکتِ فیلتردار برای نرم شدن لبه‌ها */
+            filter: drop-shadow(0 0 0 transparent);
+        }
+
+        .logo-part {
+            opacity: 1;
+            transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), fill 0.4s ease;
+            transform-origin: center center;
+            transform-box: fill-box;
+            outline: 1px solid transparent;
+            /* جلوگیری از پیکسلی شدن لبه ها */
+        }
+
+        .logo-part.hover-active {
+            transform: scale(1.12) !important;
+        }
+
+        /* انیمیشن اصلی برای کروم و سافاری (Scale) */
+        @keyframes aeBreathing {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(0.95);
+                opacity: 0.6;
+            }
+        }
+
+        /* 
+           ترفند اختصاصی برای فایرفاکس: 
+           چون فایرفاکس در Scale کردن وکتورها لرزش دارد، 
+           فقط در این مرورگر به جای Scale از ترنسلیت (Float) استفاده می‌کنیم تا کاملاً نرم شود.
+        */
+        @-moz-document url-prefix() {
+            @keyframes aeBreathing {
+
+                0%,
+                100% {
+                    transform: translateY(2px);
+                    opacity: 1;
+                }
+
+                50% {
+                    transform: translateY(-6px);
+                    opacity: 0.6;
+                }
+            }
+
+            .logo-part.hover-active {
+                transform: translateY(-6px) !important;
+            }
+        }
+
+        /* توالی زمانی متفاوت برای ایجاد یک ریتم نرم، نامنظم و زیبا */
+        [data-state="idle"] .idle-pulse-1 {
+            animation: aeBreathing 4s ease-in-out infinite 0s;
+        }
+
+        [data-state="idle"] .idle-pulse-2 {
+            animation: aeBreathing 4.5s ease-in-out infinite 0.7s;
+        }
+
+        [data-state="idle"] .idle-pulse-3 {
+            animation: aeBreathing 5s ease-in-out infinite 1.4s;
+        }
+
+        [data-state="idle"] .idle-pulse-4 {
+            animation: aeBreathing 4.2s ease-in-out infinite 2.1s;
+        }
+
+        [data-state="idle"] .idle-pulse-5 {
+            animation: aeBreathing 4.8s ease-in-out infinite 2.8s;
         }
 
         .visual-fill {
@@ -451,81 +543,48 @@
             height: 3.5rem;
             transform: translate(-50%, -50%) scale(var(--marker-scale)) translateX(var(--marker-shift));
             will-change: transform, left, opacity;
-            transition: transform 0.62s var(--ease-elegant), left 0.62s var(--ease-elegant), opacity 0.62s var(--ease-elegant), color 0.45s var(--ease-elegant);
+            transition: transform 0.62s var(--ease-elegant), left 0.62s var(--ease-elegant), opacity 0.62s var(--ease-elegant);
+            /* رنگ سبز رو برداشتیم تا خاکستری اصلی خودشون باشن */
+            color: var(--razan-gray-200);
             opacity: 0.22;
             pointer-events: none;
             overflow: visible;
-            color: var(--razan-gray-200);
             z-index: 0;
         }
 
+        /* برای اینکه در حالت عادی هم رنگ‌های اصلی خودشون رو داشته باشن */
         .nav-btn-home .logo-part-marker {
             --marker-left: 4.5rem;
+            color: #676767;
         }
 
         .nav-btn-news .logo-part-marker {
             --marker-left: 4.45rem;
-            color: var(--razan-gray-300);
+            color: #676767;
         }
 
+        /* دکمه Projects که بخش مرکزی و سبز لوگو هست */
         .nav-btn-projects .logo-part-marker {
             --marker-left: 4.35rem;
-            color: var(--razan-teal);
+            color: #028c85;
         }
 
         .nav-btn-about .logo-part-marker {
             --marker-left: 4.3rem;
+            color: #676767;
         }
 
         .nav-btn-contact .logo-part-marker {
             --marker-left: 4.4rem;
+            color: #676767;
         }
 
         .nav-item:hover .logo-part-marker,
         .nav-item[aria-selected="true"] .logo-part-marker {
             --marker-scale: 1.08;
             --marker-shift: 0.24rem;
-            opacity: 0.5;
-        }
-
-        /* ═══════════════════════════════════════════════
-           SPINE DIVIDER
-           ═══════════════════════════════════════════════ */
-        .spine-bottom {
-            min-width: 72px;
-            text-align: center;
-        }
-
-        .spine-bottom-inner {
-            position: relative;
-            display: block;
-            width: 72px;
-            height: 1rem;
-            line-height: 1rem;
-        }
-
-        .spine-bottom-fa,
-        .spine-bottom-en,
-        .spine-bottom-separator {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .spine-bottom-fa {
-            right: 50%;
-            margin-right: 0.6rem;
-        }
-
-        .spine-bottom-separator {
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: 600;
-        }
-
-        .spine-bottom-en {
-            left: 50%;
-            margin-left: 0.65rem;
+            /* شفافیت (Transparency) رو هنگام هاور برمیداریم (طبق ویس) */
+            opacity: 1;
         }
 
         /* ═══════════════════════════════════════════════
@@ -545,680 +604,19 @@
         }
 
         /* ═══════════════════════════════════════════════
-           IDLE REMIX KEYFRAMES
-           ═══════════════════════════════════════════════ */
-        [data-state="idle"][data-remix="c"] #part1 {
-            animation: remixC1 3s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="c"] #part2 {
-            animation: remixC2 3s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="c"] #part3 {
-            animation: remixC3 3s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="c"] #part4 {
-            animation: remixC4 3s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="c"] #part5 {
-            animation: remixC5 3s var(--ease-elegant);
-        }
-
-        @keyframes remixC1 {
+   INFINITE LOGO IDLE ANIMATION (FADE & SCALE SEQUENCE)
+   ═══════════════════════════════════════════════ */
+        @keyframes continuousIdlePulse {
 
             0%,
             100% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1
-            }
-
-            25% {
-                transform: translate(0, 0) scale(.92);
-                opacity: .3
+                transform: scale(1);
+                opacity: 1;
             }
 
             50% {
-                transform: translate(0, 0) scale(.96);
-                opacity: .6
-            }
-
-            75% {
-                transform: translate(0, 0) scale(1.02);
-                opacity: .9
-            }
-        }
-
-        @keyframes remixC2 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1
-            }
-
-            20% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1
-            }
-
-            35% {
-                transform: translate(0, 0) scale(.92);
-                opacity: .3
-            }
-
-            60% {
-                transform: translate(0, 0) scale(.96);
-                opacity: .6
-            }
-
-            85% {
-                transform: translate(0, 0) scale(1.02);
-                opacity: .9
-            }
-        }
-
-        @keyframes remixC3 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1
-            }
-
-            15% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1
-            }
-
-            30% {
-                transform: translate(0, 0) scale(.92);
-                opacity: .3
-            }
-
-            55% {
-                transform: translate(0, 0) scale(.96);
-                opacity: .6
-            }
-
-            80% {
-                transform: translate(0, 0) scale(1.02);
-                opacity: .9
-            }
-        }
-
-        @keyframes remixC4 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1
-            }
-
-            10% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1
-            }
-
-            25% {
-                transform: translate(0, 0) scale(.92);
-                opacity: .3
-            }
-
-            50% {
-                transform: translate(0, 0) scale(.96);
-                opacity: .6
-            }
-
-            75% {
-                transform: translate(0, 0) scale(1.02);
-                opacity: .9
-            }
-        }
-
-        @keyframes remixC5 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1
-            }
-
-            30% {
-                transform: translate(0, 0) scale(.92);
-                opacity: .3
-            }
-
-            55% {
-                transform: translate(0, 0) scale(.96);
-                opacity: .6
-            }
-
-            80% {
-                transform: translate(0, 0) scale(1.02);
-                opacity: .9
-            }
-        }
-
-        [data-state="idle"][data-remix="d"] .logo-part {
-            animation: remixD 2.8s var(--ease-elegant);
-        }
-
-        @keyframes remixD {
-
-            0%,
-            100% {
-                transform: perspective(800px) rotateY(0deg) rotateX(0deg)
-            }
-
-            25% {
-                transform: perspective(800px) rotateY(8deg) rotateX(-3deg)
-            }
-
-            50% {
-                transform: perspective(800px) rotateY(0deg) rotateX(0deg)
-            }
-
-            75% {
-                transform: perspective(800px) rotateY(-8deg) rotateX(3deg)
-            }
-        }
-
-        [data-state="idle"][data-remix="e"] .logo-part {
-            animation: remixE 2.2s var(--ease-elegant);
-        }
-
-        @keyframes remixE {
-
-            0%,
-            100% {
-                transform: scale(1)
-            }
-
-            15% {
-                transform: scale(1.04)
-            }
-
-            30% {
-                transform: scale(.97)
-            }
-
-            45% {
-                transform: scale(1.02)
-            }
-
-            60% {
-                transform: scale(.99)
-            }
-
-            75% {
-                transform: scale(1.01)
-            }
-
-            90% {
-                transform: scale(.995)
-            }
-        }
-
-        [data-state="idle"][data-remix="f"] #part1 {
-            animation: remixF1 3.4s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="f"] #part2 {
-            animation: remixF2 3.4s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="f"] #part3 {
-            animation: remixF3 3.4s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="f"] #part4 {
-            animation: remixF4 3.4s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="f"] #part5 {
-            animation: remixF5 3.4s var(--ease-elegant);
-        }
-
-        @keyframes remixF1 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg);
-                opacity: 1
-            }
-
-            34% {
-                transform: translate(-26px, 18px) rotate(-8deg);
-                opacity: .72
-            }
-
-            55% {
-                transform: translate(-38px, 22px) rotate(-10deg);
-                opacity: .55
-            }
-
-            78% {
-                transform: translate(-10px, 8px) rotate(-2deg);
-                opacity: .92
-            }
-        }
-
-        @keyframes remixF2 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg);
-                opacity: 1
-            }
-
-            34% {
-                transform: translate(26px, -18px) rotate(8deg);
-                opacity: .72
-            }
-
-            55% {
-                transform: translate(38px, -22px) rotate(10deg);
-                opacity: .55
-            }
-
-            78% {
-                transform: translate(10px, -8px) rotate(2deg);
-                opacity: .92
-            }
-        }
-
-        @keyframes remixF3 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg);
-                opacity: 1
-            }
-
-            34% {
-                transform: translate(-20px, -22px) rotate(-6deg);
-                opacity: .72
-            }
-
-            55% {
-                transform: translate(-28px, -30px) rotate(-8deg);
-                opacity: .55
-            }
-
-            78% {
-                transform: translate(-8px, -6px) rotate(-1deg);
-                opacity: .92
-            }
-        }
-
-        @keyframes remixF4 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg);
-                opacity: 1
-            }
-
-            34% {
-                transform: translate(20px, 22px) rotate(6deg);
-                opacity: .72
-            }
-
-            55% {
-                transform: translate(28px, 30px) rotate(8deg);
-                opacity: .55
-            }
-
-            78% {
-                transform: translate(8px, 6px) rotate(1deg);
-                opacity: .92
-            }
-        }
-
-        @keyframes remixF5 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1
-            }
-
-            34% {
-                transform: translate(0, -18px) scale(.96);
-                opacity: .68
-            }
-
-            55% {
-                transform: translate(0, -28px) scale(.92);
-                opacity: .52
-            }
-
-            78% {
-                transform: translate(0, -6px) scale(.99);
-                opacity: .9
-            }
-        }
-
-        [data-state="idle"][data-remix="g"] #part1 {
-            animation: remixG1 2.7s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="g"] #part2 {
-            animation: remixG2 2.7s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="g"] #part3 {
-            animation: remixG3 2.7s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="g"] #part4 {
-            animation: remixG4 2.7s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="g"] #part5 {
-            animation: remixG5 2.7s var(--ease-elegant);
-        }
-
-        @keyframes remixG1 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg)
-            }
-
-            20% {
-                transform: translate(-9px, 6px) rotate(-3deg)
-            }
-
-            42% {
-                transform: translate(4px, -2px) rotate(1deg)
-            }
-
-            65% {
-                transform: translate(-3px, 1px) rotate(-1deg)
-            }
-        }
-
-        @keyframes remixG2 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg)
-            }
-
-            20% {
-                transform: translate(9px, -6px) rotate(3deg)
-            }
-
-            42% {
-                transform: translate(-4px, 2px) rotate(-1deg)
-            }
-
-            65% {
-                transform: translate(3px, -1px) rotate(1deg)
-            }
-        }
-
-        @keyframes remixG3 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg)
-            }
-
-            20% {
-                transform: translate(-7px, -9px) rotate(-2deg)
-            }
-
-            42% {
-                transform: translate(3px, 2px) rotate(1deg)
-            }
-
-            65% {
-                transform: translate(-2px, -1px) rotate(-1deg)
-            }
-        }
-
-        @keyframes remixG4 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg)
-            }
-
-            20% {
-                transform: translate(7px, 9px) rotate(2deg)
-            }
-
-            42% {
-                transform: translate(-3px, -2px) rotate(-1deg)
-            }
-
-            65% {
-                transform: translate(2px, 1px) rotate(1deg)
-            }
-        }
-
-        @keyframes remixG5 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1)
-            }
-
-            20% {
-                transform: translate(0, -10px) scale(.96)
-            }
-
-            42% {
-                transform: translate(0, 5px) scale(1.02)
-            }
-
-            65% {
-                transform: translate(0, -2px) scale(.99)
-            }
-        }
-
-        [data-state="idle"][data-remix="a"] #part1 {
-            animation: remixA1 2.5s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="a"] #part2 {
-            animation: remixA2 2.5s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="a"] #part3 {
-            animation: remixA3 2.5s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="a"] #part4 {
-            animation: remixA4 2.5s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="a"] #part5 {
-            animation: remixA5 2.5s var(--ease-elegant);
-        }
-
-        @keyframes remixA1 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg)
-            }
-
-            40% {
-                transform: translate(-14px, 9px) rotate(-3deg)
-            }
-
-            62% {
-                transform: translate(-18px, 14px) rotate(-5deg)
-            }
-        }
-
-        @keyframes remixA2 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg)
-            }
-
-            40% {
-                transform: translate(10px, -11px) rotate(3deg)
-            }
-
-            62% {
-                transform: translate(14px, -16px) rotate(5deg)
-            }
-        }
-
-        @keyframes remixA3 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg)
-            }
-
-            40% {
-                transform: translate(-12px, -6px) rotate(-2deg)
-            }
-
-            62% {
-                transform: translate(-16px, -10px) rotate(-4deg)
-            }
-        }
-
-        @keyframes remixA4 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg)
-            }
-
-            40% {
-                transform: translate(10px, 6px) rotate(2deg)
-            }
-
-            62% {
-                transform: translate(14px, 10px) rotate(4deg)
-            }
-        }
-
-        @keyframes remixA5 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1)
-            }
-
-            40% {
-                transform: translate(0, -11px) scale(.98)
-            }
-
-            62% {
-                transform: translate(0, -16px) scale(.96)
-            }
-        }
-
-        [data-state="idle"][data-remix="b"] #part1 {
-            animation: remixB1 2.35s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="b"] #part2 {
-            animation: remixB2 2.35s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="b"] #part3 {
-            animation: remixB3 2.35s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="b"] #part4 {
-            animation: remixB4 2.35s var(--ease-elegant);
-        }
-
-        [data-state="idle"][data-remix="b"] #part5 {
-            animation: remixB5 2.35s var(--ease-elegant);
-        }
-
-        @keyframes remixB1 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg)
-            }
-
-            42% {
-                transform: translate(-8px, -10px) rotate(-2deg)
-            }
-
-            65% {
-                transform: translate(-6px, -7px) rotate(-1deg)
-            }
-        }
-
-        @keyframes remixB2 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg)
-            }
-
-            42% {
-                transform: translate(7px, 10px) rotate(2deg)
-            }
-
-            65% {
-                transform: translate(5px, 7px) rotate(1deg)
-            }
-        }
-
-        @keyframes remixB3 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg)
-            }
-
-            42% {
-                transform: translate(-10px, 6px) rotate(-2deg)
-            }
-
-            65% {
-                transform: translate(-6px, 3px) rotate(-1deg)
-            }
-        }
-
-        @keyframes remixB4 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) rotate(0deg)
-            }
-
-            42% {
-                transform: translate(10px, -6px) rotate(2deg)
-            }
-
-            65% {
-                transform: translate(6px, -3px) rotate(1deg)
-            }
-        }
-
-        @keyframes remixB5 {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1)
-            }
-
-            42% {
-                transform: translate(0, 9px) scale(.98)
-            }
-
-            65% {
-                transform: translate(0, 5px) scale(.99)
+                transform: scale(0.92);
+                opacity: 0.3;
             }
         }
 
@@ -1328,22 +726,41 @@
             font-weight: bold;
         }
 
-        #about-subnav button.about-nav-active {
-            color: var(--razan-teal) !important;
-            font-weight: 600;
+        /* ── ترانزیشن بسیار نرم خطوط نشانگر (Indicator) ── */
+        #sidebar-project-filters button,
+        #sidebar-about-subnav button,
+        #sidebar-news-filters button {
             position: relative;
         }
 
-        #about-subnav button.about-nav-active::before {
+        #sidebar-project-filters button::before,
+        #sidebar-about-subnav button::before,
+        #sidebar-news-filters button::before {
             content: '';
             position: absolute;
             left: -0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
+            top: 0;
             width: 4px;
             height: 100%;
             background: var(--razan-teal);
             border-radius: 2px;
+            transform: scaleY(0);
+            /* خط در ابتدا بسته است */
+            transform-origin: center;
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar-nav-active {
+            color: var(--razan-teal) !important;
+            font-weight: 600;
+        }
+
+        .sidebar-nav-active::before {
+            transform: scaleY(1) !important;
+            /* خط با انیمیشن نرم باز می‌شود */
+            opacity: 1 !important;
         }
 
         /* ═══════════════════════════════════════════════
@@ -1404,11 +821,14 @@
                 margin: 0;
             }
 
+            /* استایل موبایل برای آیتم‌های منو */
             #main-nav .nav-item[aria-selected="true"] {
-                color: #ffffff;
-                background: linear-gradient(135deg, var(--razan-teal-light), var(--razan-teal));
-                border-color: transparent;
-                box-shadow: 0 14px 24px rgba(2, 140, 133, 0.24);
+                color: var(--razan-gray-400);
+                /* رنگ متن تیره بمونه، سفید نشه */
+                background: #f3f3f3;
+                /* به جای گرادیانت سبز، یه بکگراند ساده طوسی */
+                border-color: rgba(2, 140, 133, 0.42);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
             }
 
             [data-anim-target="spine-divider"] {
@@ -1622,81 +1042,114 @@
         class="relative flex flex-col lg:flex-row min-h-screen lg:h-screen w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-3 sm:py-4 lg:py-8 box-border"
         data-stage="app-root">
 
-        <!-- SIDEBAR LEFT: Logo + Social + Project Filters -->
+        <!-- SIDEBAR LEFT: Logo + Dynamic Sub-Navs + Social -->
         <aside
             class="w-full lg:w-[245px] flex flex-row lg:flex-col items-center justify-between lg:justify-start lg:pt-6 relative shrink-0 gap-2 sm:gap-3 lg:gap-0"
             data-anim-group="sidebar-left">
-            <!-- Logo – larger, pushed more to the left -->
+
+            <!-- Logo -->
             <div class="w-[110px] h-[110px] sm:w-[130px] sm:h-[130px] lg:w-[220px] lg:h-[220px] lg:-ml-12 lg:-mt-4 mb-0 lg:mb-4 flex justify-center items-center"
                 data-anim-target="logo-container" data-state="idle">
                 <svg class="w-full h-full overflow-visible" viewBox="0 0 800 786" xmlns="http://www.w3.org/2000/svg"
                     aria-label="لوگوی رازان زمین">
-                    <path class="logo-part" id="part1" fill="#676767"
-                        d="M252.286 339.826L252.894 340.003C253.894 341.824 252.825 390.507 252.778 395.973L252.709 647.244L253.174 687.238C253.208 693.859 252.953 707.952 253.732 713.903C246.332 709.857 234.553 705.205 226.451 701.484L172.362 676.463L92.5657 639.781C78.8707 633.45 65.4008 626.801 51.5366 620.758C50.7766 610.398 51.4294 591.903 51.4667 581.199L51.4122 479.009L51.3365 450.035C51.324 445.1 51.0344 437.554 51.7325 432.924C53.5518 431.147 61.7699 428.278 64.6023 426.994L104.719 408.384C113.072 404.552 126.905 398.599 134.592 393.784L135.083 393.473C134.238 398.458 134.295 404.713 134.082 409.823C133.656 420.046 133.654 430.275 133.66 440.505L134.451 530.81C139.924 530.619 145.302 530.559 150.778 530.51C150.314 500.582 150.847 468.979 150.837 438.964L150.799 407.041C150.793 401.002 150.56 392.795 151.248 386.975C153.752 385.426 159.508 382.966 162.315 381.707L180.558 373.472L216.147 356.977C228.282 351.394 240.414 345.957 252.286 339.826Z" />
-                    <path class="logo-part" id="part2" fill="#028c85"
-                        d="M477.35 339.826L477.999 338.687C478.24 354.409 477.718 372.005 477.683 387.973L477.259 524.431L477.574 625.651C477.781 655.163 478.158 685.599 477.639 715.082C466.475 710.634 453.921 704.506 442.893 699.405L394.626 677.21C385.072 672.764 375.195 667.837 365.614 663.609C364.785 650.848 365.52 633.344 365.546 620.015L365.67 534.019L365.436 435.491C365.41 429.299 364.792 394.009 366.053 389.684C369.801 387.37 379.941 382.994 384.303 380.965L421.416 363.776L457.976 346.937C463.894 344.177 471.414 340.185 477.35 337.957Z" />
-                    <path class="logo-part" id="part3" fill="#676767"
-                        d="M364.209 12.8717L364.809 13.2716C363.87 29.2252 364.612 45.8132 364.232 61.8463C362.981 114.746 363.26 167.825 363.346 220.747L364.374 327.76L364.49 365.083C364.506 372.75 364.317 381.281 364.882 388.844L321.305 368.174C311.497 363.639 301.391 359.265 291.671 354.606L269.595 344.41C264.989 342.276 259.387 339.544 254.631 337.999C254.192 332.908 254.517 324.509 254.549 319.169L254.626 287.205L254.71 181.224L254.638 103.82L254.633 82.6475C254.639 76.6521 254.326 70.6339 255.486 64.7758C257.272 63.5543 261.802 61.6607 263.994 60.6651L280.895 52.9829L326.303 31.8679C338.874 26.0585 352.702 20.3481 364.209 12.8717Z" />
-                    <path class="logo-part" id="part4" fill="#676767"
-                        d="M587.262 12.6001C585.876 29.0645 586.545 46.9277 586.311 63.5384L585.495 164.033L586.344 329.141C586.569 348.548 586.022 369.132 586.761 388.426C560.606 375.448 533.348 363.52 506.831 351.232C499.109 347.655 485.752 340.791 477.999 338.687L477.35 337.957C477.989 336.131 478.342 259.803 478.417 250.869L478.43 146.249C478.318 127.22 477.264 108.061 477.634 88.9833C477.786 81.1055 477.143 72.3362 477.9 64.5395L550.004 31.1783C558.693 27.1442 580.03 17.8515 587.262 12.6001Z" />
-                    <path class="logo-part" id="part5" fill="#676767"
-                        d="M697.322 339.861L697.903 340.297C698.116 342.126 697.702 347.524 697.666 349.775L697.463 371.578L696.398 440.55C696.255 448.831 695.781 456.932 695.753 465.252L696.627 624.669L697.61 697.654C697.631 702.394 697.626 707.058 697.959 711.789C698.043 712.984 698.007 712.86 697.465 713.38C689.679 709.436 679.249 705.196 671.043 701.445L624.742 679.9C612.81 674.739 600.278 668.6 588.504 663.01C588.262 658.194 588.516 650.946 588.539 645.98L588.623 614.677L588.696 512.345L588.576 433.185C588.552 421.562 587.862 401.208 588.93 390.426C595.695 386.389 609.619 380.874 617.548 377.088C644.022 364.447 671.044 353.011 697.322 339.861Z" />
+                    <g class="idle-pulse-group idle-pulse-1">
+                        <path class="logo-part" id="part1" fill="#676767"
+                            d="M252.286 339.826L252.894 340.003C253.894 341.824 252.825 390.507 252.778 395.973L252.709 647.244L253.174 687.238C253.208 693.859 252.953 707.952 253.732 713.903C246.332 709.857 234.553 705.205 226.451 701.484L172.362 676.463L92.5657 639.781C78.8707 633.45 65.4008 626.801 51.5366 620.758C50.7766 610.398 51.4294 591.903 51.4667 581.199L51.4122 479.009L51.3365 450.035C51.324 445.1 51.0344 437.554 51.7325 432.924C53.5518 431.147 61.7699 428.278 64.6023 426.994L104.719 408.384C113.072 404.552 126.905 398.599 134.592 393.784L135.083 393.473C134.238 398.458 134.295 404.713 134.082 409.823C133.656 420.046 133.654 430.275 133.66 440.505L134.451 530.81C139.924 530.619 145.302 530.559 150.778 530.51C150.314 500.582 150.847 468.979 150.837 438.964L150.799 407.041C150.793 401.002 150.56 392.795 151.248 386.975C153.752 385.426 159.508 382.966 162.315 381.707L180.558 373.472L216.147 356.977C228.282 351.394 240.414 345.957 252.286 339.826Z" />
+                    </g>
+                    <g class="idle-pulse-group idle-pulse-2">
+                        <path class="logo-part" id="part2" fill="#028c85"
+                            d="M477.35 339.826L477.999 338.687C478.24 354.409 477.718 372.005 477.683 387.973L477.259 524.431L477.574 625.651C477.781 655.163 478.158 685.599 477.639 715.082C466.475 710.634 453.921 704.506 442.893 699.405L394.626 677.21C385.072 672.764 375.195 667.837 365.614 663.609C364.785 650.848 365.52 633.344 365.546 620.015L365.67 534.019L365.436 435.491C365.41 429.299 364.792 394.009 366.053 389.684C369.801 387.37 379.941 382.994 384.303 380.965L421.416 363.776L457.976 346.937C463.894 344.177 471.414 340.185 477.35 337.957Z" />
+                    </g>
+                    <g class="idle-pulse-group idle-pulse-3">
+                        <path class="logo-part" id="part3" fill="#676767"
+                            d="M364.209 12.8717L364.809 13.2716C363.87 29.2252 364.612 45.8132 364.232 61.8463C362.981 114.746 363.26 167.825 363.346 220.747L364.374 327.76L364.49 365.083C364.506 372.75 364.317 381.281 364.882 388.844L321.305 368.174C311.497 363.639 301.391 359.265 291.671 354.606L269.595 344.41C264.989 342.276 259.387 339.544 254.631 337.999C254.192 332.908 254.517 324.509 254.549 319.169L254.626 287.205L254.71 181.224L254.638 103.82L254.633 82.6475C254.639 76.6521 254.326 70.6339 255.486 64.7758C257.272 63.5543 261.802 61.6607 263.994 60.6651L280.895 52.9829L326.303 31.8679C338.874 26.0585 352.702 20.3481 364.209 12.8717Z" />
+                    </g>
+                    <g class="idle-pulse-group idle-pulse-4">
+                        <path class="logo-part" id="part4" fill="#676767"
+                            d="M587.262 12.6001C585.876 29.0645 586.545 46.9277 586.311 63.5384L585.495 164.033L586.344 329.141C586.569 348.548 586.022 369.132 586.761 388.426C560.606 375.448 533.348 363.52 506.831 351.232C499.109 347.655 485.752 340.791 477.999 338.687L477.35 337.957C477.989 336.131 478.342 259.803 478.417 250.869L478.43 146.249C478.318 127.22 477.264 108.061 477.634 88.9833C477.786 81.1055 477.143 72.3362 477.9 64.5395L550.004 31.1783C558.693 27.1442 580.03 17.8515 587.262 12.6001Z" />
+                    </g>
+                    <g class="idle-pulse-group idle-pulse-5">
+                        <path class="logo-part" id="part5" fill="#676767"
+                            d="M697.322 339.861L697.903 340.297C698.116 342.126 697.702 347.524 697.666 349.775L697.463 371.578L696.398 440.55C696.255 448.831 695.781 456.932 695.753 465.252L696.627 624.669L697.61 697.654C697.631 702.394 697.626 707.058 697.959 711.789C698.043 712.984 698.007 712.86 697.465 713.38C689.679 709.436 679.249 705.196 671.043 701.445L624.742 679.9C612.81 674.739 600.278 668.6 588.504 663.01C588.262 658.194 588.516 650.946 588.539 645.98L588.623 614.677L588.696 512.345L588.576 433.185C588.552 421.562 587.862 401.208 588.93 390.426C595.695 386.389 609.619 380.874 617.548 377.088C644.022 364.447 671.044 353.011 697.322 339.861Z" />
+                    </g>
                 </svg>
             </div>
 
-            <!-- Project Filters (Visible ONLY when Projects tab is active) -->
-            <div id="sidebar-project-filters"
-                class="hidden lg:flex flex-col w-full px-4 mt-8 opacity-0 transition-opacity duration-500 pointer-events-none">
-                <button class="project-filter-btn active mb-4 text-left"
-                    onclick="filterProjects('all', this)">ALL</button>
+            <!-- ── Dynamic Sub-Navigaton Container ── -->
+            <div class="hidden lg:flex flex-col w-full px-4 lg:-ml-2 mt-4 relative min-h-[300px]">
 
-                <div class="flex flex-col gap-1.5 mb-6">
-                    <button class="project-filter-btn text-left"
-                        onclick="filterProjects('2000-2004', this)">2000-2004</button>
-                    <button class="project-filter-btn text-left"
-                        onclick="filterProjects('2005-2009', this)">2005-2009</button>
-                    <button class="project-filter-btn text-left"
-                        onclick="filterProjects('2010-2014', this)">2010-2014</button>
-                    <button class="project-filter-btn text-left"
-                        onclick="filterProjects('2015-2019', this)">2015-2019</button>
-                    <button class="project-filter-btn text-left"
-                        onclick="filterProjects('2019-2024', this)">2019-2024</button>
-                    <button class="project-filter-btn text-left"
-                        onclick="filterProjects('2025-2029', this)">2025-2029</button>
+                <!-- 1. Project Filters -->
+                <div id="sidebar-project-filters"
+                    class="absolute inset-0 flex flex-col w-full text-xs sm:text-sm tracking-[0.16em] uppercase text-[#8e8e8e] opacity-0 transition-opacity duration-500 pointer-events-none pt-2">
+                    <button class="sidebar-nav-active mb-3 text-left hover:text-[#028c85] transition-colors"
+                        onclick="filterProjects('all', this)">ALL</button>
+
+                    <div class="flex flex-col gap-3 mb-4">
+                        <button class="text-left hover:text-[#028c85] transition-colors"
+                            onclick="filterProjects('2000-2004', this)">2000-2004</button>
+                        <button class="text-left hover:text-[#028c85] transition-colors"
+                            onclick="filterProjects('2005-2009', this)">2005-2009</button>
+                        <button class="text-left hover:text-[#028c85] transition-colors"
+                            onclick="filterProjects('2010-2014', this)">2010-2014</button>
+                        <button class="text-left hover:text-[#028c85] transition-colors"
+                            onclick="filterProjects('2015-2019', this)">2015-2019</button>
+                        <button class="text-left hover:text-[#028c85] transition-colors"
+                            onclick="filterProjects('2019-2024', this)">2019-2024</button>
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        <button class="text-left hover:text-[#028c85] transition-colors"
+                            onclick="filterProjects('apartment', this)">Apartment</button>
+                        <button class="text-left hover:text-[#028c85] transition-colors"
+                            onclick="filterProjects('villa', this)">Villa</button>
+                        <button class="text-left hover:text-[#028c85] transition-colors"
+                            onclick="filterProjects('commercial', this)">Commercial</button>
+                        <button class="text-left hover:text-[#028c85] transition-colors"
+                            onclick="filterProjects('health', this)">Health & Care</button>
+                        <button class="text-left hover:text-[#028c85] transition-colors"
+                            onclick="filterProjects('office', this)">Office</button>
+                        <button class="text-left hover:text-[#028c85] transition-colors"
+                            onclick="filterProjects('complex', this)">Complex</button>
+                        <button class="text-left hover:text-[#028c85] transition-colors"
+                            onclick="filterProjects('interior', this)">Interior</button>
+                        <button class="text-left hover:text-[#028c85] transition-colors"
+                            onclick="filterProjects('landscape', this)">Landscape</button>
+                    </div>
                 </div>
 
-                <div class="flex flex-col gap-1.5">
-                    <button class="project-filter-btn text-left"
-                        onclick="filterProjects('apartment', this)">Apartment</button>
-                    <button class="project-filter-btn text-left" onclick="filterProjects('villa', this)">Villa</button>
-                    <button class="project-filter-btn text-left"
-                        onclick="filterProjects('commercial', this)">Commercial</button>
-                    <button class="project-filter-btn text-left" onclick="filterProjects('health', this)">Health &
-                        Care</button>
-                    <button class="project-filter-btn text-left"
-                        onclick="filterProjects('office', this)">Office</button>
-                    <button class="project-filter-btn text-left"
-                        onclick="filterProjects('complex', this)">Complex</button>
-                    <button class="project-filter-btn text-left"
-                        onclick="filterProjects('interior', this)">Interior</button>
-                    <button class="project-filter-btn text-left"
-                        onclick="filterProjects('landscape', this)">Landscape</button>
+                <!-- 2. About Sub-Nav -->
+                <div id="sidebar-about-subnav"
+                    class="absolute inset-0 flex flex-col gap-3 text-xs sm:text-sm tracking-[0.16em] uppercase text-[#8e8e8e] opacity-0 transition-opacity duration-500 pointer-events-none pt-2">
+                    <button onclick="scrollToAbout('brand')" data-target="brand"
+                        class="text-left hover:text-[#028c85] transition-colors sidebar-nav-active">Brand</button>
+                    <button onclick="scrollToAbout('leadership')" data-target="leadership"
+                        class="text-left hover:text-[#028c85] transition-colors">Resume</button>
+                    <button onclick="scrollToAbout('team')" data-target="team"
+                        class="text-left hover:text-[#028c85] transition-colors">Team now</button>
+                    <button onclick="scrollToAbout('history')" data-target="history"
+                        class="text-left hover:text-[#028c85] transition-colors">Team history</button>
+                    <button onclick="scrollToAbout('expertise')" data-target="expertise"
+                        class="text-left hover:text-[#028c85] transition-colors">Design & Construction</button>
+                    <button onclick="scrollToAbout('competitions')" data-target="competitions"
+                        class="text-left hover:text-[#028c85] transition-colors">Competitions</button>
                 </div>
-            </div>
 
-            <!-- Social links only (no text) -->
-            <div class="flex gap-4 lg:gap-5 text-[#8e8e8e] lg:absolute lg:bottom-10 lg:left-1/2 lg:-translate-x-1/2"
-                data-anim-target="social-links">
-                <svg class="w-6 h-6 hover:text-[#028c85] transition-colors cursor-pointer" fill="currentColor"
-                    viewBox="0 0 24 24" aria-label="LinkedIn">
-                    <path
-                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                </svg>
-                <svg class="w-6 h-6 hover:text-[#028c85] transition-colors cursor-pointer" fill="currentColor"
-                    viewBox="0 0 24 24" aria-label="Instagram">
-                    <path
-                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                </svg>
+                <!-- 3. News Filters -->
+                <div id="sidebar-news-filters"
+                    class="absolute inset-0 flex flex-col gap-3 text-xs sm:text-sm tracking-[0.16em] uppercase text-[#8e8e8e] opacity-0 transition-opacity duration-500 pointer-events-none pt-2">
+                    <button class="text-left hover:text-[#028c85] transition-colors sidebar-nav-active"
+                        onclick="filterNews('all', this)">All</button>
+                    <button class="text-left hover:text-[#028c85] transition-colors"
+                        onclick="filterNews('2026', this)">2026</button>
+                    <button class="text-left hover:text-[#028c85] transition-colors"
+                        onclick="filterNews('2025', this)">2025</button>
+                    <button class="text-left hover:text-[#028c85] transition-colors"
+                        onclick="filterNews('2024', this)">2024</button>
+                    <button class="text-left hover:text-[#028c85] transition-colors"
+                        onclick="filterNews('2023', this)">2023</button>
+                    <button class="text-left hover:text-[#028c85] transition-colors"
+                        onclick="filterNews('2022', this)">2022</button>
+                </div>
             </div>
         </aside>
 
@@ -1704,14 +1157,18 @@
         <div class="w-full lg:w-[54px] flex justify-center relative shrink-0 py-2 lg:py-8 z-30" aria-hidden="true"
             data-anim-target="spine-divider">
             <div class="spine-line w-full lg:w-[1px] h-[1px] lg:h-full bg-[#028c85] relative">
-                <div
-                    class="spine-top absolute -top-5 lg:-top-3 start-0 lg:start-1/2 lg:-translate-x-1/2 rtl:translate-x-1/2 font-bold tracking-widest text-xs bg-white px-2">
-                    <strong>RA<span style="color: #049e96;">Z</span>AN</strong>
+                <!-- تغییر استایل RAZAN به ضخیم‌ترین حالت ممکن با سایه متن برای کلفتی بیشتر -->
+                <div class="spine-top absolute -top-5 lg:-top-3 start-0 lg:start-1/2 lg:-translate-x-1/2 rtl:translate-x-1/2 tracking-[0.2em] text-[15px] text-[#474646] bg-white px-2 z-10"
+                    style="font-weight: 900; text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor;">
+                    RA<span class="text-[#028c85]">Z</span>AN
                 </div>
+                <!-- ساختار جدید و Flexbox برای تراز 100٪ دقیق زیر ستون فقرات -->
                 <div
-                    class="spine-bottom absolute -bottom-5 lg:-bottom-3 end-0 lg:end-auto lg:start-1/2 lg:-translate-x-1/2 rtl:translate-x-1/2 bg-white px-2 text-xs text-[#8e8e8e] whitespace-nowrap cursor-pointer hover:text-[#028c85] transition-colors">
-                    <span class="spine-bottom-inner"><span class="spine-bottom-fa">فا</span><span
-                            class="spine-bottom-separator">|</span><span class="spine-bottom-en">En</span></span>
+                    class="absolute -bottom-5 lg:-bottom-3 end-0 lg:end-auto lg:start-0 lg:-translate-x-[30px] rtl:translate-x-[30px] bg-white px-[8px] flex items-center justify-center text-xs text-[#8e8e8e] cursor-pointer hover:text-[#028c85] transition-colors z-10">
+                    <span class="w-[22px] text-center mt-[2px]">فا</span>
+                    <!-- خط گرافیکی 1 پیکسلی -->
+                    <span class="w-[1px] h-[12px] bg-[#028c85] shrink-0"></span>
+                    <span class="w-[22px] text-center font-medium">En</span>
                 </div>
             </div>
         </div>
@@ -1764,52 +1221,23 @@
             <!-- HOME -->
             <section id="sec-home" role="tabpanel" aria-labelledby="nav-btn-home"
                 class="tab-panel absolute inset-0 w-full h-full opacity-100 translate-y-0 z-10" data-page="home">
-                <div class="h-full w-full overflow-y-auto scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24">
-                    <div class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4 lg:mb-6">
-                        <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">Home</h2>
-                        <div class="w-12 h-[1px] bg-[#028c85] mt-4 lg:mt-6"></div>
-                    </div>
-                    <div class="grid grid-cols-1 xl:grid-cols-[210px_1fr] gap-6 lg:gap-9">
-                        <aside class="panel-shell p-4 lg:p-5">
-                            <h3 class="text-xs tracking-[0.2em] uppercase text-[#028c85] mb-3">Timeline</h3>
-                            <div class="timeline-vertical mt-4">
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div><time class="timeline-year">2000</time>
-                                    <p class="timeline-label">Studio Foundation</p>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div><time class="timeline-year">2004</time>
-                                    <p class="timeline-label">Expansion to Urban Design</p>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div><time class="timeline-year">2011</time>
-                                    <p class="timeline-label">First Regional Award</p>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div><time class="timeline-year">2016</time>
-                                    <p class="timeline-label">Integrated BIM Delivery</p>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div><time class="timeline-year">2020</time>
-                                    <p class="timeline-label">Sustainability Unit Launch</p>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div><time class="timeline-year">2026</time>
-                                    <p class="timeline-label">International Competition Finalist</p>
-                                </div>
-                            </div>
-                        </aside>
-                        <article
-                            class="panel-shell motion-rise min-h-[340px] sm:min-h-[420px] lg:min-h-[520px] p-4 lg:p-6">
-                            <div class="visual-fill rounded-[22px] h-full w-full flex items-end">
-                                <div class="p-5 lg:p-8">
-                                    <p class="text-white/85 text-xs tracking-[0.24em] uppercase mb-3">Architectural
-                                        Narrative</p>
-                                    <h3 class="text-white text-2xl lg:text-4xl font-light tracking-[0.08em] max-w-2xl">
-                                        Designing Context-Driven Spaces With Precision and Memory</h3>
-                                </div><span class="visual-tag">Main Frame</span>
-                            </div>
-                        </article>
+                <div class="h-full w-full px-4 sm:px-8 lg:px-10 py-4 lg:py-6 flex flex-col relative overflow-hidden">
+                    <!-- Single Large Picture Box -->
+                    <div
+                        class="flex-1 w-full h-full overflow-hidden rounded-[30px] lg:rounded-[40px] shadow-sm relative panel-shell">
+                        <!-- تصویر پس‌زمینه (می‌توانید آدرس عکس دلخواه را قرار دهید) -->
+                        <div class="absolute inset-0 bg-cover bg-center transition-all duration-700 ease-in-out scale-100 hover:scale-105 cursor-pointer"
+                            style="background-image: url('../assets/pics/Buildings/zaha-hadid-heydar-aliyev-center-baku-facade.jpg');">
+                        </div>
+
+                        <!-- گرادیانت و متن تستی (اختیاری - در صورت عدم نیاز می‌توانید حذف کنید) -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                            <h3
+                                class="text-white text-xl lg:text-3xl tracking-[0.12em] translate-y-3 hover:translate-y-0 transition-transform duration-500 drop-shadow-lg">
+                                Featured Project
+                            </h3>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1818,44 +1246,54 @@
             <section id="sec-projects" role="tabpanel" aria-labelledby="nav-btn-projects"
                 class="tab-panel absolute inset-0 w-full h-full opacity-0 translate-y-0 pointer-events-none z-0"
                 data-page="projects">
-                <!-- استفاده از h-full و overflow-hidden برای کنترل دقیق فضا -->
-                <div class="h-full w-full px-4 sm:px-8 lg:px-10 pb-6 flex flex-col relative overflow-hidden">
-                    <div class="shrink-0 bg-white z-20 py-6 lg:py-10 mb-2">
-                        <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">Selected
-                            Works</h2>
-                        <div class="w-12 h-[1px] bg-[#028c85] mt-4 lg:mt-6"></div>
-                    </div>
+                <!-- استفاده از فضای کامل، فیلترها حذف و به سایدبار منتقل شدند -->
+                <div
+                    class="h-full w-full px-4 sm:px-8 lg:px-10 pt-4 lg:pt-6 pb-6 flex flex-col relative overflow-hidden">
 
-                    <!-- 3x3 Infinite Scroll Columns -->
-                    <!-- اضافه شدن h-full برای پر کردن ارتفاع باقی‌مانده -->
                     <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 overflow-hidden relative h-full">
-
                         <!-- Column 1 -->
                         <div
                             class="flex flex-col gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full snap-y snap-mandatory">
-                            <!-- جایگزینی aspect-square با min-h-[calc(33.333%-1rem)] برای نمایش دقیق ۳ باکس در ستون -->
-                            <article onclick="openProjectDetail('Tehran Commercial Complex', '2025', 'COMMERCIAL')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Tehran Commercial Complex', '2025', 'COMMERCIAL', 1)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/angular-leaning-terracotta-glass-museum.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Tehran Commercial Complex</h3>
                                 </div>
                             </article>
-                            <article onclick="openProjectDetail('Urban Pocket Landscape', '2022', 'Artistic')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Urban Pocket Landscape', '2022', 'LANDSCAPE', 2)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/colorful-curved-facade-triangular-windows.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Urban Pocket Landscape</h3>
                                 </div>
                             </article>
-                            <article onclick="openProjectDetail('Laleh Villa', '2019', 'Large Housing')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Laleh Villa', '2019', 'VILLA', 3)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/concrete-cantilever-modernist-corner-facade.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Laleh Villa</h3>
@@ -1866,31 +1304,49 @@
                         <!-- Column 2 -->
                         <div
                             class="flex flex-col gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full snap-y snap-mandatory">
-                            <article onclick="openProjectDetail('Health Cluster', '2026', 'Government')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Health Cluster', '2026', 'HEALTH & CARE', 4)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/curved-concrete-building-blue-glass-windows.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Health Cluster</h3>
                                 </div>
                             </article>
-                            <article onclick="openProjectDetail('Office Atrium', '2016', 'Business')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Office Atrium', '2016', 'OFFICE', 5)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/dark-brutalist-geometric-patterned-facade.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Office Atrium</h3>
                                 </div>
                             </article>
-                            <article onclick="openProjectDetail('Karaj Riverfront Renewal', '2012', 'Renewal')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Karaj Riverfront Renewal', '2012', 'COMPLEX', 6)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/darya-shkapina.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
-                                        Karaj Riverfront Renewal</h3>
+                                        Karaj Riverfront</h3>
                                 </div>
                             </article>
                         </div>
@@ -1898,36 +1354,54 @@
                         <!-- Column 3 -->
                         <div
                             class="flex flex-col gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full snap-y snap-mandatory">
-                            <article onclick="openProjectDetail('Community School Campus', '2009', 'Schooling')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Community School Campus', '2009', 'COMPLEX', 7)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/double-tree-by-hilton-nice-centre.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
-                                        Community School Campus</h3>
+                                        Community School</h3>
                                 </div>
                             </article>
-                            <article onclick="openProjectDetail('Civic Gateway', '2005', 'pathing')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Civic Gateway', '2005', 'URBAN', 8)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/experimenta-science-centre-stoneware-flooring-casalgrande-padana.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                                         Civic Gateway</h3>
                                 </div>
                             </article>
-                            <article onclick="openProjectDetail('Workspace Flexibility Hub', '2004', 'Hubbing')"
-                                class="group panel-shell motion-rise relative overflow-hidden min-h-[calc(33.333%-1rem)] cursor-pointer bg-[#8e8e8e]/20 transition-colors duration-500 hover:bg-[#8e8e8e]/40 shrink-0 snap-center">
+                            <article onclick="openProjectDetail('Workspace Flexibility Hub', '2004', 'OFFICE', 9)"
+                                class="group relative overflow-hidden rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+                                    style="background-image: url('../assets/pics/Buildings/howard-bouchevereau.jpg');">
+                                </div>
                                 <div
-                                    class="visual-fill w-full h-full p-4 lg:p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3
                                         class="text-white text-sm lg:text-base tracking-[0.12em] translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
-                                        Workspace Flexibility Hub</h3>
+                                        Flexibility Hub</h3>
                                 </div>
                             </article>
                         </div>
 
-                        <!-- فید سفید (Gradient Fade) -->
+                        <!-- فید سفید بالا و پایین -->
                         <div
                             class="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white to-transparent pointer-events-none z-10">
                         </div>
@@ -1937,15 +1411,14 @@
                     </div>
                 </div>
 
-                <!-- PROJECT DETAIL OVERLAY (Hidden by default) -->
+                <!-- PROJECT DETAIL OVERLAY -->
                 <div id="project-detail-overlay"
                     class="absolute inset-0 w-full h-full bg-white z-50 flex flex-col transform translate-x-full opacity-0 transition-all duration-700 ease-in-out pointer-events-none">
 
-                    <!-- Header & Back Button -->
                     <div
                         class="shrink-0 bg-white/95 backdrop-blur-md z-20 px-6 py-6 border-b border-[#028c85]/20 flex items-center">
                         <button onclick="closeProjectDetail()"
-                            class="group flex items-center text-[#8e8e8e] hover:text-[#028c85] transition-colors tracking-[0.15em] text-xs uppercase focus:outline-none">
+                            class="group cursor-pointer flex items-center text-[#8e8e8e] hover:text-[#028c85] transition-colors tracking-[0.15em] text-xs uppercase focus:outline-none">
                             <svg class="w-5 h-5 mr-3 rtl:ml-3 rtl:mr-0 transform group-hover:-translate-x-2 transition-transform duration-500"
                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -1955,58 +1428,68 @@
                         </button>
                     </div>
 
-                    <!-- Detail Content -->
                     <div class="flex-1 overflow-y-auto scroll-clean p-6 lg:p-10">
                         <div class="max-w-4xl mx-auto pb-12">
-                            <!-- Title & Meta -->
                             <h2 id="pd-title"
                                 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase mb-2">
                                 Project Title</h2>
-                            <p id="pd-meta" class="text-xs tracking-[0.18em] text-[#028c85] mb-8">2026 | CATEGORY</p>
+                            <p id="pd-meta" class="text-xs tracking-[0.18em] text-[#028c85] mb-8">2026 | CATEGORY
+                            </p>
 
-                            <!-- Main Hero Image (Placeholder) -->
-                            <div
-                                class="w-full aspect-[16/7] panel-shell visual-fill rounded-[22px] mb-10 flex items-center justify-center">
-                                <span class="text-white/60 tracking-widest uppercase text-sm">Main View</span>
+                            <!-- کانتینر عکس اصلی که از طریق JS آپدیت می‌شود -->
+                            <!-- نکته: حذف panel-shell و جایگزینی با سایه و بوردر اختصاصی برای رفع تداخل بک‌گراند -->
+                            <div id="pd-main-img"
+                                class="w-full aspect-[16/7] shadow-[0_12px_28px_rgba(71,70,70,0.12)] border border-[#028c85]/30 bg-cover bg-center rounded-[22px] mb-10 flex items-center justify-center transition-all duration-500">
                             </div>
 
-                            <!-- Description & Info Grid -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 mb-12">
                                 <div class="md:col-span-2">
-                                    <h3 class="text-lg text-[#474646] tracking-[0.1em] mb-4 uppercase">Project Narrative
+                                    <h3 class="text-lg text-[#474646] tracking-[0.1em] mb-4 uppercase">Project
+                                        Narrative
                                     </h3>
                                     <p class="text-[#595959] font-light leading-relaxed text-justify">
                                         Razan sees architecture as a layered act of listening: to site, climate,
-                                        culture, and program. We map constraints early, then translate them into clear
-                                        spatial systems that age with dignity and perform efficiently. This project
-                                        represents our core values in urban development and sustainable design.
+                                        culture, and program. We map constraints early, then translate them into
+                                        clear
+                                        spatial systems that age with dignity and perform efficiently.
                                     </p>
                                 </div>
                                 <div class="space-y-6">
                                     <div>
-                                        <p class="text-[10px] uppercase tracking-[0.16em] text-[#8e8e8e] mb-1">Location
+                                        <p class="text-[10px] uppercase tracking-[0.16em] text-[#8e8e8e] mb-1">
+                                            Location
                                         </p>
                                         <p class="text-sm text-[#474646]">Tehran, Iran</p>
                                     </div>
                                     <div>
-                                        <p class="text-[10px] uppercase tracking-[0.16em] text-[#8e8e8e] mb-1">Area</p>
+                                        <p class="text-[10px] uppercase tracking-[0.16em] text-[#8e8e8e] mb-1">Area
+                                        </p>
                                         <p class="text-sm text-[#474646]">12,500 sqm</p>
                                     </div>
                                     <div>
-                                        <p class="text-[10px] uppercase tracking-[0.16em] text-[#8e8e8e] mb-1">Status
+                                        <p class="text-[10px] uppercase tracking-[0.16em] text-[#8e8e8e] mb-1">
+                                            Status
                                         </p>
                                         <p class="text-sm text-[#474646]">Completed</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Gallery Grid -->
+                            <!-- گالری با عکس‌های واقعی -->
                             <h3 class="text-lg text-[#474646] tracking-[0.1em] mb-6 uppercase">Gallery</h3>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
-                                <div class="aspect-[4/3] panel-shell visual-fill rounded-[18px]"></div>
-                                <div class="aspect-[4/3] panel-shell visual-fill rounded-[18px]"></div>
-                                <div class="aspect-[4/3] panel-shell visual-fill rounded-[18px]"></div>
-                                <div class="aspect-[4/3] panel-shell visual-fill rounded-[18px]"></div>
+                                <div
+                                    class="pd-gallery-img aspect-[4/3] shadow-[0_12px_28px_rgba(71,70,70,0.12)] border border-[#028c85]/30 bg-cover bg-center rounded-[18px]">
+                                </div>
+                                <div
+                                    class="pd-gallery-img aspect-[4/3] shadow-[0_12px_28px_rgba(71,70,70,0.12)] border border-[#028c85]/30 bg-cover bg-center rounded-[18px]">
+                                </div>
+                                <div
+                                    class="pd-gallery-img aspect-[4/3] shadow-[0_12px_28px_rgba(71,70,70,0.12)] border border-[#028c85]/30 bg-cover bg-center rounded-[18px]">
+                                </div>
+                                <div
+                                    class="pd-gallery-img aspect-[4/3] shadow-[0_12px_28px_rgba(71,70,70,0.12)] border border-[#028c85]/30 bg-cover bg-center rounded-[18px]">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2017,99 +1500,177 @@
             <section id="sec-news" role="tabpanel" aria-labelledby="nav-btn-news"
                 class="tab-panel absolute inset-0 w-full h-full opacity-0 translate-y-0 pointer-events-none z-0"
                 data-page="news">
-                <div class="h-full w-full overflow-y-auto scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24">
-                    <div class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4">
-                        <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">News</h2>
+                <div class="h-full w-full overflow-y-auto scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24 relative">
+                    <!-- هدر Sticky با افکت جلوگیری از بیرون‌زدگی اسکرول -->
+                    <div
+                        class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4 -mx-4 px-4 sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">
+                        <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">News
+                        </h2>
                         <div class="w-12 h-[1px] bg-[#028c85] mt-4 lg:mt-6"></div>
                     </div>
+
                     <div class="space-y-7 lg:space-y-8">
-                        <div class="flex flex-wrap gap-0 border-b-2 border-[#8e8e8e]/20 mb-6" id="news-year-tabs">
-                            <button class="news-year-tab active" onclick="filterNews('all', this)">All</button>
-                            <button class="news-year-tab" onclick="filterNews('2021', this)">2021</button>
-                            <button class="news-year-tab" onclick="filterNews('2022', this)">2022</button>
-                            <button class="news-year-tab" onclick="filterNews('2023', this)">2023</button>
-                            <button class="news-year-tab" onclick="filterNews('2024', this)">2024</button>
-                            <button class="news-year-tab" onclick="filterNews('2025', this)">2025</button>
-                            <button class="news-year-tab" onclick="filterNews('2026', this)">2026</button>
-                        </div>
-                        <div id="news-articles" class="space-y-4">
-                            <article class="news-article-item group flex items-stretch gap-2 lg:gap-3 cursor-pointer"
-                                data-year="2021">
-                                <div
-                                    class="panel-shell visual-fill motion-rise flex-1 min-h-[58px] lg:min-h-[72px] px-4 lg:px-6 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-white text-[11px] tracking-[0.16em] uppercase">Jan 28</p>
-                                        <h4
-                                            class="text-white text-sm lg:text-base tracking-[0.12em] mt-1 group-hover:translate-x-1 transition-transform duration-500">
-                                            Interdisciplinary health cluster competition entry submitted</h4>
-                                    </div>
-                                </div>
-                                <div class="panel-shell visual-fill motion-rise w-[54px] lg:w-[74px]"></div>
-                            </article>
-                            <article class="news-article-item group flex items-stretch gap-2 lg:gap-3 cursor-pointer"
-                                data-year="2022">
-                                <div
-                                    class="panel-shell visual-fill motion-rise flex-1 min-h-[58px] lg:min-h-[72px] px-4 lg:px-6 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-white text-[11px] tracking-[0.16em] uppercase">May 02</p>
-                                        <h4
-                                            class="text-white text-sm lg:text-base tracking-[0.12em] mt-1 group-hover:translate-x-1 transition-transform duration-500">
-                                            Community school campus receives planning approval</h4>
-                                    </div>
-                                </div>
-                                <div class="panel-shell visual-fill motion-rise w-[54px] lg:w-[74px]"></div>
-                            </article>
-                            <article class="news-article-item group flex items-stretch gap-2 lg:gap-3 cursor-pointer"
-                                data-year="2023">
-                                <div
-                                    class="panel-shell visual-fill motion-rise flex-1 min-h-[58px] lg:min-h-[72px] px-4 lg:px-6 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-white text-[11px] tracking-[0.16em] uppercase">Jun 16</p>
-                                        <h4
-                                            class="text-white text-sm lg:text-base tracking-[0.12em] mt-1 group-hover:translate-x-1 transition-transform duration-500">
-                                            Workspace flexibility report published by Razan Studio</h4>
-                                    </div>
-                                </div>
-                                <div class="panel-shell visual-fill motion-rise w-[54px] lg:w-[74px]"></div>
-                            </article>
-                            <article class="news-article-item group flex items-stretch gap-2 lg:gap-3 cursor-pointer"
-                                data-year="2024">
-                                <div
-                                    class="panel-shell visual-fill motion-rise flex-1 min-h-[58px] lg:min-h-[72px] px-4 lg:px-6 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-white text-[11px] tracking-[0.16em] uppercase">Oct 21</p>
-                                        <h4
-                                            class="text-white text-sm lg:text-base tracking-[0.12em] mt-1 group-hover:translate-x-1 transition-transform duration-500">
-                                            North Tehran residential complex enters commissioning</h4>
-                                    </div>
-                                </div>
-                                <div class="panel-shell visual-fill motion-rise w-[54px] lg:w-[74px]"></div>
-                            </article>
-                            <article class="news-article-item group flex items-stretch gap-2 lg:gap-3 cursor-pointer"
-                                data-year="2025">
-                                <div
-                                    class="panel-shell visual-fill motion-rise flex-1 min-h-[58px] lg:min-h-[72px] px-4 lg:px-6 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-white text-[11px] tracking-[0.16em] uppercase">Dec 09</p>
-                                        <h4
-                                            class="text-white text-sm lg:text-base tracking-[0.12em] mt-1 group-hover:translate-x-1 transition-transform duration-500">
-                                            BIM workflow audit improves delivery speed by 17%</h4>
-                                    </div>
-                                </div>
-                                <div class="panel-shell visual-fill motion-rise w-[54px] lg:w-[74px]"></div>
-                            </article>
-                            <article class="news-article-item group flex items-stretch gap-2 lg:gap-3 cursor-pointer"
+
+                        <div id="news-articles" class="space-y-4 lg:space-y-5">
+                            <!-- News 1 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
                                 data-year="2026">
                                 <div
-                                    class="panel-shell visual-fill motion-rise flex-1 min-h-[58px] lg:min-h-[72px] px-4 lg:px-6 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-white text-[11px] tracking-[0.16em] uppercase">Apr 12</p>
-                                        <h4
-                                            class="text-white text-sm lg:text-base tracking-[0.12em] mt-1 group-hover:translate-x-1 transition-transform duration-500">
-                                            Razan shortlisted for Tehran Civic Gateway</h4>
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        Apr 12, 2026</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        Razan shortlisted for Tehran Civic Gateway</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/modern-brick-building-corner-windows-sky.jpg');">
                                     </div>
                                 </div>
-                                <div class="panel-shell visual-fill motion-rise w-[54px] lg:w-[74px]"></div>
+                            </article>
+                            <!-- News 2 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
+                                data-year="2026">
+                                <div
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        Jan 05, 2026</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        Our new sustainability framework officially launched</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/modern-cantilevered-office-building-waterfront.jpg');">
+                                    </div>
+                                </div>
+                            </article>
+                            <!-- News 3 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
+                                data-year="2025">
+                                <div
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        Dec 09, 2025</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        BIM workflow audit improves delivery speed by 17%</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/modern-white-building-curved-glass-stairs.jpg');">
+                                    </div>
+                                </div>
+                            </article>
+                            <!-- News 4 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
+                                data-year="2025">
+                                <div
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        Jul 22, 2025</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        Award-winning landscape integrated into our recent commercial design</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/monochrome-cylindrical-building-geometric-facade.jpg');">
+                                    </div>
+                                </div>
+                            </article>
+                            <!-- News 5 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
+                                data-year="2024">
+                                <div
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        Oct 21, 2024</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        North Tehran residential complex enters final commissioning phase</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/parametric-curved-glass-amber-grid-architecture.jpg');">
+                                    </div>
+                                </div>
+                            </article>
+                            <!-- News 6 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
+                                data-year="2024">
+                                <div
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        Mar 14, 2024</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        Razan experts featured in the national urban development panel</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/stacked-cantilevered-glass-volumes-architecture.jpg');">
+                                    </div>
+                                </div>
+                            </article>
+                            <!-- News 7 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
+                                data-year="2023">
+                                <div
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        Jun 16, 2023</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        Workspace flexibility report formally published by Razan Studio</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/stepped-dark-glass-facade-architecture-twilight.jpg');">
+                                    </div>
+                                </div>
+                            </article>
+                            <!-- News 8 -->
+                            <article
+                                class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
+                                data-year="2022">
+                                <div
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    <p
+                                        class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
+                                        May 02, 2022</p>
+                                    <h4
+                                        class="text-[#474646] text-sm lg:text-base tracking-[0.08em] mt-1 lg:mt-2 group-hover:text-[#028c85] transition-colors line-clamp-2">
+                                        Community school campus receives regional planning approval</h4>
+                                </div>
+                                <div
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise overflow-hidden shrink-0">
+                                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image: url('../assets/pics/Buildings/undulating-metallic-reflective-architecture.jpg');">
+                                    </div>
+                                </div>
                             </article>
                         </div>
                     </div>
@@ -2121,53 +1682,47 @@
                 class="tab-panel absolute inset-0 w-full h-full opacity-0 translate-y-0 pointer-events-none z-0"
                 data-page="about">
                 <div id="about-scroll-container"
-                    class="h-full w-full overflow-y-auto scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24 scroll-smooth">
-                    <div class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4">
+                    class="h-full w-full overflow-y-auto scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24 scroll-smooth relative">
+
+                    <!-- هدر Sticky -->
+                    <div
+                        class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4 -mx-4 px-4 sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">
                         <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">About
                             Razan</h2>
                         <div class="w-12 h-[1px] bg-[#028c85] mt-4 lg:mt-6"></div>
                     </div>
+
                     <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 relative">
-                        <div class="lg:w-1/4">
-                            <div class="lg:sticky lg:top-32 flex flex-col gap-3 text-xs sm:text-sm tracking-[0.16em] uppercase text-[#8e8e8e]"
-                                id="about-subnav">
-                                <button onclick="scrollToAbout('brand')" data-target="brand"
-                                    class="text-left hover:text-[#028c85] transition-colors about-nav-active">Brand</button>
-                                <button onclick="scrollToAbout('leadership')" data-target="leadership"
-                                    class="text-left hover:text-[#028c85] transition-colors text-[#8e8e8e]">Resume</button>
-                                <button onclick="scrollToAbout('team')" data-target="team"
-                                    class="text-left hover:text-[#028c85] transition-colors text-[#8e8e8e]">Team
-                                    now</button>
-                                <button onclick="scrollToAbout('history')" data-target="history"
-                                    class="text-left hover:text-[#028c85] transition-colors text-[#8e8e8e]">Team
-                                    history</button>
-                                <button onclick="scrollToAbout('expertise')" data-target="expertise"
-                                    class="text-left hover:text-[#028c85] transition-colors text-[#8e8e8e]">Design &
-                                    Construction</button>
-                                <button onclick="scrollToAbout('competitions')" data-target="competitions"
-                                    class="text-left hover:text-[#028c85] transition-colors text-[#8e8e8e]">Competitions</button>
-                            </div>
-                        </div>
-                        <div class="lg:w-3/4 space-y-16 lg:space-y-20">
+                        <!-- حذف ساب‌منو از اینجا و گرفتن کل عرض برای محتوا -->
+                        <div class="w-full space-y-16 lg:space-y-20 max-w-4xl mx-auto">
                             <div id="about-brand" class="space-y-6 scroll-mt-28">
                                 <h3 class="text-2xl font-light tracking-wide text-[#474646]">Brand Philosophy</h3>
                                 <div class="panel-shell p-2">
-                                    <div class="visual-fill rounded-[20px] aspect-[16/8]"></div>
+                                    <!-- جایگذاری عکس دفتر رازان (مسیر اصلاح شد) -->
+                                    <div class="rounded-[20px] aspect-[16/8] bg-cover bg-center"
+                                        style="background-image: url('../assets/pics/Buildings/Razan-Office.jpg');">
+                                    </div>
                                 </div>
                                 <p class="text-[#595959] leading-relaxed font-light text-justify">Razan sees
-                                    architecture as a layered act of listening: to site, climate, culture, and program.
-                                    We map constraints early, then translate them into clear spatial systems that age
+                                    architecture as a layered act of listening: to site, climate, culture, and
+                                    program.
+                                    We map constraints early, then translate them into clear spatial systems that
+                                    age
                                     with dignity and perform efficiently.</p>
                             </div>
                             <div id="about-leadership" class="space-y-6 pt-8 border-t border-[#8e8e8e]/30 scroll-mt-28">
-                                <h3 class="text-2xl font-light tracking-wide text-[#474646]">Leadership & Resume</h3>
+                                <h3 class="text-2xl font-light tracking-wide text-[#474646]">Leadership & Resume
+                                </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5">
                                     <article class="panel-shell p-4 lg:p-5">
                                         <h4 class="text-[#474646] tracking-[0.08em] uppercase text-sm">Principal
                                             Architect</h4>
-                                        <p class="text-[#028c85] text-xs tracking-[0.16em] mt-1">M.Arch, 18+ Years</p>
-                                        <p class="text-[#595959] text-sm mt-3 leading-relaxed">Leads concept strategy,
-                                            urban integration, and design QA across mixed-use and civic projects.</p>
+                                        <p class="text-[#028c85] text-xs tracking-[0.16em] mt-1">M.Arch, 18+ Years
+                                        </p>
+                                        <p class="text-[#595959] text-sm mt-3 leading-relaxed">Leads concept
+                                            strategy,
+                                            urban integration, and design QA across mixed-use and civic projects.
+                                        </p>
                                     </article>
                                     <article class="panel-shell p-4 lg:p-5">
                                         <h4 class="text-[#474646] tracking-[0.08em] uppercase text-sm">Technical
@@ -2183,16 +1738,19 @@
                                 <h3 class="text-2xl font-light tracking-wide text-[#474646]">Team Now</h3>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                                     <div class="panel-shell p-4">
-                                        <p class="text-[#474646] text-sm tracking-[0.1em] uppercase">Architecture</p>
+                                        <p class="text-[#474646] text-sm tracking-[0.1em] uppercase">Architecture
+                                        </p>
                                         <p class="text-[#028c85] text-xs mt-2 tracking-[0.16em]">12 Designers</p>
                                     </div>
                                     <div class="panel-shell p-4">
-                                        <p class="text-[#474646] text-sm tracking-[0.1em] uppercase">Urban + Landscape
+                                        <p class="text-[#474646] text-sm tracking-[0.1em] uppercase">Urban +
+                                            Landscape
                                         </p>
                                         <p class="text-[#028c85] text-xs mt-2 tracking-[0.16em]">6 Specialists</p>
                                     </div>
                                     <div class="panel-shell p-4">
-                                        <p class="text-[#474646] text-sm tracking-[0.1em] uppercase">Technical Delivery
+                                        <p class="text-[#474646] text-sm tracking-[0.1em] uppercase">Technical
+                                            Delivery
                                         </p>
                                         <p class="text-[#028c85] text-xs mt-2 tracking-[0.16em]">9 Engineers</p>
                                     </div>
@@ -2200,23 +1758,35 @@
                             </div>
                             <div id="about-history" class="space-y-6 pt-8 border-t border-[#8e8e8e]/30 scroll-mt-28">
                                 <h3 class="text-2xl font-light tracking-wide text-[#474646]">Team History</h3>
-                                <p class="text-[#595959] leading-relaxed font-light text-justify">From a compact design
+                                <p class="text-[#595959] leading-relaxed font-light text-justify">From a compact
+                                    design
                                     studio in 2000 to a multidisciplinary practice, the firm evolved through
-                                    public-sector planning, healthcare delivery, and private mixed-use commissions. This
-                                    trajectory shaped a process-centric culture rooted in coordination and clarity.</p>
+                                    public-sector planning, healthcare delivery, and private mixed-use commissions.
+                                    This
+                                    trajectory shaped a process-centric culture rooted in coordination and clarity.
+                                </p>
                             </div>
                             <div id="about-expertise" class="space-y-6 pt-8 border-t border-[#8e8e8e]/30 scroll-mt-28">
-                                <h3 class="text-2xl font-light tracking-wide text-[#474646]">Design & Construction</h3>
+                                <h3 class="text-2xl font-light tracking-wide text-[#474646]">Design & Construction
+                                </h3>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div class="panel-shell p-2">
-                                        <div class="visual-fill rounded-[18px] aspect-square flex items-end p-4"><span
-                                                class="text-white text-xs tracking-[0.18em] uppercase">Design
-                                                Package</span></div>
+                                        <!-- جایگذاری عکس معماری -->
+                                        <div class="rounded-[18px] aspect-square flex items-end p-4 bg-cover bg-center"
+                                            style="background-image: linear-gradient(to top, rgba(0,0,0,0.6), transparent), url('../assets/pics/Buildings/geometric-glass-honeycomb-facade.jpg');">
+                                            <span
+                                                class="text-white text-xs tracking-[0.18em] uppercase relative z-10">Design
+                                                Package</span>
+                                        </div>
                                     </div>
                                     <div class="panel-shell p-2">
-                                        <div class="visual-fill rounded-[18px] aspect-square flex items-end p-4"><span
-                                                class="text-white text-xs tracking-[0.18em] uppercase">Construction
-                                                Docs</span></div>
+                                        <!-- جایگذاری عکس معماری -->
+                                        <div class="rounded-[18px] aspect-square flex items-end p-4 bg-cover bg-center"
+                                            style="background-image: linear-gradient(to top, rgba(0,0,0,0.6), transparent), url('../assets/pics/Buildings/stacked-cantilevered-glass-volumes-architecture.jpg');">
+                                            <span
+                                                class="text-white text-xs tracking-[0.18em] uppercase relative z-10">Construction
+                                                Docs</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -2225,15 +1795,18 @@
                                 <h3 class="text-2xl font-light tracking-wide text-[#474646]">Competitions</h3>
                                 <div class="space-y-3">
                                     <div class="panel-shell p-4">
-                                        <p class="text-[#474646] text-sm tracking-[0.08em] uppercase">2026 Civic Gateway
+                                        <p class="text-[#474646] text-sm tracking-[0.08em] uppercase">2026 Civic
+                                            Gateway
                                             - Finalist</p>
                                     </div>
                                     <div class="panel-shell p-4">
-                                        <p class="text-[#474646] text-sm tracking-[0.08em] uppercase">2024 Health Campus
+                                        <p class="text-[#474646] text-sm tracking-[0.08em] uppercase">2024 Health
+                                            Campus
                                             - 2nd Prize</p>
                                     </div>
                                     <div class="panel-shell p-4">
-                                        <p class="text-[#474646] text-sm tracking-[0.08em] uppercase">2023 Riverfront
+                                        <p class="text-[#474646] text-sm tracking-[0.08em] uppercase">2023
+                                            Riverfront
                                             Renewal - Shortlist</p>
                                     </div>
                                 </div>
@@ -2247,46 +1820,74 @@
             <section id="sec-contact" role="tabpanel" aria-labelledby="nav-btn-contact"
                 class="tab-panel absolute inset-0 w-full h-full opacity-0 translate-y-0 pointer-events-none z-0"
                 data-page="contact">
-                <div class="contact-shell h-full w-full scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24">
-                    <div class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4">
-                        <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">Contact
+                <div class="contact-shell h-full w-full scroll-clean px-4 sm:px-8 lg:px-10 pb-10 lg:pb-24 relative">
+
+                    <!-- هدر Sticky اصلاح شده برای جلوگیری از بیرون‌زدگی اسکرول -->
+                    <div
+                        class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4 -mx-4 px-4 sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">
+                        <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">
+                            Contact
                         </h2>
                         <div class="w-12 h-[1px] bg-[#028c85] mt-4 lg:mt-6"></div>
                     </div>
+
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-3">
                         <div class="panel-shell p-2">
-                            <div
-                                class="visual-fill rounded-[20px] aspect-[4/3] lg:aspect-[16/6] flex items-center justify-center">
-                                <p class="text-white text-lg lg:text-2xl tracking-[0.14em]">Main Office Map</p>
+                            <!-- جایگذاری عکس نقشه (مسیر اصلاح شد) -->
+                            <div class="rounded-[20px] aspect-[4/3] lg:aspect-[16/6] bg-cover bg-center flex items-end p-5"
+                                style="background-image: linear-gradient(to top, rgba(0,0,0,0.6), transparent), url('../assets/pics/Buildings/Map1.png');">
+                                <p class="text-white text-sm lg:text-base tracking-[0.14em] drop-shadow-md">Main
+                                    Office
+                                    Map</p>
                             </div>
                         </div>
                         <div class="panel-shell p-2">
-                            <div
-                                class="visual-fill rounded-[20px] aspect-[4/3] lg:aspect-[16/6] flex items-center justify-center">
-                                <p class="text-white text-lg lg:text-2xl tracking-[0.14em]">Site Visit Map</p>
+                            <!-- جایگذاری عکس نقشه دوم با تصویر جدید گوگل مپ -->
+                            <div class="rounded-[20px] aspect-[4/3] lg:aspect-[16/6] bg-cover bg-center flex items-end p-5"
+                                style="background-image: linear-gradient(to top, rgba(0,0,0,0.6), transparent), url('../assets/pics/Buildings/google-map-view.jpg');">
+                                <p class="text-white text-sm lg:text-base tracking-[0.14em] drop-shadow-md">Site
+                                    Visit
+                                    Map</p>
                             </div>
                         </div>
                     </div>
                     <div class="flex flex-col lg:flex-row gap-12 lg:gap-10 mt-8 lg:mt-5">
                         <div class="w-full lg:w-[34%] space-y-8 lg:space-y-5">
                             <div>
-                                <h3 class="text-lg text-[#028c85] tracking-[0.2em] font-medium uppercase mb-3">Get in
+                                <h3 class="text-lg text-[#028c85] tracking-[0.2em] font-medium uppercase mb-3">Get
+                                    in
                                     Touch</h3>
                                 <p class="text-[#676767] font-light leading-relaxed">For collaborations, competition
-                                    teams, and project inquiries, contact the coordination desk and we will route your
+                                    teams, and project inquiries, contact the coordination desk and we will route
+                                    your
                                     request to the relevant group.</p>
                             </div>
                             <div class="space-y-3 text-[#474646] font-light text-base lg:text-[0.95rem]">
-                                <p><span class="text-xs tracking-[0.16em] uppercase text-[#8e8e8e]">Tel</span>: [Insert
+                                <p><span class="text-xs tracking-[0.16em] uppercase text-[#8e8e8e]">Tel</span>:
+                                    [Insert
                                     Tel]</p>
                                 <p><span class="text-xs tracking-[0.16em] uppercase text-[#8e8e8e]">Mobile</span>:
                                     [Insert Mobile]</p>
-                                <p><span class="text-xs tracking-[0.16em] uppercase text-[#8e8e8e]">Fax</span>: [Insert
+                                <p><span class="text-xs tracking-[0.16em] uppercase text-[#8e8e8e]">Fax</span>:
+                                    [Insert
                                     Fax]</p>
                                 <p><span class="text-xs tracking-[0.16em] uppercase text-[#8e8e8e]">Email</span>:
                                     [Insert Email]</p>
                                 <p><span class="text-xs tracking-[0.16em] uppercase text-[#8e8e8e]">Address</span>:
                                     [Insert Address]</p>
+                            </div>
+                            <!-- Social Links in Contact Page -->
+                            <div class="flex gap-4 lg:gap-5 text-[#8e8e8e] mt-8">
+                                <svg class="w-6 h-6 hover:text-[#028c85] transition-colors cursor-pointer"
+                                    fill="currentColor" viewBox="0 0 24 24" aria-label="LinkedIn">
+                                    <path
+                                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                </svg>
+                                <svg class="w-6 h-6 hover:text-[#028c85] transition-colors cursor-pointer"
+                                    fill="currentColor" viewBox="0 0 24 24" aria-label="Instagram">
+                                    <path
+                                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                                </svg>
                             </div>
                         </div>
                         <div class="w-full lg:w-[66%]">
@@ -2329,9 +1930,6 @@
         let newsFilterTimer = 0;
         let panelSwitchTimer = 0;
         let introTimers = [];
-        let remixTimerId = 0;
-        let remixClearTimerId = 0;
-        let isRemixRunning = false;
         let isTabVisible = true;
         let introStarted = false;
 
@@ -2341,16 +1939,29 @@
             const targetPanel = document.getElementById('sec-' + activeTab);
             if (!targetBtn || !targetPanel) return;
 
-            // --- کدهای جدید برای مخفی و نمایان کردن فیلترها در سایدبار ---
-            const sidebarFilters = document.getElementById('sidebar-project-filters');
-            if (sidebarFilters) {
-                if (activeTab === 'projects') {
-                    sidebarFilters.classList.remove('opacity-0', 'pointer-events-none');
-                    sidebarFilters.classList.add('opacity-100', 'pointer-events-auto');
-                } else {
-                    sidebarFilters.classList.add('opacity-0', 'pointer-events-none');
-                    sidebarFilters.classList.remove('opacity-100', 'pointer-events-auto');
+            // --- داینامیک کردن زیر-منوهای سایدبار ---
+            const filterProjects = document.getElementById('sidebar-project-filters');
+            const subnavAbout = document.getElementById('sidebar-about-subnav');
+            const filterNews = document.getElementById('sidebar-news-filters');
+
+            // پنهان کردن همه زیرمنوها
+            [filterProjects, subnavAbout, filterNews].forEach(el => {
+                if (el) {
+                    el.classList.add('opacity-0', 'pointer-events-none');
+                    el.classList.remove('opacity-100', 'pointer-events-auto');
                 }
+            });
+
+            // نمایش زیرمنوی مربوط به تب فعال
+            if (activeTab === 'projects' && filterProjects) {
+                filterProjects.classList.remove('opacity-0', 'pointer-events-none');
+                filterProjects.classList.add('opacity-100', 'pointer-events-auto');
+            } else if (activeTab === 'about' && subnavAbout) {
+                subnavAbout.classList.remove('opacity-0', 'pointer-events-none');
+                subnavAbout.classList.add('opacity-100', 'pointer-events-auto');
+            } else if (activeTab === 'news' && filterNews) {
+                filterNews.classList.remove('opacity-0', 'pointer-events-none');
+                filterNews.classList.add('opacity-100', 'pointer-events-auto');
             }
 
             const currentBtn = document.querySelector('#main-nav [aria-selected="true"]');
@@ -2385,13 +1996,14 @@
         }
 
         function setAboutActive(sectionId) {
-            const buttons = document.querySelectorAll('#about-subnav button');
+            // حل باگ نام آیدی: تغییر from '#about-subnav' to '#sidebar-about-subnav'
+            const buttons = document.querySelectorAll('#sidebar-about-subnav button');
             buttons.forEach(btn => {
                 if (btn.getAttribute('data-target') === sectionId) {
-                    btn.classList.add('about-nav-active');
+                    btn.classList.add('sidebar-nav-active');
                     btn.classList.remove('text-[#8e8e8e]');
                 } else {
-                    btn.classList.remove('about-nav-active');
+                    btn.classList.remove('sidebar-nav-active');
                     btn.classList.add('text-[#8e8e8e]');
                 }
             });
@@ -2410,9 +2022,12 @@
         function filterNews(year, clickedBtn) {
             const list = document.getElementById('news-articles');
             const articles = document.querySelectorAll('.news-article-item');
-            const tabsEl = document.querySelectorAll('.news-year-tab');
-            tabsEl.forEach(tab => tab.classList.remove('active'));
-            clickedBtn.classList.add('active');
+
+            // مدیریت کلاس اکتیو در سایدبار
+            const allBtns = document.querySelectorAll('#sidebar-news-filters button');
+            allBtns.forEach(btn => btn.classList.remove('sidebar-nav-active'));
+            clickedBtn.classList.add('sidebar-nav-active');
+
             window.clearTimeout(newsFilterTimer);
             if (list) list.classList.add('news-switching');
             newsFilterTimer = window.setTimeout(() => {
@@ -2427,9 +2042,9 @@
         }
 
         function filterProjects(filter, clickedBtn) {
-            const allBtns = document.querySelectorAll('.project-filter-btn');
-            allBtns.forEach(btn => btn.classList.remove('active'));
-            clickedBtn.classList.add('active');
+            const allBtns = document.querySelectorAll('#sidebar-project-filters button');
+            allBtns.forEach(btn => btn.classList.remove('sidebar-nav-active'));
+            clickedBtn.classList.add('sidebar-nav-active');
         }
 
         function clearIntroTimers() {
@@ -2437,7 +2052,6 @@
             introTimers = [];
         }
 
-        /* ── Compute exact pixel offsets from SVG coordinates ── */
         const SVG_CENTERS = {
             blue: { x: 421.5, y: 526.5 },
             p1: { x: 152.3, y: 526.9 },
@@ -2452,7 +2066,6 @@
             const rect = wrapper.getBoundingClientRect();
             const scaleX = rect.width / 800;
             const scaleY = rect.height / 786;
-
             const blueX = SVG_CENTERS.blue.x * scaleX;
             const blueY = SVG_CENTERS.blue.y * scaleY;
 
@@ -2464,15 +2077,12 @@
                 const finalY = c.y * scaleY;
                 const offX = finalX - blueX;
                 const offY = finalY - blueY;
-
-                // ثبت فاصله‌ها به عنوان متغیرهای CSS
                 piece.style.setProperty('--off-x', offX + 'px');
                 piece.style.setProperty('--off-y-initial', '0px');
                 piece.style.setProperty('--off-y-final', offY + 'px');
             });
         }
 
-        /* ── Measure target position for intro logo fly-to-corner ── */
         function measureIntroTarget() {
             const sidebarLogo = document.querySelector('[data-anim-target="logo-container"]');
             const introLogoWrap = document.getElementById('intro-logo-wrap');
@@ -2500,7 +2110,6 @@
             });
         }
 
-        /* ── Intro Animation Sequence ── */
         function startIntroSequence() {
             if (introStarted) return;
             introStarted = true;
@@ -2513,41 +2122,18 @@
             if (!overlay) return;
 
             if (textBlock) textBlock.style.opacity = '0';
-
-            // فاز ۱: باز شدن به طرفین
-            introTimers.push(setTimeout(() => {
-                overlay.classList.add('intro-phase-1');
-            }, 250));
-
-            // فاز ۲: حرکت قطعات بالایی
-            introTimers.push(setTimeout(() => {
-                overlay.classList.add('intro-phase-2');
-            }, 900));
-
-            // ------ تغییر جدید: فاز ۲.۵ (فید-این محتوا زودتر شروع شود) ------
-            introTimers.push(setTimeout(() => {
-                body.classList.add('content-visible');
-            }, 1200));
-
-            // فاز ۳: پرواز لوگو به گوشه
-            introTimers.push(setTimeout(() => {
-                overlay.classList.add('intro-phase-3');
-                // (حذف content-visible از اینجا چون در فاز 2.5 انجام شد)
-            }, 1700));
-
-            introTimers.push(setTimeout(() => {
-                overlay.classList.add('intro-fade-out');
-            }, 2550));
+            introTimers.push(setTimeout(() => { overlay.classList.add('intro-phase-1'); }, 300));
+            introTimers.push(setTimeout(() => { overlay.classList.add('intro-phase-2'); }, 1000));
+            introTimers.push(setTimeout(() => { body.classList.add('content-visible'); }, 1300));
+            introTimers.push(setTimeout(() => { overlay.classList.add('intro-phase-3'); }, 1800));
+            introTimers.push(setTimeout(() => { overlay.classList.add('intro-fade-out'); }, 2600));
 
             introTimers.push(setTimeout(() => {
                 overlay.classList.add('intro-hidden');
                 body.setAttribute('data-phase', 'idle');
                 const sidebarLogo = document.querySelector('[data-anim-target="logo-container"]');
                 if (sidebarLogo) sidebarLogo.setAttribute('data-state', 'idle');
-
-                runLogoRemix();
-                scheduleNextRemix();
-            }, 3250));
+            }, 3400));
         }
 
         function snapToIdleLogo() {
@@ -2558,66 +2144,6 @@
             logo.removeAttribute('data-remix');
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => { logo.classList.remove('logo-no-transition'); });
-            });
-        }
-
-        const remixVariants = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
-        const remixDurations = { a: 2520, b: 2360, c: 3020, d: 2820, e: 2220, f: 3420, g: 2720 };
-
-        function runLogoRemix() {
-            const logo = document.querySelector('[data-anim-target="logo-container"]');
-            const body = document.body;
-            if (!logo || body.getAttribute('data-phase') !== 'idle' || isRemixRunning || !isTabVisible || logo.getAttribute('data-state') !== 'idle') return;
-            isRemixRunning = true;
-            const variant = remixVariants[Math.floor(Math.random() * remixVariants.length)];
-            logo.setAttribute('data-remix', variant);
-            window.clearTimeout(remixClearTimerId);
-            remixClearTimerId = window.setTimeout(() => {
-                logo.removeAttribute('data-remix');
-                isRemixRunning = false;
-            }, remixDurations[variant] || 2400);
-        }
-
-        function scheduleNextRemix() {
-            window.clearTimeout(remixTimerId);
-            const delay = 9200 + Math.floor(Math.random() * 5600);
-            remixTimerId = window.setTimeout(() => {
-                runLogoRemix();
-                scheduleNextRemix();
-            }, delay);
-        }
-
-        function stopRemixLoopSmoothly() {
-            const logo = document.querySelector('[data-anim-target="logo-container"]');
-            if (!logo || !logo.hasAttribute('data-remix')) {
-                clearTimeout(remixTimerId);
-                clearTimeout(remixClearTimerId);
-                isRemixRunning = false;
-                return;
-            }
-
-            // خواندن موقعیت فعلی قطعات در وسط هوا و ثبت به عنوان استایل ثابت (برای جلوگیری از پرش)
-            const parts = logo.querySelectorAll('.logo-part');
-            parts.forEach(p => {
-                const comp = window.getComputedStyle(p).transform;
-                p.style.transition = 'none';
-                p.style.transform = comp !== 'none' ? comp : '';
-            });
-
-            // حالا بأمان کامل انیمیشن را قطع می‌کنیم
-            logo.removeAttribute('data-remix');
-            isRemixRunning = false;
-            clearTimeout(remixTimerId);
-            clearTimeout(remixClearTimerId);
-
-            // اعمال ترانزیشن برای بازگشت نرم به حالت عادی
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    parts.forEach(p => {
-                        p.style.transition = 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
-                        p.style.transform = ''; // پاک کردن استایل خطی
-                    });
-                });
             });
         }
 
@@ -2632,7 +2158,6 @@
             const aboutSections = ['brand', 'leadership', 'team', 'history', 'expertise', 'competitions']
                 .map(key => document.getElementById('about-' + key)).filter(Boolean);
 
-            // Initial page fade-in
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     body.classList.add('page-ready');
@@ -2652,11 +2177,10 @@
                 desktopQuery.addListener(updateNavOrientation);
             }
 
-            // ── Sidebar Logo Mapping (Step 3) ──
             const navToPartMap = {
                 'home': 'part3',
                 'news': 'part4',
-                'projects': 'part2', // قطعه آبی وسط
+                'projects': 'part2',
                 'about': 'part5',
                 'contact': 'part1'
             };
@@ -2664,8 +2188,6 @@
             const navButtons = tabs.map(tab => document.getElementById('nav-btn-' + tab)).filter(Boolean);
 
             navButtons.forEach((btn, index) => {
-
-                // --- کنترل با کیبورد (کدهای قبلی خودتان) ---
                 btn.addEventListener('keydown', event => {
                     const isNext = event.key === 'ArrowDown' || event.key === 'ArrowRight';
                     const isPrev = event.key === 'ArrowUp' || event.key === 'ArrowLeft';
@@ -2684,16 +2206,12 @@
                     targetBtn.focus();
                 });
 
-                // --- Hover & Click Interactions (Smooth) ---
                 btn.addEventListener('mouseenter', () => {
                     const tab = btn.id.replace('nav-btn-', '');
                     const partId = navToPartMap[tab];
                     const part = document.getElementById(partId);
 
                     if (part && document.body.getAttribute('data-phase') === 'idle') {
-                        stopRemixLoopSmoothly(); // توقف نرم به جای توقف خشن
-
-                        // صبر می‌کنیم تا فریمِ توقف اعمال شود، سپس هاور را فعال می‌کنیم
                         requestAnimationFrame(() => {
                             requestAnimationFrame(() => {
                                 part.classList.add('hover-active');
@@ -2710,14 +2228,6 @@
                     if (part) {
                         part.classList.remove('hover-active');
                     }
-
-                    clearTimeout(remixTimerId);
-                    remixTimerId = setTimeout(() => {
-                        if (document.body.getAttribute('data-phase') === 'idle') {
-                            runLogoRemix();
-                            scheduleNextRemix();
-                        }
-                    }, 1200);
                 });
 
                 btn.addEventListener('click', () => {
@@ -2726,9 +2236,6 @@
                     const part = document.getElementById(partId);
 
                     if (part && document.body.getAttribute('data-phase') === 'idle') {
-                        stopRemixLoopSmoothly();
-
-                        // پالسِ بدون تغییر رنگ
                         part.animate([
                             { transform: 'scale(1.09)' },
                             { transform: 'scale(0.94)' },
@@ -2741,76 +2248,91 @@
                 });
             });
 
-            // ── Step 4: Infinite Quantum Idle Scroll for Projects ──
+            // ── Infinite Quantum Idle Scroll for Projects ──
             const columns = document.querySelectorAll('.project-col');
-            let isAnyProjectHovered = false; // یک متغیر سراسری برای تشخیص هاور روی کل بخش
+            let isAnyProjectHovered = false;
 
-            columns.forEach((col, index) => {
-                const originals = Array.from(col.children);
-                // تکثیر
-                for (let i = 0; i < 4; i++) {
-                    originals.forEach(item => col.appendChild(item.cloneNode(true)));
-                }
+            if (columns.length > 0) {
+                columns.forEach((col, index) => {
+                    const originals = Array.from(col.children);
+                    for (let i = 0; i < 4; i++) {
+                        originals.forEach(item => col.appendChild(item.cloneNode(true)));
+                    }
 
-                // تشخیص هاور روی هر ستون
-                col.addEventListener('mouseenter', () => isAnyProjectHovered = true);
-                col.addEventListener('mouseleave', () => isAnyProjectHovered = false);
-                col.addEventListener('touchstart', () => isAnyProjectHovered = true, { passive: true });
-                col.addEventListener('touchend', () => setTimeout(() => isAnyProjectHovered = false, 1500));
+                    col.addEventListener('mouseenter', () => isAnyProjectHovered = true);
+                    col.addEventListener('mouseleave', () => isAnyProjectHovered = false);
+                    col.addEventListener('touchstart', () => isAnyProjectHovered = true, { passive: true });
+                    col.addEventListener('touchend', () => setTimeout(() => isAnyProjectHovered = false, 1500));
 
-                const direction = (index % 2 === 0) ? 1 : -1;
-                requestAnimationFrame(() => {
-                    if (direction === -1) col.scrollTop = col.scrollHeight / 2;
+                    const direction = (index % 2 === 0) ? 1 : -1;
+                    requestAnimationFrame(() => {
+                        if (direction === -1) col.scrollTop = col.scrollHeight / 2;
+                    });
+
+                    col.addEventListener('scroll', () => {
+                        if (originals.length === 0) return;
+                        const itemHeight = originals[0].getBoundingClientRect().height;
+                        const gap = parseInt(window.getComputedStyle(col).gap) || 0;
+                        const groupHeight = originals.length * (itemHeight + gap);
+
+                        if (col.scrollTop >= groupHeight * 3) {
+                            col.scrollTop -= groupHeight;
+                        } else if (col.scrollTop <= groupHeight * 0.5) {
+                            col.scrollTop += groupHeight;
+                        }
+                    }, { passive: true });
                 });
 
-                // ریست مخفیانه اسکرول
-                col.addEventListener('scroll', () => {
-                    const itemHeight = originals[0].getBoundingClientRect().height;
-                    const gap = parseInt(window.getComputedStyle(col).gap) || 0;
-                    const groupHeight = originals.length * (itemHeight + gap);
+                let currentScrollingCol = 0;
+                setInterval(() => {
+                    const activePanel = document.querySelector('.tab-panel.opacity-100');
+                    if (activePanel && activePanel.id === 'sec-projects' && !isAnyProjectHovered) {
+                        const col = columns[currentScrollingCol];
+                        const direction = (currentScrollingCol % 2 === 0) ? 1 : -1;
 
-                    if (col.scrollTop >= groupHeight * 3) {
-                        col.scrollTop -= groupHeight;
-                    } else if (col.scrollTop <= groupHeight * 0.5) {
-                        col.scrollTop += groupHeight;
+                        if (col && col.children.length > 0) {
+                            const itemHeight = col.children[0].getBoundingClientRect().height;
+                            const gap = parseInt(window.getComputedStyle(col).gap) || 0;
+                            const shift = (itemHeight + gap) * direction;
+
+                            col.scrollBy({ top: shift, behavior: 'smooth' });
+                        }
+                        currentScrollingCol = (currentScrollingCol + 1) % columns.length;
                     }
-                }, { passive: true });
-            });
+                }, 2400);
+            }
 
-            // هماهنگ‌کننده مرکزی: فقط یک تایمر که نوبتی ستون‌ها را می‌چرخاند
-            let currentScrollingCol = 0;
-            setInterval(() => {
-                const activePanel = document.querySelector('.tab-panel.opacity-100');
-                if (activePanel && activePanel.id === 'sec-projects' && !isAnyProjectHovered) {
-
-                    const col = columns[currentScrollingCol];
-                    const direction = (currentScrollingCol % 2 === 0) ? 1 : -1;
-
-                    if (col && col.children.length > 0) {
-                        const itemHeight = col.children[0].getBoundingClientRect().height;
-                        const gap = parseInt(window.getComputedStyle(col).gap) || 0;
-                        const shift = (itemHeight + gap) * direction;
-
-                        col.scrollBy({ top: shift, behavior: 'smooth' });
-                    }
-
-                    // رفتن به ستون بعدی در دورِ بعد
-                    currentScrollingCol = (currentScrollingCol + 1) % columns.length;
-                }
-            }, 2400); // هر 2.4 ثانیه فقط یک ستون حرکت می‌کند
-
+            // ── Precise Scrollspy for About Section ──
             if (aboutContainer && aboutSections.length > 0) {
                 let aboutTicking = false;
+
                 const syncAboutActive = () => {
+                    // بررسی اینکه آیا به انتهای بخش رسیده‌ایم یا خیر
                     const bottomGap = aboutContainer.scrollHeight - aboutContainer.scrollTop - aboutContainer.clientHeight;
-                    if (bottomGap < 24) { setAboutActive('competitions'); return; }
-                    const probeLine = aboutContainer.scrollTop + 140;
+
+                    // افزایش تلورانس از 24 به 60 برای اطمینان از کلیک خوردن بخش آخر در تمام مرورگرها
+                    if (bottomGap <= 60) {
+                        // اگر به انتهای لیست رسیدیم، مستقیماً بخش آخر (Competitions) را روشن کن
+                        setAboutActive('competitions');
+                        return;
+                    }
+
+                    // در غیر این صورت، بر اساس وسط صفحه بررسی کن
+                    const probeLine = aboutContainer.scrollTop + (aboutContainer.clientHeight * 0.4);
                     let activeId = 'brand';
-                    aboutSections.forEach(section => { if (probeLine >= section.offsetTop - 24) activeId = section.id.replace('about-', ''); });
+
+                    aboutSections.forEach(section => {
+                        if (probeLine >= section.offsetTop) {
+                            activeId = section.id.replace('about-', '');
+                        }
+                    });
+
                     setAboutActive(activeId);
                 };
+
                 setAboutActive('brand');
                 syncAboutActive();
+
                 aboutContainer.addEventListener('scroll', () => {
                     if (aboutTicking) return;
                     aboutTicking = true;
@@ -2818,7 +2340,8 @@
                         syncAboutActive();
                         aboutTicking = false;
                     });
-                });
+                }, { passive: true });
+
                 window.addEventListener('resize', syncAboutActive);
             }
 
@@ -2840,15 +2363,13 @@
                 if (textBlock) textBlock.style.display = 'none';
                 snapToIdleLogo();
                 introStarted = true;
-                window.setTimeout(() => {
-                    runLogoRemix();
-                    scheduleNextRemix();
-                }, 1200);
             } else if (overlay) {
                 body.setAttribute('data-phase', 'intro');
                 if (logo) logo.setAttribute('data-state', 'idle');
                 const triggerIntro = () => startIntroSequence();
-                introTimers.push(setTimeout(triggerIntro, 1750));
+
+                introTimers.push(setTimeout(triggerIntro, 3500));
+
                 overlay.addEventListener('click', triggerIntro, { once: true });
                 document.addEventListener('click', function docClickTrigger(e) {
                     if (introStarted) return;
@@ -2874,15 +2395,10 @@
                     introStarted = true;
                     clearIntroTimers();
                 }
-                if (!document.hidden && body.getAttribute('data-phase') === 'idle') {
-                    runLogoRemix();
-                    scheduleNextRemix();
-                }
             });
 
             window.addEventListener('pagehide', () => {
                 clearIntroTimers();
-                stopRemixLoop();
             });
             window.addEventListener('pageshow', (e) => {
                 if (e.persisted) {
@@ -2896,29 +2412,58 @@
                     const textBlock = document.getElementById('intro-text-block');
                     if (textBlock) textBlock.style.display = 'none';
                     snapToIdleLogo();
-                    stopRemixLoop();
-                    runLogoRemix();
-                    scheduleNextRemix();
                     introStarted = true;
                     clearIntroTimers();
                 }
             });
         });
 
-        // ── Project Details Overlay Controllers ──
-        function openProjectDetail(title, year, category) {
+        // ── Project Details Overlay Controllers (Dynamic Gallery) ──
+        const projectImages = {
+            1: ['angular-leaning-terracotta-glass-museum.jpg', 'colorful-curved-facade-triangular-windows.jpg', 'concrete-cantilever-modernist-corner-facade.jpg', 'curved-concrete-building-blue-glass-windows.jpg', 'curved-modern-glass-building-metal-louvers.jpg'],
+            2: ['colorful-curved-facade-triangular-windows.jpg', 'curved-white-building-tall-glass-arch.jpg', 'dark-brutalist-geometric-patterned-facade.jpg', 'darya-shkapina.jpg', 'double-tree-by-hilton-nice-centre.jpg'],
+            3: ['concrete-cantilever-modernist-corner-facade.jpg', 'experimenta-science-centre-stoneware-flooring-casalgrande-padana.jpg', 'futuristic-geometric-glass-canopy-copper-facade.jpg', 'geometric-glass-honeycomb-facade.jpg', 'germanys-axel-springer-group.jpg'],
+            4: ['curved-concrete-building-blue-glass-windows.jpg', 'harpa-concert-hall-glass-honeycomb-facade.jpg', 'howard-bouchevereau.jpg', 'minimalist-white-architecture-cantilevered-volume.jpg', 'modern-brick-building-corner-windows-sky.jpg'],
+            5: ['dark-brutalist-geometric-patterned-facade.jpg', 'modern-cantilevered-office-building-waterfront.jpg', 'modern-white-building-curved-glass-stairs.jpg', 'monochrome-cylindrical-building-geometric-facade.jpg', 'parametric-curved-glass-amber-grid-architecture.jpg'],
+            6: ['darya-shkapina.jpg', 'pexels-michael-pointner-134459625-10209033.jpg', 'pierres-vives.jpg', 'rock-and-roll-hall-of-fame-cleveland-architecture.jpg', 'sidra-medicine-hospital-abudhabi-cantilevered-glass.jpg'],
+            7: ['double-tree-by-hilton-nice-centre.jpg', 'silver-geometric-origami-metal-facade.jpg', 'stacked-cantilevered-glass-volumes-architecture.jpg', 'stepped-dark-glass-facade-architecture-twilight.jpg', 'undulating-metallic-reflective-architecture.jpg'],
+            8: ['experimenta-science-centre-stoneware-flooring-casalgrande-padana.jpg', 'zaha-hadid-heydar-aliyev-center-baku-facade.jpg', 'angular-leaning-terracotta-glass-museum.jpg', 'concrete-cantilever-modernist-corner-facade.jpg', 'curved-modern-glass-building-metal-louvers.jpg'],
+            9: ['howard-bouchevereau.jpg', 'colorful-curved-facade-triangular-windows.jpg', 'dark-brutalist-geometric-patterned-facade.jpg', 'double-tree-by-hilton-nice-centre.jpg', 'geometric-glass-honeycomb-facade.jpg']
+        };
+
+        function openProjectDetail(title, year, category, projectId) {
             const overlay = document.getElementById('project-detail-overlay');
             const titleEl = document.getElementById('pd-title');
             const metaEl = document.getElementById('pd-meta');
+            const mainImgEl = document.getElementById('pd-main-img');
+            const galImages = document.querySelectorAll('.pd-gallery-img');
 
-            // داینامیک کردن اطلاعات پروژه بر اساس باکسی که روی آن کلیک شده
             if (titleEl) titleEl.innerText = title;
             if (metaEl) metaEl.innerText = `${year} | ${category}`;
 
-            // نمایش پنل با ترانزیشن اسلاید از راست به چپ
+            const imgs = projectImages[projectId];
+            if (imgs) {
+                // استفاده از setProperty با important برای غلبه بر CSS پیش‌فرضِ panel-shell
+                if (mainImgEl) mainImgEl.style.setProperty('background-image', `url('../assets/pics/Buildings/${imgs[0]}')`, 'important');
+
+                galImages.forEach((el, index) => {
+                    if (imgs[index + 1]) {
+                        el.style.setProperty('background-image', `url('../assets/pics/Buildings/${imgs[index + 1]}')`, 'important');
+                    }
+                });
+            }
+
             if (overlay) {
                 overlay.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none');
                 overlay.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            }
+        }
+
+        function closeProjectDetail() {
+            const overlay = document.getElementById('project-detail-overlay');
+            if (overlay) {
+                overlay.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+                overlay.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
             }
         }
 
