@@ -1,0 +1,44 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'               # با هر تگ مثل v1.0.0 اجرا می‌شود
+  workflow_dispatch:        # امکان اجرای دستی از界面 گیت‌هاب
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # (اختیاری) اگر نیاز به build دارید (مثلاً تولید dist با Tailwind)
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+      #
+      # - name: Install dependencies & build
+      #   run: |
+      #     npm ci
+      #     npm run build         # باید در package.json تعریف شده باشد
+
+      - name: Create release archive
+        run: |
+          zip -r release.zip \
+            assets \
+            dist \
+            src \
+            package.json \
+            package-lock.json \
+            tailwind.config.js
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release.zip
+          generate_release_notes: true   # یادداشت‌های انتشار خودکار
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
