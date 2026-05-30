@@ -10,6 +10,11 @@
             --intro-fly-x: 0px;
             --intro-fly-y: 0px;
             --intro-fly-scale: 1;
+            --dir-sign: 1;
+        }
+
+        html[dir="rtl"] {
+            --dir-sign: -1;
         }
 
         @font-face {
@@ -78,7 +83,7 @@
             width: var(--logo-w);
             height: 275px;
             margin-bottom: 0.5rem;
-            left: calc(var(--logo-w) * -0.026875);
+            inset-inline-start: calc(var(--logo-w) * -0.026875);
             transition: transform 0.85s var(--ease-elegant), opacity 0.5s var(--ease-elegant);
             transform-origin: center center;
             will-change: transform, opacity;
@@ -109,7 +114,7 @@
         .intro-piece {
             position: absolute;
             top: 0;
-            left: 0;
+            inset-inline-start: 0;
             width: 100%;
             height: 100%;
             will-change: transform, opacity;
@@ -137,7 +142,7 @@
             /* قطعات در ابتدا مخفی هستند */
             opacity: 0;
             /* موقعیت اولیه: مخفی شده زیر قطعه آبی (با جابجایی منفی برای جبران فاصله) */
-            transform: translate(calc(var(--off-x) * -1), calc(var(--off-y-final) * -1)) scale(1);
+            transform: translate(calc(var(--off-x) * -1 * var(--dir-sign)), calc(var(--off-y-final) * -1)) scale(1);
         }
 
         /* Phase 1: horizontal slide only (Y stays at blue level) */
@@ -344,13 +349,6 @@
             box-shadow: 0 12px 28px rgba(71, 70, 70, 0.12);
         }
 
-        /* رفع لگ اسکرول کروم (حذف will-change و استفاده از Hardware Acceleration بهینه) */
-        .panel-shell,
-        .news-article-item {
-            transform: translateZ(0);
-            backface-visibility: hidden;
-        }
-
         /* ── انیمیشن ارگانیک و افترافکتی لوگو (Breathing Effect) ── */
         .idle-pulse-group {
             transform-origin: center center;
@@ -475,24 +473,53 @@
         }
 
         /* توالی زمانی متفاوت برای ایجاد یک ریتم نرم، نامنظم و زیبا */
+        @keyframes loopPart1 {
+            0%, 15% { transform: translate(269.2px, -0.4px); opacity: 0; }
+            30% { transform: translate(0px, -0.4px); opacity: 1; }
+            45%, 55% { transform: translate(0px, 0px); opacity: 1; }
+            70% { transform: translate(0px, -0.4px); opacity: 1; }
+            85%, 100% { transform: translate(269.2px, -0.4px); opacity: 0; }
+        }
+        @keyframes loopPart3 {
+            0%, 15% { transform: translate(112.0px, 325.6px); opacity: 0; }
+            30% { transform: translate(0px, 325.6px); opacity: 1; }
+            45%, 55% { transform: translate(0px, 0px); opacity: 1; }
+            70% { transform: translate(0px, 325.6px); opacity: 1; }
+            85%, 100% { transform: translate(112.0px, 325.6px); opacity: 0; }
+        }
+        @keyframes loopPart4 {
+            0%, 15% { transform: translate(-110.7px, 326.0px); opacity: 0; }
+            30% { transform: translate(0px, 326.0px); opacity: 1; }
+            45%, 55% { transform: translate(0px, 0px); opacity: 1; }
+            70% { transform: translate(0px, 326.0px); opacity: 1; }
+            85%, 100% { transform: translate(-110.7px, 326.0px); opacity: 0; }
+        }
+        @keyframes loopPart5 {
+            0%, 15% { transform: translate(-221.5px, -0.1px); opacity: 0; }
+            30% { transform: translate(0px, -0.1px); opacity: 1; }
+            45%, 55% { transform: translate(0px, 0px); opacity: 1; }
+            70% { transform: translate(0px, -0.1px); opacity: 1; }
+            85%, 100% { transform: translate(-221.5px, -0.1px); opacity: 0; }
+        }
+
         [data-state="idle"] .idle-pulse-1 {
-            animation: aeBreathing 4s ease-in-out infinite 0s;
+            animation: loopPart1 8s var(--ease-elegant) infinite;
         }
 
         [data-state="idle"] .idle-pulse-2 {
-            animation: aeBreathing 4.5s ease-in-out infinite 0.7s;
+            /* Part 2 stays in the center */
         }
 
         [data-state="idle"] .idle-pulse-3 {
-            animation: aeBreathing 5s ease-in-out infinite 1.4s;
+            animation: loopPart3 8s var(--ease-elegant) infinite;
         }
 
         [data-state="idle"] .idle-pulse-4 {
-            animation: aeBreathing 4.2s ease-in-out infinite 2.1s;
+            animation: loopPart4 8s var(--ease-elegant) infinite;
         }
 
         [data-state="idle"] .idle-pulse-5 {
-            animation: aeBreathing 4.8s ease-in-out infinite 2.8s;
+            animation: loopPart5 8s var(--ease-elegant) infinite;
         }
 
         .visual-fill {
@@ -529,6 +556,14 @@
             display: none;
         }
 
+        .project-col {
+            scroll-snap-type: y mandatory;
+        }
+
+        .project-col article {
+            scroll-snap-align: center;
+        }
+
         .tab-panel {
             transition: opacity 0.56s ease-in-out;
             will-change: opacity;
@@ -544,6 +579,7 @@
             z-index: 10;
             /* پدینگ بالا و پایین زیاد شده تا هیت‌باکس‌ها به هم بچسبند اما متن‌ها فاصله داشته باشند */
             padding: 1.5rem 0.35rem;
+            padding-inline-start: 1.5rem; /* Base fallback */
             margin: 0;
             display: flex;
             align-items: center;
@@ -554,27 +590,9 @@
             outline: none;
         }
 
-        .nav-item::after {
-            content: "";
-            position: absolute;
-            inset-inline-start: 0.35rem;
-            bottom: 0.25rem;
-            width: calc(100% - 0.7rem);
-            height: 1px;
-            background: rgba(2, 140, 133, 0.42);
-            transition: width 0.45s var(--ease-elegant), opacity 0.45s var(--ease-elegant);
-            opacity: 0;
-        }
-
         .nav-item:hover,
         .nav-item[aria-selected="true"] {
             text-shadow: 0 0 0.01px currentColor;
-        }
-
-        .nav-item:hover::after,
-        .nav-item[aria-selected="true"]::after {
-            width: calc(100% - 0.7rem);
-            opacity: 1;
         }
 
         .spine-top strong {
@@ -590,12 +608,12 @@
             --marker-shift: 0rem;
             position: absolute;
             top: 50%;
-            left: calc(var(--marker-left) * -1);
+            inset-inline-start: calc(var(--marker-left) * -1);
             width: 3.5rem;
             height: 3.5rem;
-            transform: translate(-50%, -50%) scale(var(--marker-scale)) translateX(var(--marker-shift));
-            will-change: transform, left, opacity;
-            transition: transform 0.62s var(--ease-elegant), left 0.62s var(--ease-elegant), opacity 0.62s var(--ease-elegant);
+            transform: translate(calc(-50% * var(--dir-sign)), -50%) scale(var(--marker-scale)) translateX(calc(var(--marker-shift) * var(--dir-sign)));
+            will-change: transform, inset-inline-start, opacity;
+            transition: transform 0.62s var(--ease-elegant), inset-inline-start 0.62s var(--ease-elegant), opacity 0.62s var(--ease-elegant);
             /* رنگ سبز رو برداشتیم تا خاکستری اصلی خودشون باشن */
             color: var(--razan-gray-200);
             opacity: 0.22;
@@ -606,37 +624,52 @@
 
         /* برای اینکه در حالت عادی هم رنگ‌های اصلی خودشون رو داشته باشن */
         .nav-btn-home .logo-part-marker {
-            --marker-left: 4.5rem;
+            --marker-left: 2.8rem;
             color: #676767;
         }
 
         .nav-btn-news .logo-part-marker {
-            --marker-left: 4.45rem;
+            --marker-left: 2.75rem;
             color: #676767;
         }
 
         /* دکمه Projects که بخش مرکزی و سبز لوگو هست */
         .nav-btn-projects .logo-part-marker {
-            --marker-left: 4.35rem;
+            --marker-left: 2.65rem;
             color: #028c85;
         }
 
         .nav-btn-about .logo-part-marker {
-            --marker-left: 4.3rem;
+            --marker-left: 2.6rem;
             color: #676767;
         }
 
         .nav-btn-contact .logo-part-marker {
-            --marker-left: 4.4rem;
+            --marker-left: 2.7rem;
             color: #676767;
         }
 
         .nav-item:hover .logo-part-marker,
         .nav-item[aria-selected="true"] .logo-part-marker {
             --marker-scale: 1.08;
-            --marker-shift: 0.24rem;
-            /* شفافیت (Transparency) رو هنگام هاور برمیداریم (طبق ویس) */
+            --marker-shift: 1.8rem;
             opacity: 1;
+        }
+
+        .nav-btn-contact:hover .logo-part-marker,
+        .nav-btn-contact[aria-selected="true"] .logo-part-marker {
+            --marker-shift: 2.6rem;
+        }
+
+        @media (min-width: 1024px) {
+            .nav-item {
+                padding-inline-start: 0.8rem;
+                transition: padding-inline-start 0.5s var(--ease-elegant), color 0.5s var(--ease-elegant), text-shadow 0.5s var(--ease-elegant);
+            }
+            .nav-btn-contact:hover,
+            .nav-btn-contact[aria-selected="true"] {
+                padding-inline-start: 1.6rem;
+            }
         }
 
         /* ═══════════════════════════════════════════════
@@ -677,9 +710,9 @@
            ═══════════════════════════════════════════════ */
         .timeline-vertical {
             position: relative;
-            padding-left: 2rem;
-            border-left: 2px solid var(--razan-teal-light);
-            margin-left: 0.5rem;
+            padding-inline-start: 2rem;
+            border-inline-start: 2px solid var(--razan-teal-light);
+            margin-inline-start: 0.5rem;
         }
 
         .timeline-item {
@@ -697,7 +730,7 @@
             height: 12px;
             background: var(--razan-teal);
             border-radius: 50%;
-            left: -2.44rem;
+            inset-inline-start: -2.44rem;
             top: 0.35rem;
             border: 3px solid #ffffff;
             box-shadow: 0 0 0 2px var(--razan-teal-light);
@@ -790,7 +823,7 @@
         #sidebar-news-filters button::before {
             content: '';
             position: absolute;
-            left: -0.75rem;
+            inset-inline-start: -0.75rem;
             top: 0;
             width: 4px;
             height: 100%;
@@ -892,14 +925,14 @@
 
             [data-anim-target="spine-divider"] .spine-line .spine-top {
                 top: -1.35rem;
-                left: 0.6rem;
+                inset-inline-start: 0.6rem;
                 transform: none;
             }
 
             [data-anim-target="spine-divider"] .spine-line .spine-bottom {
                 bottom: -1.45rem;
-                right: 0.6rem;
-                left: auto;
+                inset-inline-end: 0.6rem;
+                inset-inline-start: auto;
                 transform: none;
             }
 

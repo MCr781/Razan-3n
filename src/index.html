@@ -48,15 +48,32 @@
             <!-- Intro text block (positioned relative to the overlay, not the wrapper) -->
         </div>
         <div id="intro-text-block">
-            <div class="intro-title">RAZAN</div>
-            <div class="intro-subtitle">Consulting Engineering</div>
+            <div id="intro-en">
+                <div class="intro-title">RAZAN</div>
+                <div class="intro-subtitle">Consulting Engineering</div>
+            </div>
+            <div id="intro-fa" class="hidden flex flex-col items-center justify-center mt-2">
+                <img src="../assets/pics/RAZAN Consulting Engineering.svg" class="w-[180px] sm:w-[240px] lg:w-[320px] h-auto drop-shadow-sm">
+            </div>
         </div>
     </div>
 
     <!-- ═══════════════ BRANDBOOK BACKGROUND ═══════════════ -->
-    <div class="pointer-events-none fixed inset-0 z-0 w-full h-full"
-        style="background-image: url('../assets/pics/background.svg'); background-size: 93%; background-position: center; background-repeat: no-repeat;"
-        aria-hidden="true">
+    <div class="pointer-events-none fixed inset-0 z-[-1] w-full h-full opacity-40 lg:opacity-30"
+        style="background-image: url('../assets/pics/background.svg'); background-size: 150% auto; background-position: center; background-repeat: no-repeat;"
+        aria-hidden="true" id="desktop-bg-element">
+        <style>
+            @media (min-width: 1024px) {
+                #desktop-bg-element {
+                    background-size: 55% auto !important;
+                    background-position: 95% center !important;
+                }
+
+                html[dir="rtl"] #desktop-bg-element {
+                    background-position: 5% center !important;
+                }
+            }
+        </style>
     </div>
 
     <!-- ═══════════════ REUSABLE SVG SHAPES ═══════════════ -->
@@ -89,11 +106,11 @@
                 class="w-full lg:w-[245px] flex flex-row lg:flex-col items-center justify-between lg:justify-start lg:pt-6 relative shrink-0 gap-2 sm:gap-3 lg:gap-0"
                 data-anim-group="sidebar-left">
 
-                <!-- کانتینر آپدیت شده: لوگو و متن بسیار بزرگ‌تر برای پر کردن فضا -->
-                <div class="flex flex-row items-center justify-start w-full lg:w-auto lg:justify-center">
+                <!-- کانتینر آپدیت شده: لوگو و متن -->
+                <div class="flex flex-row lg:flex-col items-center justify-start w-full lg:w-auto lg:justify-center">
 
-                    <!-- Logo: سایز از 110 پیکسل به 145 پیکسل افزایش یافت -->
-                    <div class="w-[145px] h-[145px] sm:w-[165px] sm:h-[165px] lg:w-[220px] lg:h-[220px] lg:-ml-12 lg:-mt-4 mb-0 lg:mb-4 flex justify-center items-center shrink-0"
+                    <!-- Logo: سایز 20 درصد کوچکتر شد -->
+                    <div class="w-[116px] h-[116px] sm:w-[132px] sm:h-[132px] lg:w-[176px] lg:h-[176px] lg:-ml-12 lg:-mt-4 mb-0 lg:mb-4 flex justify-center items-center shrink-0"
                         data-anim-target="logo-container" data-state="idle">
                         <svg class="w-full h-full overflow-visible" viewBox="0 0 800 786"
                             xmlns="http://www.w3.org/2000/svg" aria-label="لوگوی رازان زمین">
@@ -120,21 +137,9 @@
                         </svg>
                     </div>
 
-                    <!-- متن هدر: افزایش سایز فونت به 19px، ضخامت بیشتر و هماهنگی دندانه -->
-                    <div class="flex lg:hidden flex-col items-start text-[#111111] ml-[15%] sm:ml-[18%] pt-1"
-                        style="-webkit-text-stroke: 0.9px currentColor; text-shadow: 0.5px 0.5px 0 currentColor;">
-                        <span class="font-[900] text-[19px] sm:text-[22px] tracking-[0.16em] uppercase leading-tight">
-                            RA<span class="text-[#028c85]">Z</span>AN
-                        </span>
-                        <!-- بیرون‌زدگی به ml-8 افزایش یافت تا با فونت بزرگ هماهنگ بماند -->
-                        <span
-                            class="font-[900] text-[19px] sm:text-[22px] tracking-[0.16em] uppercase leading-tight mt-0.5 ml-8">
-                            CONSULTING
-                        </span>
-                        <span
-                            class="font-[900] text-[19px] sm:text-[22px] tracking-[0.16em] uppercase leading-tight mt-0.5">
-                            ENGINEERS
-                        </span>
+                    <!-- متن هدر: استفاده از فایل SVG برای تطابق دقیق با Brand Book -->
+                    <div class="flex items-center ml-[5%] sm:ml-[8%] lg:ml-0 lg:-ml-10 lg:mt-2 w-[160px] sm:w-[180px] lg:w-[220px]">
+                        <img src="../assets/pics/RAZAN Consulting Engineering.svg" alt="RAZAN Consulting Engineers" class="w-full h-auto">
                     </div>
 
                 </div>
@@ -144,76 +149,128 @@
 
                     <!-- 1. Project Filters -->
                     <div id="sidebar-project-filters"
-                        class="absolute inset-0 flex flex-col w-full text-xs sm:text-sm tracking-[0.16em] uppercase text-[#8e8e8e] opacity-0 transition-opacity duration-500 pointer-events-none pt-2">
-                        <button class="sidebar-nav-active mb-3 text-left hover:text-[#028c85] transition-colors"
+                        class="absolute inset-0 flex flex-col w-full text-[10px] sm:text-[11px] lg:text-[12px] tracking-[0.16em] uppercase text-[#8e8e8e] opacity-0 transition-opacity duration-500 pointer-events-none pt-2">
+                        <button class="sidebar-nav-active mb-2 text-start hover:text-[#028c85] transition-colors"
                             onclick="filterProjects('all', this)">ALL</button>
 
-                        <div class="flex flex-col gap-3 mb-4">
-                            <button class="text-left hover:text-[#028c85] transition-colors"
+                        <div class="flex flex-col gap-[6px] mb-3">
+                            <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                                 onclick="filterProjects('2000-2004', this)">2000-2004</button>
-                            <button class="text-left hover:text-[#028c85] transition-colors"
+                            <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                                 onclick="filterProjects('2005-2009', this)">2005-2009</button>
-                            <button class="text-left hover:text-[#028c85] transition-colors"
+                            <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                                 onclick="filterProjects('2010-2014', this)">2010-2014</button>
-                            <button class="text-left hover:text-[#028c85] transition-colors"
+                            <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                                 onclick="filterProjects('2015-2019', this)">2015-2019</button>
-                            <button class="text-left hover:text-[#028c85] transition-colors"
+                            <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                                 onclick="filterProjects('2019-2024', this)">2019-2024</button>
                         </div>
 
-                        <div class="flex flex-col gap-3">
-                            <button class="text-left hover:text-[#028c85] transition-colors"
+                        <div class="flex flex-col gap-[6px]">
+                            <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                                 onclick="filterProjects('apartment', this)">Apartment</button>
-                            <button class="text-left hover:text-[#028c85] transition-colors"
+                            <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                                 onclick="filterProjects('villa', this)">Villa</button>
-                            <button class="text-left hover:text-[#028c85] transition-colors"
+                            <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                                 onclick="filterProjects('commercial', this)">Commercial</button>
-                            <button class="text-left hover:text-[#028c85] transition-colors"
+                            <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                                 onclick="filterProjects('health', this)">Health & Care</button>
-                            <button class="text-left hover:text-[#028c85] transition-colors"
+                            <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                                 onclick="filterProjects('office', this)">Office</button>
-                            <button class="text-left hover:text-[#028c85] transition-colors"
+                            <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                                 onclick="filterProjects('complex', this)">Complex</button>
-                            <button class="text-left hover:text-[#028c85] transition-colors"
+                            <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                                 onclick="filterProjects('interior', this)">Interior</button>
-                            <button class="text-left hover:text-[#028c85] transition-colors"
+                            <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                                 onclick="filterProjects('landscape', this)">Landscape</button>
                         </div>
                     </div>
 
                     <!-- 2. About Sub-Nav -->
                     <div id="sidebar-about-subnav"
-                        class="absolute inset-0 flex flex-col gap-3 text-xs sm:text-sm tracking-[0.16em] uppercase text-[#8e8e8e] opacity-0 transition-opacity duration-500 pointer-events-none pt-2">
+                        class="absolute inset-0 flex flex-col gap-[6px] text-[10px] sm:text-[11px] lg:text-[12px] tracking-[0.16em] uppercase text-[#8e8e8e] opacity-0 transition-opacity duration-500 pointer-events-none pt-2">
                         <button onclick="scrollToAbout('brand')" data-target="brand"
-                            class="text-left hover:text-[#028c85] transition-colors sidebar-nav-active">Brand</button>
+                            class="text-start hover:text-[#028c85] transition-colors sidebar-nav-active leading-tight">Brand</button>
                         <button onclick="scrollToAbout('leadership')" data-target="leadership"
-                            class="text-left hover:text-[#028c85] transition-colors">Resume</button>
+                            class="text-start hover:text-[#028c85] transition-colors leading-tight">Resume</button>
                         <button onclick="scrollToAbout('team')" data-target="team"
-                            class="text-left hover:text-[#028c85] transition-colors">Team now</button>
+                            class="text-start hover:text-[#028c85] transition-colors leading-tight">Team now</button>
                         <button onclick="scrollToAbout('history')" data-target="history"
-                            class="text-left hover:text-[#028c85] transition-colors">Team history</button>
+                            class="text-start hover:text-[#028c85] transition-colors leading-tight">Team history</button>
                         <button onclick="scrollToAbout('expertise')" data-target="expertise"
-                            class="text-left hover:text-[#028c85] transition-colors">Design & Construction</button>
+                            class="text-start hover:text-[#028c85] transition-colors leading-tight">Design & Construction</button>
                         <button onclick="scrollToAbout('competitions')" data-target="competitions"
-                            class="text-left hover:text-[#028c85] transition-colors">Competitions</button>
+                            class="text-start hover:text-[#028c85] transition-colors leading-tight">Competitions</button>
                     </div>
 
                     <!-- 3. News Filters -->
                     <div id="sidebar-news-filters"
-                        class="absolute inset-0 flex flex-col gap-3 text-xs sm:text-sm tracking-[0.16em] uppercase text-[#8e8e8e] opacity-0 transition-opacity duration-500 pointer-events-none pt-2">
-                        <button class="text-left hover:text-[#028c85] transition-colors sidebar-nav-active"
+                        class="absolute inset-0 flex flex-col gap-[6px] text-[10px] sm:text-[11px] lg:text-[12px] tracking-[0.16em] uppercase text-[#8e8e8e] opacity-0 transition-opacity duration-500 pointer-events-none pt-2">
+                        <button class="text-start hover:text-[#028c85] transition-colors sidebar-nav-active leading-tight"
                             onclick="filterNews('all', this)">All</button>
-                        <button class="text-left hover:text-[#028c85] transition-colors"
+                        <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                             onclick="filterNews('2026', this)">2026</button>
-                        <button class="text-left hover:text-[#028c85] transition-colors"
+                        <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                             onclick="filterNews('2025', this)">2025</button>
-                        <button class="text-left hover:text-[#028c85] transition-colors"
+                        <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                             onclick="filterNews('2024', this)">2024</button>
-                        <button class="text-left hover:text-[#028c85] transition-colors"
+                        <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                             onclick="filterNews('2023', this)">2023</button>
-                        <button class="text-left hover:text-[#028c85] transition-colors"
+                        <button class="text-start hover:text-[#028c85] transition-colors leading-tight"
                             onclick="filterNews('2022', this)">2022</button>
                     </div>
+                </div>
+
+                <!-- Social Links (Feature 13 & Problem 3) positioned at bottom -->
+                <div id="global-social-icons" class="hidden lg:grid grid-cols-4 gap-y-3 gap-x-2 lg:-ml-10 mt-auto pb-4 pt-10 text-[#8e8e8e] z-20 place-items-center transition-opacity duration-300">
+                    <a href="#" class="hover:text-[#028c85] transition-colors" aria-label="LinkedIn">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    </a>
+                    <a href="#" class="hover:text-[#028c85] transition-colors" aria-label="WhatsApp">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    </a>
+                    <a href="#" class="hover:text-[#028c85] transition-colors" aria-label="Instagram">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                    <a href="#" class="hover:text-[#028c85] transition-colors" aria-label="Telegram">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12zm5.894-17.15l-1.92 9.043c-.143.633-.518.795-1.045.501l-2.887-2.127-1.393 1.343c-.154.154-.284.284-.582.284l.207-2.923 5.321-4.81c.231-.206-.051-.32-.361-.115l-6.574 4.14-2.836-.884c-.616-.192-.628-.616.128-.916l11.082-4.275c.513-.191.956.122.86.739z"/></svg>
+                    </a>
+                    <a href="#" class="hover:text-[#028c85] transition-colors" aria-label="Bale">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.425 23.987a12.218 12.218 0 0 1-2.95-.514 6.578 6.578 0 0 0-.336-.116C4.936 22.303 2.22 19.763.913 16.599a11.92 11.92 0 0 1-.9-4.063C.005 12.377.001 10.246 0 6.74 0 .71-.005 1.137.07.903.23.394.673.05 1.224.005c.421-.034.7.088 1.603.699.562.38 1.119.78 1.796 1.289.315.237.353.261.376.247l.35-.23c.58-.381 1.11-.677 1.7-.945A11.913 11.913 0 0 1 9.766.21a11.19 11.19 0 0 1 2.041-.2c1.14-.016 2.077.091 3.152.36 3.55.888 6.538 3.411 8.028 6.78.492 1.113.845 2.43.945 3.522.033.366.039.43.053.611.008.105.015.406.015.669 0 .783-.065 1.57-.169 2.064a5.474 5.474 0 0 0-.046.26c-.056.378-.214.987-.399 1.535-.205.613-.367.999-.684 1.633a11.95 11.95 0 0 1-2.623 3.436c-.44.396-.829.705-1.26 1.003-.647.445-1.307.812-2.039 1.134-.6.265-1.44.539-2.101.686a11.165 11.165 0 0 1-1.178.202 12.28 12.28 0 0 1-2.076.082zm-.61-5.92c.294-.06.678-.209.864-.337.144-.099.428-.376 2.064-2.013a161.8 161.8 0 0 1 1.764-1.753c.017 0 1.687-1.67 1.687-1.689 0-.02 1.64-1.648 1.661-1.648.01 0 .063-.047.118-.106.467-.495.682-.957.716-1.547.026-.433-.06-.909-.217-1.196a2.552 2.552 0 0 0-.983-1.024c-.281-.163-.512-.233-.888-.27-.306-.031-.688 0-.948.075-.243.07-.603.274-.853.481-.042.035-1.279 1.265-2.748 2.733l-2.671 2.67-1.093-1.09c-.6-.6-1.12-1.114-1.155-1.142a2.419 2.419 0 0 0-1.338-.51c-.404-.013-.91.09-1.224.25a2.89 2.89 0 0 0-.659.526c-.108.12-.287.357-.29.385-.003.03-.009.044-.065.16a2.312 2.312 0 0 0-.224.91c-.011.229-.01.265.019.491.045.353.24.781.51 1.115.05.063.97.992 2.044 2.064 1.507 1.505 1.98 1.97 2.074 2.039.327.24.683.388 1.101.456.182.03.5.016.734-.03z"></path></svg>
+                    </a>
+                    <a href="#" class="hover:text-[#028c85] transition-colors" aria-label="Eitaa">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5.968 23.942a6.624 6.624 0 0 1-2.332-.83c-1.62-.929-2.829-2.593-3.217-4.426-.151-.717-.17-1.623-.15-7.207C.288 5.47.274 5.78.56 4.79c.142-.493.537-1.34.823-1.767C2.438 1.453 3.99.445 5.913.08c.384-.073.94-.08 6.056-.08 6.251 0 6.045-.009 7.066.314a6.807 6.807 0 0 1 4.314 4.184c.33.937.346 1.087.369 3.555l.02 2.23-.391.268c-.558.381-1.29 1.06-2.316 2.15-1.182 1.256-2.376 2.42-2.982 2.907-1.309 1.051-2.508 1.651-3.726 1.864-.634.11-1.682.067-2.302-.095-.553-.144-.517-.168-.726.464a6.355 6.355 0 0 0-.318 1.546l-.031.407-.146-.03c-1.215-.241-2.419-1.285-2.884-2.5a3.583 3.583 0 0 1-.26-1.219l-.016-.34-.309-.284c-.644-.59-1.063-1.312-1.195-2.061-.212-1.193.34-2.542 1.538-3.756 1.264-1.283 3.127-2.29 4.953-2.68.658-.14 1.818-.177 2.403-.075 1.138.198 2.067.773 2.645 1.639.182.271.195.31.177.555a.812.812 0 0 1-.183.493c-.465.651-1.848 1.348-3.336 1.68-2.625.585-4.294-.142-4.033-1.759.026-.163.04-.304.031-.313-.032-.032-.293.104-.575.3-.479.334-.903.984-1.05 1.607-.036.156-.05.406-.034.65.02.331.053.454.192.736.092.186.275.45.408.589l.24.251-.096.122a4.845 4.845 0 0 0-.677 1.217 3.635 3.635 0 0 0-.105 1.815c.103.461.421 1.095.739 1.468.242.285.797.764.886.764.024 0 .044-.048.044-.106.001-.23.184-.973.326-1.327.423-1.058 1.351-1.96 2.82-2.74.245-.13.952-.47 1.572-.757 1.36-.63 2.103-1.015 2.511-1.305 1.176-.833 1.903-2.065 2.14-3.625.086-.57.086-1.634 0-2.207-.368-2.438-2.195-4.096-4.818-4.37-2.925-.307-6.648 1.953-8.942 5.427-1.116 1.69-1.87 3.565-2.187 5.443-.123.728-.169 2.08-.093 2.75.193 1.704.822 3.078 1.903 4.156a6.531 6.531 0 0 0 1.87 1.313c2.368 1.13 4.99 1.155 7.295.071.996-.469 1.974-1.196 3.023-2.25 1.02-1.025 1.71-1.88 3.592-4.458 1.04-1.423 1.864-2.368 2.272-2.605l.15-.086-.019 3.091c-.018 2.993-.022 3.107-.123 3.561-.6 2.678-2.54 4.636-5.195 5.242l-.468.107-5.775.01c-4.734.008-5.85-.002-6.19-.056z"></path></svg>
+                    </a>
+                    <a href="#" class="hover:text-[#028c85] transition-colors" aria-label="Rubika">
+                        <svg class="w-5 h-5" viewBox="0 0 620 620" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g fill="currentColor" stroke="#ffffff" stroke-width="18" stroke-linejoin="round">
+        <path d="M307.789 -42.7626H310.078C310.702 12.7347 309.753 124.054 309.753 124.054C256.619 94.2859 203.121 65.2189 150.014 35.3597C184.803 15.6008 219.619 -4.10192 254.46 -23.7483C270.962 -33.0477 288.712 -41.0352 307.789 -42.7626Z"/>
+        <path d="M313.849 -42.7756C334.512 -40.9184 353.186 -31.0865 370.988 -21.1118C404.139 -2.43518 437.247 16.3281 470.311 35.1779C416.996 64.6994 363.095 94.6885 309.701 124.119C309.246 68.6217 310.52 12.7217 309.896 -42.7756H313.849Z"/>
+        <path d="M150.053 35.2949L309.792 123.989L148.948 217.84C148.948 217.84 148.87 158.29 149.052 128.6C148.909 97.7667 150.053 35.2949 150.053 35.2949Z"/>
+        <path d="M470.493 35.1909L470.948 35.4377C470.818 90.7533 470.948 146.069 470.948 201.384C470.857 206.8 470.805 217.97 470.805 217.97L309.805 124.054C309.805 124.054 417.19 64.7125 470.545 35.1909H470.493Z"/>
+        <path d="M470.817 35.4247C506.291 55.5689 541.519 76.1548 576.759 96.6887C593.807 106.248 611.869 116.846 621.18 134.86C571.271 162.459 470.752 217.983 470.752 217.983C470.752 217.983 470.674 206.8 470.752 201.384C470.752 146.069 470.674 90.7532 470.752 35.4377L470.817 35.4247Z"/>
+        <path d="M48.2719 93.6365C81.6267 74.1546 149.949 35.3467 149.949 35.3467L149.012 217.84C149.012 217.84 48.883 162.706 -0.869595 135.094C9.97558 115.846 29.5594 104.144 48.2719 93.6365Z"/>
+        <path d="M309.648 124.041L470.649 217.944C470.649 217.944 418.841 246.582 393.12 260.336C365.63 275.922 309.779 306.859 309.779 306.859L148.948 217.84L309.648 124.041Z"/>
+        <path d="M-12.1955 207.93C-12.0524 183.435 -12.4945 157.433 -0.934071 135.094C48.8575 162.706 148.948 217.84 148.948 217.84C95.151 248.907 41.6143 280.442 -12.1564 311.548C-12.2345 277 -12.1564 242.465 -12.1564 207.93H-12.1955Z"/>
+        <path d="M621.18 134.86C630.985 153.173 632.417 174.473 631.871 194.851C631.871 233.568 631.871 311.886 631.871 311.886L470.805 217.97C470.805 217.97 571.271 162.46 621.18 134.86Z"/>
+        <path d="M148.948 217.84C149.195 217.736 309.779 306.859 309.779 306.859C309.779 306.859 309.818 399.97 309.844 445.518C310.104 460.182 309.753 489.82 309.753 489.82C256.087 460.234 202.706 430.387 149.026 400.801L148.935 400.398C148.935 339.546 148.948 278.693 148.948 217.84Z"/>
+        <path d="M-12.1564 311.548C41.6143 280.377 95.151 248.907 148.948 217.84C148.896 278.701 148.883 339.554 148.935 400.398C140.678 396.957 133.174 392.047 125.293 387.878C79.481 362.72 33.8116 336.978 -12.1698 312.067V311.587L-12.1564 311.548Z"/>
+        <path d="M470.752 217.983C470.752 255.301 470.753 292.598 470.753 329.9C470.584 353.629 471.351 377.267 470.753 400.983C417.164 430.076 309.753 489.82 309.753 489.82C309.753 489.82 310.104 460.182 309.844 445.518C309.818 399.97 309.779 306.859 309.779 306.859L470.752 217.983Z"/>
+        <path d="M470.752 217.983C470.752 217.983 631.871 311.665 631.871 311.886C578.334 341.524 470.753 400.983 470.753 400.983C471.351 377.267 470.584 353.629 470.753 329.9C470.753 292.581 470.805 255.271 470.805 217.97L470.752 217.983Z"/>
+        <path d="M-12.1698 312.067C33.8117 337.017 79.416 362.72 125.28 387.917C133.161 392.086 140.677 397.008 148.935 400.437L149.025 400.84C99.6109 429.612 50.2226 458.398 0.860119 487.196C-4.34141 479.287 -6.9422 470.065 -8.90577 460.896C-12.0137 445.609 -12.1828 429.946 -12.1828 414.412C-12.1828 380.297 -12.1698 346.182 -12.1698 312.067Z"/>
+        <path d="M631.871 311.886C631.949 347.797 631.844 383.709 631.844 419.62C632.364 442.648 631.688 467.182 619.4 487.482C574.927 461.506 470.753 400.983 470.753 400.983C470.753 400.983 578.334 341.524 631.871 311.886Z"/>
+        <path d="M0.860377 487.157C50.2228 458.324 99.6118 429.539 149.026 400.801C148.701 461.623 149.13 522.459 148.818 583.268C113.837 563.57 78.9481 543.715 44.15 523.705C27.8822 514.094 11.2244 503.405 0.860377 487.157Z"/>
+        <path d="M149.026 400.801C202.706 430.387 256.087 460.234 309.753 489.82C256.178 520.991 148.896 583.333 148.818 583.268C149.13 522.459 148.701 461.623 149.026 400.801Z"/>
+        <path d="M470.506 401.1L470.753 400.983C470.909 461.818 470.441 522.666 471.013 583.502L470.61 583.697C428.14 558.357 385.162 533.823 342.497 508.782C331.756 502.678 309.753 489.82 309.753 489.82C309.753 489.82 416.918 430.257 470.506 401.1Z"/>
+        <path d="M470.753 400.983C475.499 404.217 574.966 461.532 619.439 487.482C613.119 498.262 603.106 506.172 593.015 513.25C576.734 524.186 559.361 533.342 542.43 543.187C518.62 556.63 494.966 570.345 471.013 583.45C470.441 522.614 470.922 461.766 470.766 400.931L470.753 400.983Z"/>
+        <path d="M309.753 489.82L309.753 662.468C296.424 660.507 281.899 657.442 270.091 650.675C229.636 628.258 189.116 605.971 148.818 583.268C202.393 552.032 256.178 521.056 309.753 489.82Z"/>
+        <path d="M309.753 489.82C309.753 489.82 331.756 502.678 342.497 508.782C385.162 533.823 428.14 558.357 467.023 577.601C426.517 599.984 386.015 622.418 345.517 644.902C335.397 650.512 324.172 653.845 312.627 654.667C311.915 654.667 309.753 654.667 309.753 654.667L309.753 489.82Z"/>
+    </g>
+</svg>
+
+                    <a href="#" class="hover:text-[#028c85] transition-colors" aria-label="Gmail">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+                    </a>
                 </div>
             </aside>
 
@@ -225,9 +282,9 @@
                 <div class="flex lg:hidden w-full items-center">
                     <div class="flex-1 h-[1px] bg-[#028c85]"></div>
                     <div class="flex items-center text-xs text-[#8e8e8e] ml-4">
-                        <span class="cursor-pointer hover:text-[#028c85] font-medium">فا</span>
-                        <span class="mx-2 text-[#8e8e8e] font-light">|</span>
-                        <span class="cursor-pointer hover:text-[#028c85] font-medium">En</span>
+                        <span class="cursor-pointer hover:text-[#028c85] font-medium" onclick="toggleLanguage('fa')">فا</span>
+                        <span class="w-[1px] h-[12px] bg-[#028c85] mx-2"></span>
+                        <span class="cursor-pointer hover:text-[#028c85] font-medium" onclick="toggleLanguage('en')">En</span>
                     </div>
                 </div>
 
@@ -239,9 +296,9 @@
                     </div>
                     <div
                         class="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-white px-[8px] flex items-center justify-center text-xs text-[#8e8e8e] cursor-pointer hover:text-[#028c85] transition-colors z-10">
-                        <span class="w-[22px] text-center mt-[2px]">فا</span>
+                        <span class="w-[22px] text-center mt-[2px]" onclick="toggleLanguage('fa')">فا</span>
                         <span class="w-[1px] h-[12px] bg-[#028c85] shrink-0 mx-1"></span>
-                        <span class="w-[22px] text-center font-medium">En</span>
+                        <span class="w-[22px] text-center font-medium" onclick="toggleLanguage('en')">En</span>
                     </div>
                 </div>
 
@@ -257,35 +314,35 @@
                     data-anim-target="nav-item"><svg class="logo-part-marker" viewBox="254.192 12.8717 110.69 375.9723"
                         preserveAspectRatio="xMidYMid meet" fill="currentColor" aria-hidden="true">
                         <use href="#logo-shape-part3"></use>
-                    </svg>HOME</button>
+                    </svg><span class="nav-text" data-en="HOME" data-fa="خانه">HOME</span></button>
                 <button onclick="switchTab('news')" id="nav-btn-news" role="tab" aria-selected="false"
                     aria-controls="sec-news" tabindex="-1"
                     class="nav-item nav-btn-news group flex items-center relative min-h-[2rem] lg:min-h-[2.5rem] text-sm sm:text-base lg:text-xl tracking-[0.18em] lg:tracking-wider text-[#8e8e8e] hover:text-[#676767] aria-selected:text-[#474646] cursor-pointer bg-transparent border-none p-0 text-start outline-none focus-visible:ring-2 focus-visible:ring-[#028c85] focus-visible:ring-offset-4 lg:focus-visible:ring-offset-8 whitespace-nowrap"
                     data-anim-target="nav-item"><svg class="logo-part-marker" viewBox="477.143 12.6001 110.119 375.8259"
                         preserveAspectRatio="xMidYMid meet" fill="currentColor" aria-hidden="true">
                         <use href="#logo-shape-part4"></use>
-                    </svg>NEWS</button>
+                    </svg><span class="nav-text" data-en="NEWS" data-fa="اخبار">NEWS</span></button>
                 <button onclick="switchTab('projects')" id="nav-btn-projects" role="tab" aria-selected="false"
                     aria-controls="sec-projects" tabindex="-1"
                     class="nav-item nav-btn-projects group flex items-center relative min-h-[2rem] lg:min-h-[2.5rem] text-sm sm:text-base lg:text-xl tracking-[0.18em] lg:tracking-wider text-[#8e8e8e] hover:text-[#676767] aria-selected:text-[#474646] cursor-pointer bg-transparent border-none p-0 text-start outline-none focus-visible:ring-2 focus-visible:ring-[#028c85] focus-visible:ring-offset-4 lg:focus-visible:ring-offset-8 whitespace-nowrap"
                     data-anim-target="nav-item"><svg class="logo-part-marker" viewBox="364.785 337.957 113.455 377.125"
                         preserveAspectRatio="xMidYMid meet" fill="currentColor" aria-hidden="true">
                         <use href="#logo-shape-part2"></use>
-                    </svg>PROJECTS</button>
+                    </svg><span class="nav-text" data-en="PROJECTS" data-fa="پروژه‌ها">PROJECTS</span></button>
                 <button onclick="switchTab('about')" id="nav-btn-about" role="tab" aria-selected="false"
                     aria-controls="sec-about" tabindex="-1"
                     class="nav-item nav-btn-about group flex items-center relative min-h-[2rem] lg:min-h-[2.5rem] text-sm sm:text-base lg:text-xl tracking-[0.18em] lg:tracking-wider text-[#8e8e8e] hover:text-[#676767] aria-selected:text-[#474646] cursor-pointer bg-transparent border-none p-0 text-start outline-none focus-visible:ring-2 focus-visible:ring-[#028c85] focus-visible:ring-offset-4 lg:focus-visible:ring-offset-8 whitespace-nowrap"
                     data-anim-target="nav-item"><svg class="logo-part-marker" viewBox="587.862 339.861 110.254 373.519"
                         preserveAspectRatio="xMidYMid meet" fill="currentColor" aria-hidden="true">
                         <use href="#logo-shape-part5"></use>
-                    </svg>ABOUT</button>
+                    </svg><span class="nav-text" data-en="ABOUT" data-fa="درباره ما">ABOUT</span></button>
                 <button onclick="switchTab('contact')" id="nav-btn-contact" role="tab" aria-selected="false"
                     aria-controls="sec-contact" tabindex="-1"
                     class="nav-item nav-btn-contact group flex items-center relative min-h-[2rem] lg:min-h-[2.5rem] text-sm sm:text-base lg:text-xl tracking-[0.18em] lg:tracking-wider text-[#8e8e8e] hover:text-[#676767] aria-selected:text-[#474646] cursor-pointer bg-transparent border-none p-0 text-start outline-none focus-visible:ring-2 focus-visible:ring-[#028c85] focus-visible:ring-offset-4 lg:focus-visible:ring-offset-8 whitespace-nowrap"
                     data-anim-target="nav-item"><svg class="logo-part-marker" viewBox="50.7766 339.826 203.1174 374.077"
                         preserveAspectRatio="xMidYMid meet" fill="currentColor" aria-hidden="true">
                         <use href="#logo-shape-part1"></use>
-                    </svg>CONTACT</button>
+                    </svg><span class="nav-text" data-en="CONTACT" data-fa="تماس با ما">CONTACT</span></button>
                 </button>
             </nav>
         </div> <!-- این دیو برای بستن کانتینر Sticky اضافه شد -->
@@ -319,16 +376,16 @@
                 data-page="projects">
                 <!-- استفاده از فضای کامل، فیلترها حذف و به سایدبار منتقل شدند -->
                 <div
-                    class="h-full w-full px-4 sm:px-8 lg:px-10 pt-4 lg:pt-6 pb-6 flex flex-col relative overflow-hidden">
+                    class="h-full w-full px-4 sm:px-8 lg:px-10 pt-4 lg:pt-6 pb-6 flex flex-col relative overflow-hidden items-center justify-center">
 
-                    <!-- گرید آپدیت شده: ۳ ستونه در تمام دستگاه‌ها با فاصله‌ها و گوشه‌های ریسپانسیو -->
-                    <div class="flex-1 grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6 overflow-hidden relative h-full">
+                    <!-- گرید آپدیت شده: کانتینر مربعی برای نمایش دقیق ۹ مربع -->
+                    <div class="w-full max-w-full h-auto lg:w-auto lg:h-full aspect-square grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6 overflow-hidden relative shrink-0 mx-auto">
 
                         <!-- Column 1 -->
                         <div
-                            class="flex flex-col gap-2 sm:gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full snap-y snap-mandatory">
+                            class="flex flex-col gap-2 sm:gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full">
                             <article onclick="openProjectDetail('Tehran Commercial Complex', '2025', 'COMMERCIAL', 1)"
-                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0">
                                 <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
                                     style="background-image: url('../assets/pics/Buildings/angular-leaning-terracotta-glass-museum.jpg');">
                                 </div>
@@ -343,7 +400,7 @@
                                 </div>
                             </article>
                             <article onclick="openProjectDetail('Urban Pocket Landscape', '2022', 'LANDSCAPE', 2)"
-                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0">
                                 <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
                                     style="background-image: url('../assets/pics/Buildings/colorful-curved-facade-triangular-windows.jpg');">
                                 </div>
@@ -358,7 +415,7 @@
                                 </div>
                             </article>
                             <article onclick="openProjectDetail('Laleh Villa', '2019', 'VILLA', 3)"
-                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0">
                                 <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
                                     style="background-image: url('../assets/pics/Buildings/concrete-cantilever-modernist-corner-facade.jpg');">
                                 </div>
@@ -376,9 +433,9 @@
 
                         <!-- Column 2 -->
                         <div
-                            class="flex flex-col gap-2 sm:gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full snap-y snap-mandatory">
+                            class="flex flex-col gap-2 sm:gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full">
                             <article onclick="openProjectDetail('Health Cluster', '2026', 'HEALTH & CARE', 4)"
-                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0">
                                 <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
                                     style="background-image: url('../assets/pics/Buildings/curved-concrete-building-blue-glass-windows.jpg');">
                                 </div>
@@ -393,7 +450,7 @@
                                 </div>
                             </article>
                             <article onclick="openProjectDetail('Office Atrium', '2016', 'OFFICE', 5)"
-                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0">
                                 <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
                                     style="background-image: url('../assets/pics/Buildings/dark-brutalist-geometric-patterned-facade.jpg');">
                                 </div>
@@ -408,7 +465,7 @@
                                 </div>
                             </article>
                             <article onclick="openProjectDetail('Karaj Riverfront Renewal', '2012', 'COMPLEX', 6)"
-                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0">
                                 <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
                                     style="background-image: url('../assets/pics/Buildings/darya-shkapina.jpg');">
                                 </div>
@@ -426,9 +483,9 @@
 
                         <!-- Column 3 -->
                         <div
-                            class="flex flex-col gap-2 sm:gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full snap-y snap-mandatory">
+                            class="flex flex-col gap-2 sm:gap-4 lg:gap-6 overflow-y-auto scroll-clean project-col h-full">
                             <article onclick="openProjectDetail('Community School Campus', '2009', 'COMPLEX', 7)"
-                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0">
                                 <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
                                     style="background-image: url('../assets/pics/Buildings/double-tree-by-hilton-nice-centre.jpg');">
                                 </div>
@@ -443,7 +500,7 @@
                                 </div>
                             </article>
                             <article onclick="openProjectDetail('Civic Gateway', '2005', 'URBAN', 8)"
-                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0">
                                 <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
                                     style="background-image: url('../assets/pics/Buildings/experimenta-science-centre-stoneware-flooring-casalgrande-padana.jpg');">
                                 </div>
@@ -458,7 +515,7 @@
                                 </div>
                             </article>
                             <article onclick="openProjectDetail('Workspace Flexibility Hub', '2004', 'OFFICE', 9)"
-                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0 snap-center">
+                                class="group relative overflow-hidden rounded-[10px] sm:rounded-[20px] lg:rounded-[28px] aspect-square w-full cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 shrink-0">
                                 <div class="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
                                     style="background-image: url('../assets/pics/Buildings/howard-bouchevereau.jpg');">
                                 </div>
@@ -580,7 +637,7 @@
                         class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4 -mx-4 px-4 sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">
                         <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">News
                         </h2>
-                        <div class="w-12 h-[1px] bg-[#028c85] mt-4 lg:mt-6"></div>
+                        <div id="progress-news" class="w-0 h-[1px] bg-[#028c85] mt-4 lg:mt-6 transition-all duration-300"></div>
                     </div>
 
                     <div class="space-y-7 lg:space-y-8">
@@ -590,7 +647,7 @@
                                 class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
                                 data-year="2026">
                                 <div
-                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise will-change-transform transform [animation-fill-mode:forwards] bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
                                     <p
                                         class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
                                         Apr 12, 2026</p>
@@ -599,7 +656,7 @@
                                         Razan shortlisted for Tehran Civic Gateway</h4>
                                 </div>
                                 <div
-                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise will-change-transform transform [animation-fill-mode:forwards] overflow-hidden shrink-0">
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] overflow-hidden shrink-0">
                                     <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                                         style="background-image: url('../assets/pics/Buildings/modern-brick-building-corner-windows-sky.jpg');">
                                     </div>
@@ -609,7 +666,7 @@
                                 class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
                                 data-year="2026">
                                 <div
-                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise will-change-transform transform [animation-fill-mode:forwards] bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
                                     <p
                                         class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
                                         Jan 05, 2026</p>
@@ -618,7 +675,7 @@
                                         Our new sustainability framework officially launched</h4>
                                 </div>
                                 <div
-                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise will-change-transform transform [animation-fill-mode:forwards] overflow-hidden shrink-0">
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] overflow-hidden shrink-0">
                                     <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                                         style="background-image: url('../assets/pics/Buildings/modern-cantilevered-office-building-waterfront.jpg');">
                                     </div>
@@ -628,7 +685,7 @@
                                 class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
                                 data-year="2025">
                                 <div
-                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise will-change-transform transform [animation-fill-mode:forwards] bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
                                     <p
                                         class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
                                         Dec 09, 2025</p>
@@ -637,7 +694,7 @@
                                         BIM workflow audit improves delivery speed by 17%</h4>
                                 </div>
                                 <div
-                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise will-change-transform transform [animation-fill-mode:forwards] overflow-hidden shrink-0">
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] overflow-hidden shrink-0">
                                     <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                                         style="background-image: url('../assets/pics/Buildings/modern-white-building-curved-glass-stairs.jpg');">
                                     </div>
@@ -647,7 +704,7 @@
                                 class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
                                 data-year="2025">
                                 <div
-                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise will-change-transform transform [animation-fill-mode:forwards] bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
                                     <p
                                         class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
                                         Jul 22, 2025</p>
@@ -656,7 +713,7 @@
                                         Award-winning landscape integrated into our recent commercial design</h4>
                                 </div>
                                 <div
-                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise will-change-transform transform [animation-fill-mode:forwards] overflow-hidden shrink-0">
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] overflow-hidden shrink-0">
                                     <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                                         style="background-image: url('../assets/pics/Buildings/monochrome-cylindrical-building-geometric-facade.jpg');">
                                     </div>
@@ -666,7 +723,7 @@
                                 class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
                                 data-year="2024">
                                 <div
-                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise will-change-transform transform [animation-fill-mode:forwards] bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
                                     <p
                                         class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
                                         Oct 21, 2024</p>
@@ -675,7 +732,7 @@
                                         North Tehran residential complex enters final commissioning phase</h4>
                                 </div>
                                 <div
-                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise will-change-transform transform [animation-fill-mode:forwards] overflow-hidden shrink-0">
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] overflow-hidden shrink-0">
                                     <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                                         style="background-image: url('../assets/pics/Buildings/parametric-curved-glass-amber-grid-architecture.jpg');">
                                     </div>
@@ -685,7 +742,7 @@
                                 class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
                                 data-year="2024">
                                 <div
-                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise will-change-transform transform [animation-fill-mode:forwards] bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
                                     <p
                                         class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
                                         Mar 14, 2024</p>
@@ -694,7 +751,7 @@
                                         Razan experts featured in the national urban development panel</h4>
                                 </div>
                                 <div
-                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise will-change-transform transform [animation-fill-mode:forwards] overflow-hidden shrink-0">
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] overflow-hidden shrink-0">
                                     <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                                         style="background-image: url('../assets/pics/Buildings/stacked-cantilevered-glass-volumes-architecture.jpg');">
                                     </div>
@@ -704,7 +761,7 @@
                                 class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
                                 data-year="2023">
                                 <div
-                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise will-change-transform transform [animation-fill-mode:forwards] bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
                                     <p
                                         class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
                                         Jun 16, 2023</p>
@@ -713,7 +770,7 @@
                                         Workspace flexibility report formally published by Razan Studio</h4>
                                 </div>
                                 <div
-                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise will-change-transform transform [animation-fill-mode:forwards] overflow-hidden shrink-0">
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] overflow-hidden shrink-0">
                                     <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                                         style="background-image: url('../assets/pics/Buildings/stepped-dark-glass-facade-architecture-twilight.jpg');">
                                     </div>
@@ -723,7 +780,7 @@
                                 class="news-article-item group flex flex-row items-stretch gap-3 lg:gap-5 cursor-pointer h-[100px] lg:h-[130px]"
                                 data-year="2022">
                                 <div
-                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 motion-rise will-change-transform transform [animation-fill-mode:forwards] bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
+                                    class="panel-shell flex-1 flex flex-col justify-center px-4 lg:px-6 bg-white transition-colors duration-500 hover:border-[#028c85]/50 hover:shadow-lg">
                                     <p
                                         class="text-[#028c85] text-[10px] lg:text-xs tracking-[0.16em] uppercase font-bold">
                                         May 02, 2022</p>
@@ -732,7 +789,7 @@
                                         Community school campus receives regional planning approval</h4>
                                 </div>
                                 <div
-                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] motion-rise will-change-transform transform [animation-fill-mode:forwards] overflow-hidden shrink-0">
+                                    class="panel-shell w-[100px] sm:w-[140px] lg:w-[200px] overflow-hidden shrink-0">
                                     <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                                         style="background-image: url('../assets/pics/Buildings/undulating-metallic-reflective-architecture.jpg');">
                                     </div>
@@ -755,10 +812,10 @@
                         class="sticky top-0 bg-white z-20 py-6 lg:py-10 mb-4 -mx-4 px-4 sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">
                         <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">About
                             Razan</h2>
-                        <div class="w-12 h-[1px] bg-[#028c85] mt-4 lg:mt-6"></div>
+                        <div id="progress-about" class="w-0 h-[1px] bg-[#028c85] mt-4 lg:mt-6 transition-all duration-300"></div>
                     </div>
 
-                    <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 relative">
+                    <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
                         <!-- حذف ساب‌منو از اینجا و گرفتن کل عرض برای محتوا -->
                         <div class="w-full space-y-16 lg:space-y-20 max-w-4xl mx-auto">
                             <div id="about-brand" class="space-y-6 scroll-mt-28">
@@ -896,7 +953,7 @@
                                 <h2 class="text-3xl lg:text-4xl font-light text-[#474646] tracking-[0.14em] uppercase">
                                     Contact
                                 </h2>
-                                <div class="w-12 h-[1px] bg-[#028c85] mt-4 lg:mt-6"></div>
+                                <div id="progress-contact" class="w-0 h-[1px] bg-[#028c85] mt-4 lg:mt-6 transition-all duration-300"></div>
                             </div>
 
                             <!-- شبکه‌های اجتماعی منتقل شده به هدر صفحه کانتکت (فقط برای موبایل) -->
@@ -961,16 +1018,6 @@
 
                             <!-- شبکه‌های اجتماعی برای دسکتاپ (زیر آدرس) -->
                             <div class="hidden lg:flex gap-5 text-[#8e8e8e] pt-6">
-                                <svg class="w-6 h-6 hover:text-[#028c85] transition-colors cursor-pointer"
-                                    fill="currentColor" viewBox="0 0 24 24" aria-label="LinkedIn">
-                                    <path
-                                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                                </svg>
-                                <svg class="w-6 h-6 hover:text-[#028c85] transition-colors cursor-pointer"
-                                    fill="currentColor" viewBox="0 0 24 24" aria-label="Instagram">
-                                    <path
-                                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                                </svg>
                             </div>
                         </div>
                         <div class="w-full lg:w-[66%]">

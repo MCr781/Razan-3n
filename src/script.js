@@ -1,3 +1,45 @@
+const baseTranslations = {
+    "HOME": "خانه", "NEWS": "اخبار", "PROJECTS": "پروژه‌ها", "ABOUT": "درباره ما", "CONTACT": "تماس با ما",
+    "ALL": "همه", "All": "همه", "Apartment": "آپارتمان", "Villa": "ویلا", "Commercial": "تجاری", "COMMERCIAL": "تجاری", "Health & Care": "درمانی", "HEALTH & CARE": "درمانی", "Office": "اداری", "OFFICE": "اداری", "Complex": "مجتمع", "COMPLEX": "مجتمع", "Interior": "داخلی", "INTERIOR": "داخلی", "Landscape": "لندسکیپ", "LANDSCAPE": "لندسکیپ", "URBAN": "شهری",
+    "Brand": "برند", "Resume": "رزومه", "Team now": "تیم فعلی", "Team history": "تاریخچه تیم", "Design & Construction": "طراحی و ساخت", "Competitions": "مسابقات",
+    "Tehran Commercial Complex": "مجتمع تجاری تهران", "Urban Pocket Landscape": "منظر شهری پاکت", "Laleh Villa": "ویلا لاله", "Health Cluster": "خوشه سلامت", "Office Atrium": "آتریوم اداری", "Karaj Riverfront": "حاشیه رودخانه کرج", "Community School": "مدرسه اجتماعی", "Civic Gateway": "دروازه شهری", "Flexibility Hub": "قطب انعطاف‌پذیری",
+    "About Razan": "درباره رازان", "Brand Philosophy": "فلسفه برند",
+    "Razan sees architecture as a layered act of listening: to site, climate, culture, and program. We map constraints early, then translate them into clear spatial systems that age with dignity and perform efficiently.": "رازان معماری را عمل لایه‌مند شنیدن می‌داند: به سایت، اقلیم، فرهنگ و کاربری. ما محدودیت‌ها را زودهنگام بررسی کرده و آن‌ها را به سیستم‌های فضایی واضحی تبدیل می‌کنیم که با وقار ماندگار شده و عملکرد بالایی دارند.",
+    "Leadership & Resume": "رهبری و رزومه", "Principal Architect": "معمار ارشد", "M.Arch, 18+ Years": "کارشناس ارشد معماری، +۱۸ سال",
+    "Leads concept strategy, urban integration, and design QA across mixed-use and civic projects.": "راهبری استراتژی کانسپت، ادغام شهری و تضمین کیفیت طراحی در پروژه‌های عمومی و چندمنظوره.",
+    "Technical Director": "مدیر فنی", "PE, Construction Systems": "مهندس ارشد، سیستم‌های ساخت",
+    "Oversees coordination packages, constructability checks, and procurement interface.": "نظارت بر بسته‌های هماهنگی، کنترل‌های قابلیت ساخت و فرآیند تدارکات.",
+    "Team Now": "تیم فعلی", "Architecture": "معماری", "12 Designers": "۱۲ طراح", "Urban + Landscape": "شهرسازی + منظر", "6 Specialists": "۶ متخصص", "Technical Delivery": "تحویل فنی", "9 Engineers": "۹ مهندس",
+    "Team History": "تاریخچه تیم",
+    "From a compact design studio in 2000 to a multidisciplinary practice, the firm evolved through public-sector planning, healthcare delivery, and private mixed-use commissions. This trajectory shaped a process-centric culture rooted in coordination and clarity.": "از یک استودیوی طراحی کوچک در سال ۲۰۰۰ تا یک دفتر چندتخصصی، این شرکت از طریق پروژه‌های دولتی، درمانی و کاربری‌های مختلط خصوصی تکامل یافت. این مسیر، فرهنگی فرآیند-محور مبتنی بر هماهنگی و شفافیت را شکل داد.",
+    "Design Package": "طراحی فاز یک", "Construction Docs": "نقشه‌های اجرایی", "2026 Civic Gateway - Finalist": "۲۰۲۶ دروازه شهری - فینالیست", "2024 Health Campus - 2nd Prize": "۲۰۲۴ پردیس سلامت - رتبه دوم", "2023 Riverfront Renewal - Shortlist": "۲۰۲۳ نوسازی حاشیه رودخانه - لیست منتخب",
+    "Razan shortlisted for Tehran Civic Gateway": "رازان در لیست نهایی دروازه شهری تهران", "Our new sustainability framework officially launched": "رونمایی رسمی از چارچوب جدید پایداری ما", "BIM workflow audit improves delivery speed by 17%": "ممیزی گردش کار BIM سرعت تحویل را ۱۷٪ افزایش داد", "Award-winning landscape integrated into our recent commercial design": "ادغام منظر برنده جایزه در طراحی تجاری اخیر ما", "North Tehran residential complex enters final commissioning phase": "مجتمع مسکونی شمال تهران وارد فاز نهایی تحویل شد", "Razan experts featured in the national urban development panel": "حضور کارشناسان رازان در پنل ملی توسعه شهری", "Workspace flexibility report formally published by Razan Studio": "گزارش انعطاف‌پذیری فضای کار رسماً توسط رازان منتشر شد", "Community school campus receives regional planning approval": "پردیس مدرسه اجتماعی تأییدیه برنامه‌ریزی منطقه‌ای گرفت",
+    "Apr 12, 2026": "۲۳ فروردین ۱۴۰۵", "Jan 05, 2026": "۱۵ دی ۱۴۰۴", "Dec 09, 2025": "۱۸ آذر ۱۴۰۴", "Jul 22, 2025": "۳۱ تیر ۱۴۰۴", "Oct 21, 2024": "۳۰ مهر ۱۴۰۳", "Mar 14, 2024": "۲۴ اسفند ۱۴۰۲", "Jun 16, 2023": "۲۶ خرداد ۱۴۰۲", "May 02, 2022": "۱۲ اردیبهشت ۱۴۰۱",
+    "Back to Selected Works": "بازگشت به پروژه‌ها", "Project Title": "عنوان پروژه", "Project Narrative": "شرح پروژه", "Location": "مکان", "Tehran, Iran": "تهران، ایران", "Area": "مساحت", "12,500 sqm": "۱۲,۵۰۰ متر مربع", "Status": "وضعیت", "Completed": "تکمیل شده", "Gallery": "گالری",
+    "Contact": "تماس", "Main Office Map": "نقشه دفتر مرکزی", "Site Visit Map": "نقشه محل کارگاه", "Get in Touch": "ارتباط با ما",
+    "For collaborations, competition teams, and project inquiries, contact the coordination desk and we will route your request to the relevant group.": "برای همکاری‌ها، مسابقات و درخواست‌های پروژه، با میز هماهنگی تماس بگیرید تا درخواست شما به بخش مربوطه ارجاع داده شود.",
+    "Tel": "تلفن", "Mobile": "موبایل", "Fax": "فکس", "Email": "ایمیل", "Address": "آدرس", "[Insert Tel]": "[درج تلفن]", "[Insert Mobile]": "[درج موبایل]", "[Insert Fax]": "[درج فکس]", "[Insert Email]": "[درج ایمیل]", "[Insert Address]": "[درج آدرس]", "Name": "نام", "Your Name": "نام شما", "your@email.com": "ایمیل شما@email.com", "Message": "پیام", "Tell us about your inquiry...": "پیام خود را بنویسید...", "Send Message": "ارسال پیام", "News": "اخبار"
+};
+
+const translations = {
+    "fa": baseTranslations,
+    "en": Object.keys(baseTranslations).reduce((acc, key) => { acc[baseTranslations[key]] = key; return acc; }, {})
+};
+
+function walkAndTranslate(node, lang) {
+    if (node.nodeType === 3) { 
+        let text = node.nodeValue.trim().replace(/\s+/g, ' ');
+        if (text && translations[lang] && translations[lang][text]) {
+            node.nodeValue = node.nodeValue.replace(node.nodeValue.trim(), translations[lang][text]);
+        }
+    } else if (node.nodeType === 1 && !['SCRIPT', 'STYLE', 'SVG'].includes(node.nodeName)) {
+        if (node.placeholder && translations[lang] && translations[lang][node.placeholder.trim()]) {
+            node.placeholder = translations[lang][node.placeholder.trim()];
+        }
+        node.childNodes.forEach(child => walkAndTranslate(child, lang));
+    }
+}
+
 const tabs = ['home', 'news', 'projects', 'about', 'contact'];
 let newsFilterTimer = 0;
 let panelSwitchTimer = 0;
@@ -15,6 +57,7 @@ function switchTab(activeTab) {
     const filterProjects = document.getElementById('sidebar-project-filters');
     const subnavAbout = document.getElementById('sidebar-about-subnav');
     const filterNews = document.getElementById('sidebar-news-filters');
+    const globalSocialIcons = document.getElementById('global-social-icons');
 
     // پنهان کردن همه زیرمنوها
     [filterProjects, subnavAbout, filterNews].forEach(el => {
@@ -23,6 +66,16 @@ function switchTab(activeTab) {
             el.classList.remove('opacity-100', 'pointer-events-auto');
         }
     });
+
+    if (globalSocialIcons) {
+        if (activeTab === 'home' || activeTab === 'contact') {
+            globalSocialIcons.classList.remove('opacity-0', 'pointer-events-none');
+            globalSocialIcons.classList.add('opacity-100', 'pointer-events-auto');
+        } else {
+            globalSocialIcons.classList.add('opacity-0', 'pointer-events-none');
+            globalSocialIcons.classList.remove('opacity-100', 'pointer-events-auto');
+        }
+    }
 
     // نمایش زیرمنوی مربوط به تب فعال
     if (activeTab === 'projects' && filterProjects) {
@@ -195,17 +248,17 @@ function startIntroSequence() {
 
     if (textBlock) textBlock.style.opacity = '0';
     introTimers.push(setTimeout(() => { overlay.classList.add('intro-phase-1'); }, 300));
-    introTimers.push(setTimeout(() => { overlay.classList.add('intro-phase-2'); }, 1000));
+    introTimers.push(setTimeout(() => { overlay.classList.add('intro-phase-2'); }, 1150));
     introTimers.push(setTimeout(() => { body.classList.add('content-visible'); }, 1300));
-    introTimers.push(setTimeout(() => { overlay.classList.add('intro-phase-3'); }, 1800));
-    introTimers.push(setTimeout(() => { overlay.classList.add('intro-fade-out'); }, 2600));
+    introTimers.push(setTimeout(() => { overlay.classList.add('intro-phase-3'); }, 2000));
+    introTimers.push(setTimeout(() => { overlay.classList.add('intro-fade-out'); }, 2800));
 
     introTimers.push(setTimeout(() => {
         overlay.classList.add('intro-hidden');
         body.setAttribute('data-phase', 'idle');
         const sidebarLogo = document.querySelector('[data-anim-target="logo-container"]');
         if (sidebarLogo) sidebarLogo.setAttribute('data-state', 'idle');
-    }, 3400));
+    }, 3600));
 }
 
 function snapToIdleLogo() {
@@ -338,7 +391,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const direction = (index % 2 === 0) ? 1 : -1;
             requestAnimationFrame(() => {
-                if (direction === -1) col.scrollTop = col.scrollHeight / 2;
+                if (originals.length > 0) {
+                    const itemHeight = originals[0].getBoundingClientRect().height;
+                    const gap = parseInt(window.getComputedStyle(col).gap) || 0;
+                    const groupHeight = originals.length * (itemHeight + gap);
+                    if (direction === -1) {
+                        col.scrollTop = groupHeight * 2; // Perfectly aligned to items
+                    } else {
+                        col.scrollTop = groupHeight;
+                    }
+                }
             });
 
             col.addEventListener('scroll', () => {
@@ -367,7 +429,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const gap = parseInt(window.getComputedStyle(col).gap) || 0;
                     const shift = (itemHeight + gap) * direction;
 
+                    col.style.scrollSnapType = 'none';
                     col.scrollBy({ top: shift, behavior: 'smooth' });
+                    setTimeout(() => { col.style.scrollSnapType = ''; }, 600);
                 }
                 currentScrollingCol = (currentScrollingCol + 1) % columns.length;
             }
@@ -379,18 +443,14 @@ document.addEventListener('DOMContentLoaded', () => {
         let aboutTicking = false;
 
         const syncAboutActive = () => {
-            // بررسی اینکه آیا به انتهای بخش رسیده‌ایم یا خیر
             const bottomGap = aboutContainer.scrollHeight - aboutContainer.scrollTop - aboutContainer.clientHeight;
 
-            // افزایش تلورانس از 24 به 60 برای اطمینان از کلیک خوردن بخش آخر در تمام مرورگرها
             if (bottomGap <= 60) {
-                // اگر به انتهای لیست رسیدیم، مستقیماً بخش آخر (Competitions) را روشن کن
                 setAboutActive('competitions');
                 return;
             }
 
-            // در غیر این صورت، بر اساس وسط صفحه بررسی کن
-            const probeLine = aboutContainer.scrollTop + (aboutContainer.clientHeight * 0.4);
+            const probeLine = aboutContainer.scrollTop + 60;
             let activeId = 'brand';
 
             aboutSections.forEach(section => {
@@ -488,6 +548,36 @@ document.addEventListener('DOMContentLoaded', () => {
             clearIntroTimers();
         }
     });
+
+    // ── Scroll Progress Bars (Feature 5) ──
+    const setupProgressBar = (containerSelector, progressId) => {
+        const container = document.querySelector(containerSelector);
+        const progress = document.getElementById(progressId);
+        if (!container || !progress) return;
+
+        const updateProgress = () => {
+            const scrollTop = container.scrollTop;
+            const scrollHeight = container.scrollHeight - container.clientHeight;
+            const scrollPercent = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+            // حداقل اندازه برای اینکه دیده شود
+            const width = Math.max(5, scrollPercent);
+            progress.style.width = width + '%';
+        };
+
+        container.addEventListener('scroll', updateProgress, { passive: true });
+        // Initial setup
+        updateProgress();
+        // Update on tab switch or resize
+        window.addEventListener('resize', updateProgress);
+        document.querySelectorAll('.nav-item').forEach(btn => {
+            btn.addEventListener('click', () => setTimeout(updateProgress, 600));
+        });
+    };
+
+    setupProgressBar('#sec-news .scroll-clean', 'progress-news');
+    setupProgressBar('#about-scroll-container', 'progress-about');
+    setupProgressBar('#sec-contact .scroll-clean', 'progress-contact');
+
     initHomeMatrix();
 });
 
@@ -511,8 +601,11 @@ function openProjectDetail(title, year, category, projectId) {
     const mainImgEl = document.getElementById('pd-main-img');
     const galImages = document.querySelectorAll('.pd-gallery-img');
 
-    if (titleEl) titleEl.innerText = title;
-    if (metaEl) metaEl.innerText = `${year} | ${category}`;
+    const lang = document.documentElement.lang || 'en';
+    const t = (text) => (translations[lang] && translations[lang][text]) ? translations[lang][text] : text;
+
+    if (titleEl) titleEl.innerText = t(title);
+    if (metaEl) metaEl.innerText = `${year} | ${t(category)}`;
 
     const imgs = projectImages[projectId];
     if (imgs) {
@@ -540,17 +633,7 @@ function closeProjectDetail() {
     }
 }
 
-function closeProjectDetail() {
-    const overlay = document.getElementById('project-detail-overlay');
-
-    // بازگرداندن پنل به سمت راست
-    if (overlay) {
-        overlay.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-        overlay.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
-    }
-}
-
-// ── Home Page 10x10 Matrix Generator (Wave Sync) ──
+    // ── Home Page 10x10 Matrix Generator (Wave Sync) ──
 function initHomeMatrix() {
     const grid = document.getElementById('home-matrix-grid');
     if (!grid) return;
@@ -563,6 +646,8 @@ function initHomeMatrix() {
         '../assets/pics/Buildings/dark-brutalist-geometric-patterned-facade.jpg',
         '../assets/pics/Buildings/double-tree-by-hilton-nice-centre.jpg'
     ];
+
+    const items = [];
 
     for (let i = 0; i < 100; i++) {
         const item = document.createElement('div');
@@ -578,7 +663,89 @@ function initHomeMatrix() {
 
         item.className = `matrix-item matrix-wave-${waveGroup} w-full h-full bg-cover bg-center`;
         item.style.backgroundImage = `url('${randomImg}')`;
+        // اضافه کردن ترانزیشن برای تغییر نرم عکس (فقط opacity)
+        item.style.transition = 'opacity 0.5s ease';
 
         grid.appendChild(item);
+        items.push(item);
     }
+
+    // تغییر عکس رندوم هر ۳ ثانیه
+    setInterval(() => {
+        if (items.length === 0) return;
+        const activePanel = document.querySelector('.tab-panel.opacity-100');
+        if (activePanel && activePanel.id === 'sec-home') {
+            const randomItemIndex = Math.floor(Math.random() * items.length);
+            const randomImageIndex = Math.floor(Math.random() * images.length);
+            const item = items[randomItemIndex];
+            
+            // Ensure relative positioning
+            if (getComputedStyle(item).position === 'static') {
+                item.style.position = 'relative';
+            }
+            
+            const overlayImg = document.createElement('div');
+            overlayImg.style.position = 'absolute';
+            overlayImg.style.inset = '0';
+            overlayImg.style.backgroundSize = 'cover';
+            overlayImg.style.backgroundPosition = 'center';
+            overlayImg.style.zIndex = '10';
+            overlayImg.style.transition = 'opacity 1s ease-in-out';
+            overlayImg.style.backgroundImage = `url('${images[randomImageIndex]}')`;
+            overlayImg.style.opacity = '0';
+            
+            item.appendChild(overlayImg);
+            
+            // Trigger reflow
+            void overlayImg.offsetWidth;
+            
+            overlayImg.style.opacity = '1';
+            
+            setTimeout(() => {
+                item.style.backgroundImage = overlayImg.style.backgroundImage;
+                if (item.contains(overlayImg)) {
+                    item.removeChild(overlayImg);
+                }
+            }, 1000);
+        }
+    }, 3000);
+}
+
+function toggleLanguage(lang) {
+    // a. Set direction and lang
+    document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
+
+    // b. Toggle intro content
+    const introEn = document.getElementById('intro-en');
+    const introFa = document.getElementById('intro-fa');
+    if (lang === 'fa') {
+        if (introEn) introEn.classList.add('hidden');
+        if (introFa) introFa.classList.remove('hidden');
+    } else {
+        if (introEn) introEn.classList.remove('hidden');
+        if (introFa) introFa.classList.add('hidden');
+    }
+
+    // c. Automate translations via DOM Walker
+    walkAndTranslate(document.body, lang);
+
+    // d. Reset and replay intro
+    clearIntroTimers();
+    introStarted = false;
+    const overlay = document.getElementById('intro-overlay');
+    if (overlay) {
+        overlay.classList.remove('intro-phase-1', 'intro-phase-2', 'intro-phase-3', 'intro-fade-out', 'intro-hidden');
+    }
+    
+    document.body.classList.remove('content-visible');
+    document.body.setAttribute('data-phase', 'intro');
+
+    // Fix: Wait for layout/RTL repaint before measuring coordinates
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            measureIntroTarget();
+            startIntroSequence();
+        });
+    });
 }
