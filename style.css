@@ -1086,3 +1086,9 @@
                 gap: 2.25rem;
             }
         }
+
+        /* RTL-specific styles for brand text centering on spine */
+        html[dir="rtl"] #brand-text-fa {
+            display: inline-block;
+            text-align: center;
+        }
