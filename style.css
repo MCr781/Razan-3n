@@ -1092,3 +1092,31 @@
             display: inline-block;
             text-align: center;
         }
+
+        /* Ensure social media icons container is stable and centered */
+        #global-social-icons {
+            position: relative;
+        }
+
+        #global-social-icons > div:first-child {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        /* Language switcher divider matching spine line style */
+        [data-anim-target="spine-divider"] .language-toggle-divider {
+            border-left: 1px solid #028c85;
+            opacity: 1;
+            height: 1rem;
+        }
+
+        /* RTL brand text center alignment */
+        html[dir="rtl"] #brand-text-fa,
+        html[dir="rtl"] .brand-text-fa {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
