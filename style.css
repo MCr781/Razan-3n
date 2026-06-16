@@ -1089,7 +1089,9 @@
 
         /* RTL-specific styles for brand text centering on spine */
         html[dir="rtl"] #brand-text-fa {
-            display: inline-block;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-align: center;
         }
 
@@ -1110,13 +1112,4 @@
             border-left: 1px solid #028c85;
             opacity: 1;
             height: 1rem;
-        }
-
-        /* RTL brand text center alignment */
-        html[dir="rtl"] #brand-text-fa,
-        html[dir="rtl"] .brand-text-fa {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
         }
